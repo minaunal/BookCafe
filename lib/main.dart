@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
       initialRoute: "/",
       routes: {
         "/": (context) => Iskele(),
-        "/anasayfa": (context) => AnaSayfa()
+       // "/anasayfa": (context) => AnaSayfa()
       },
     );
   }
