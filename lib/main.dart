@@ -46,7 +46,7 @@ class _IskeleState extends State<Iskele> {
                   splashRadius: 50,
                   iconSize: 100,
                   icon: Lottie.asset(Icons8.book,
-                      height: 50, fit: BoxFit.fitHeight),
+                      height: 70, fit: BoxFit.fitHeight),
                   onPressed: null),
               Giris(),
             ]),
