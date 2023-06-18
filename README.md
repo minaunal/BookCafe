@@ -48,7 +48,8 @@ Sonuç olarak, BookSmart projesi öğrencilerin ders çalışma ortamlarını iy
 # Sprint 1
 - **Sprint içinde tamamlanması tahmin edilen puan:** 100 Puan
 - **Puan tamamlama mantığı:** Toplamda proje boyunca tamamlanması gereken 340 puanlık backlog bulunmaktadır. 3 sprint'e bölündüğünde ilk sprint'in en azından 100 ile başlaması gerektiğine karar verildi.
-- **Daily Scrum:** Daily Scrum toplantıları 2 günde bir Discord üzerinden sesli toplantı, her gün Whatsapp üzerinden yazılı toplantı yapılmasına karar verilmiştir. Daily Scrum toplantısı örneği jpeg veya word olarak Readme'de paylaşılmaktadır: WP SS + DİSCORD SS
+- **Daily Scrum**: Daily Scrum toplantılarının zamansal sebeplerden ötürü Slack üzerinden yapılmasına karar verilmiştir. Daily Scrum toplantısı örneği jpeg veya word olarak Readme'de tarafımızdan paylaşılmaktadır: [Sprint 1 Daily Scrum Chats] -> [DailyScrum.docx](https://github.com/minaunal/BookCafe/files/11782340/DailyScrum.docx)
+
 - **Sprint board update:** Sprint board screenshots : TRELLO YAPIŞTIR
 - Ürün Durumu: Ekran görüntüleri ekteki gibidir. UYGULAMA SS YAPIŞTIR
 - **Sprint Review:**
