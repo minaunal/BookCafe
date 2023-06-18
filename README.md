@@ -1,5 +1,5 @@
 # Takım İsmi
-**_Flutter 89_**
+**_Takım Flutter 89_**
 
 # Ürün İle İlgili Bilgiler
 ## Takım Üyeleri
@@ -10,7 +10,7 @@
 - Mehmet Ak: Aktif Olmayan Üye
   
 ## Ürün İsmi
-**_Belirlideğil_**
+**_Bootcamp_**
 
 ## Product Backlog URL
 -yarın mina atınca treloo düzenle ss al sonra burndown yapıştır
@@ -43,14 +43,22 @@ Sonuç olarak, BookSmart projesi öğrencilerin ders çalışma ortamlarını iy
 - Eğitim merkezleri ve öğrenci toplulukları
 - Kütüphane yöneticileri
 
-## Jüriye Not
+
 ---------------------------
 # Sprint 1
-- **Sprint içinde tamamlanması tahmin edilen puan:** 100 Puan
-- **Puan tamamlama mantığı:** Toplamda proje boyunca tamamlanması gereken 340 puanlık backlog bulunmaktadır. 3 sprint'e bölündüğünde ilk sprint'in en azından 100 ile başlaması gerektiğine karar verildi.
-- **Daily Scrum**: Daily Scrum toplantılarının zamansal sebeplerden ötürü Slack üzerinden yapılmasına karar verilmiştir. Daily Scrum toplantısı örneği jpeg veya word olarak Readme'de tarafımızdan paylaşılmaktadır: [Sprint 1 Daily Scrum Chats] -> [DailyScrum.docx](https://github.com/minaunal/BookCafe/files/11782340/DailyScrum.docx)
+- **Sprint içinde tamamlanması tahmin edilen puan:** 120 Puan
+- **Puan tamamlama mantığı:** Toplamda proje boyunca tamamlanması gereken 340 puanlık backlog bulunmaktadır. 3 sprint'e bölündüğünde ilk sprint'in en azından 120 ile başlaması gerektiğine karar verildi.
+- **Sprint notları:** Trello linkimiz sprint board update başlığı altına verilmiştir.Günlük buluşmaların ekran görüntüleri Daily Scrum başlığı altında verilmiştir.
+- **Daily Scrum**: Daily Scrum toplantılarının Discord ve Whatsapp üzerinden yapılmasına karar verilmiştir. Daily Scrum toplantısı örneği word olarak Readme'de tarafımızdan paylaşılmaktadır: [Sprint 1 Daily Scrum Chats] -> [DailyScrum.docx](https://github.com/minaunal/BookCafe/files/11782340/DailyScrum.docx)
 
-- **Sprint board update:** Sprint board screenshots : TRELLO YAPIŞTIR
-- Ürün Durumu: Ekran görüntüleri ekteki gibidir. UYGULAMA SS YAPIŞTIR
+- **Sprint board update:** Sprint board'ımız : [Trello Linki](https://trello.com/b/sVYY7j2L/proje-tamamlama-s%C3%BCreci)
+- **Ürün Durumu:** Ekran görüntüleri ekteki gibidir.
+- 
+-![image](https://github.com/minaunal/BookCafe/assets/130221407/869864e1-b28d-4220-aa6a-08074b796907)
+
+-![image](https://github.com/minaunal/BookCafe/assets/130221407/eaf473e0-0cdb-46dd-ba80-03f8a3a68588)
+
+-![image](https://github.com/minaunal/BookCafe/assets/130221407/0ef21dd8-2367-4473-a2de-d6ac6e7e4ad6)
+
 - **Sprint Review:**
 - **Sprint Retrospective:**
