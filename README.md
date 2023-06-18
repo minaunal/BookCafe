@@ -10,7 +10,7 @@
 - Mehmet Ak: Aktif Olmayan Üye
   
 ## Ürün İsmi
-**_Bootcamp_**
+**_BookSmart_**
 
 ## Product Backlog URL
 -yarın mina atınca treloo düzenle ss al sonra burndown yapıştır
