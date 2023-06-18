@@ -13,7 +13,7 @@
 **_BookSmart_**
 
 ## Product Backlog URL
-[Flutter Team 89 Trello Backlog Board](https://www.google.com)
+[Flutter Team 89 Trello Backlog Board](https://trello.com/invite/b/sVYY7j2L/ATTI3c6820c9fc6c75cea3b25a053d2ec7c34EB168FE/proje-tamamlama-sureci)
 
 ## Ürün Açıklaması
 Bir grup öğrenci, ders çalışma süreçlerini daha verimli hale getirmek amacıyla bir girişime adım attı. Ortak sorunlarına bir çözüm bulma kararı aldılar ve böylece BookSmart projesini başlattılar. Bu yenilikçi sistem, teknolojiyi ders çalışma deneyimiyle birleştiriyordu.
@@ -51,7 +51,7 @@ Sonuç olarak, BookSmart projesi öğrencilerin ders çalışma ortamlarını iy
 - **Sprint notları:** Trello linkimiz sprint board update başlığı altına verilmiştir.Günlük buluşmaların ekran görüntüleri Daily Scrum başlığı altında verilmiştir.
 - **Daily Scrum**: Daily Scrum toplantılarının Discord ve Whatsapp üzerinden yapılmasına karar verilmiştir. Daily Scrum toplantısı örneği word olarak Readme'de tarafımızdan paylaşılmaktadır: [Sprint 1 Daily Scrum Chats] -> [DailyScrum.docx](https://github.com/minaunal/BookCafe/files/11782340/DailyScrum.docx)
 
-- **Sprint board update:** Sprint board'ımız : [Trello Linki](https://trello.com/b/sVYY7j2L/proje-tamamlama-s%C3%BCreci)
+- **Sprint board update:** Sprint board'ımız : [Trello Linki](https://trello.com/invite/b/sVYY7j2L/ATTI3c6820c9fc6c75cea3b25a053d2ec7c34EB168FE/proje-tamamlama-sureci)
 - **Ürün Durumu:** Ekran görüntüleri ekteki gibidir.
 <p align="center">
   <img width="500" height="1000" src="https://github.com/minaunal/BookCafe/assets/130221407/869864e1-b28d-4220-aa6a-08074b796907">
