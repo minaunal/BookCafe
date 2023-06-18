@@ -13,7 +13,7 @@
 **_BookSmart_**
 
 ## Product Backlog URL
--yarın mina atınca treloo düzenle ss al sonra burndown yapıştır
+[Flutter Team 89 Trello Backlog Board](https://www.google.com)
 
 ## Ürün Açıklaması
 Bir grup öğrenci, ders çalışma süreçlerini daha verimli hale getirmek amacıyla bir girişime adım attı. Ortak sorunlarına bir çözüm bulma kararı aldılar ve böylece BookSmart projesini başlattılar. Bu yenilikçi sistem, teknolojiyi ders çalışma deneyimiyle birleştiriyordu.
@@ -53,7 +53,7 @@ Sonuç olarak, BookSmart projesi öğrencilerin ders çalışma ortamlarını iy
 
 - **Sprint board update:** Sprint board'ımız : [Trello Linki](https://trello.com/b/sVYY7j2L/proje-tamamlama-s%C3%BCreci)
 - **Ürün Durumu:** Ekran görüntüleri ekteki gibidir.
-- 
+  
 -![image](https://github.com/minaunal/BookCafe/assets/130221407/869864e1-b28d-4220-aa6a-08074b796907)
 
 -![image](https://github.com/minaunal/BookCafe/assets/130221407/eaf473e0-0cdb-46dd-ba80-03f8a3a68588)
