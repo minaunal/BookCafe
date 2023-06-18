@@ -53,12 +53,18 @@ Sonuç olarak, BookSmart projesi öğrencilerin ders çalışma ortamlarını iy
 
 - **Sprint board update:** Sprint board'ımız : [Trello Linki](https://trello.com/b/sVYY7j2L/proje-tamamlama-s%C3%BCreci)
 - **Ürün Durumu:** Ekran görüntüleri ekteki gibidir.
-  
--![image](https://github.com/minaunal/BookCafe/assets/130221407/869864e1-b28d-4220-aa6a-08074b796907)
+<p align="center">
+  <img width="500" height="1000" src="https://github.com/minaunal/BookCafe/assets/130221407/869864e1-b28d-4220-aa6a-08074b796907">
+</p>
 
--![image](https://github.com/minaunal/BookCafe/assets/130221407/eaf473e0-0cdb-46dd-ba80-03f8a3a68588)
+<p align="center">
+  <img width="500" height="1000" src="https://github.com/minaunal/BookCafe/assets/130221407/eaf473e0-0cdb-46dd-ba80-03f8a3a68588">
+</p>
 
--![image](https://github.com/minaunal/BookCafe/assets/130221407/0ef21dd8-2367-4473-a2de-d6ac6e7e4ad6)
+<p align="center">
+  <img width="1000" height="250" src="https://github.com/minaunal/BookCafe/assets/130221407/0ef21dd8-2367-4473-a2de-d6ac6e7e4ad6">
+</p>
+
 
 - **Sprint Review:**
 - **Sprint Retrospective:**
