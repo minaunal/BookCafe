@@ -62,9 +62,24 @@ Sonuç olarak, BookSmart projesi öğrencilerin ders çalışma ortamlarını iy
 </p>
 
 <p align="center">
-  <img width="1000" height="250" src="https://github.com/minaunal/BookCafe/assets/130221407/0ef21dd8-2367-4473-a2de-d6ac6e7e4ad6">
+  <img width="1000" height="200" src="https://github.com/minaunal/BookCafe/assets/130221407/0ef21dd8-2367-4473-a2de-d6ac6e7e4ad6">
 </p>
 
 
 - **Sprint Review:**
+
+_-_ Sprint Review toplantısında, takımımız sprint boyunca tamamlanan işleri bir araya getirerek değerlendirdi ve gelecek sprintler için gelişim fırsatlarını belirledi.
+
+_-_ Takımımız sprint sürecindeki hedeflerimize ne kadar yaklaştığımızı görmek için tamamlanan işleri değerlendirdi ve olumlu sonuçlardan dolayı birbirimizi tebrik ettik.
+ 
+_-_ Takımımız sprint sürecinde karşılaştığımız zorlukları ve başarıları paylaştı ve birlikte neler öğrendiğimizi tartıştık.
+ 
+_-_ Takımımız sprint boyunca tamamlanan işleri gözden geçirdi ve gelecek sprintlerde daha iyi sonuçlar elde etmek için alınacak önlemleri tartıştık.
+ 
 - **Sprint Retrospective:**
+  
+_-_ Sprint Retrospective toplantısında, takımımız sprint boyunca karşılaştığımız zorlukları ve başarıları değerlendirdi.
+
+_-_ Takımımız sprint sürecindeki gelişim fırsatlarını belirlemek ve gelecek sprintlerde daha iyi performans göstermek için eylem adımları belirledi.
+
+_-_ Takımımız geçmiş sprintlerden çıkarılan dersleri paylaştı ve süreçte yapılması gereken iyileştirmeleri tartıştı.
