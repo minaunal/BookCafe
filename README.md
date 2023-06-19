@@ -15,6 +15,7 @@
 ## Product Backlog URL
 [Flutter Team 89 Trello Backlog Board](https://trello.com/invite/b/sVYY7j2L/ATTI3c6820c9fc6c75cea3b25a053d2ec7c34EB168FE/proje-tamamlama-sureci)
 
+![image](https://github.com/minaunal/BookCafe/assets/130221407/4aac9d29-3bb4-4760-bba9-4f09fff1438c)
 
 
 
@@ -55,6 +56,9 @@ Sonuç olarak, BookSmart projesi öğrencilerin ders çalışma ortamlarını iy
 - **Daily Scrum**: Daily Scrum toplantılarının Discord ve Whatsapp üzerinden yapılmasına karar verilmiştir. Daily Scrum toplantısı örneği word olarak Readme'de tarafımızdan paylaşılmaktadır: [Sprint 1 Daily Scrum Chats] -> [DailyScrum.docx](https://github.com/minaunal/BookCafe/files/11782340/DailyScrum.docx)
 
 - **Sprint board update:** Sprint board'ımız : [Trello Linki](https://trello.com/invite/b/sVYY7j2L/ATTI3c6820c9fc6c75cea3b25a053d2ec7c34EB168FE/proje-tamamlama-sureci)
+
+  ![image](https://github.com/minaunal/BookCafe/assets/130221407/f1921331-11de-42fb-939a-942d4d8aa473)
+
 - **Ürün Durumu:** Ekran görüntüleri ekteki gibidir.
 
 
