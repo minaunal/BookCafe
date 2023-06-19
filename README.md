@@ -15,6 +15,9 @@
 ## Product Backlog URL
 [Flutter Team 89 Trello Backlog Board](https://trello.com/invite/b/sVYY7j2L/ATTI3c6820c9fc6c75cea3b25a053d2ec7c34EB168FE/proje-tamamlama-sureci)
 
+
+
+
 ## Ürün Açıklaması
 Bir grup öğrenci, ders çalışma süreçlerini daha verimli hale getirmek amacıyla bir girişime adım attı. Ortak sorunlarına bir çözüm bulma kararı aldılar ve böylece BookSmart projesini başlattılar. Bu yenilikçi sistem, teknolojiyi ders çalışma deneyimiyle birleştiriyordu.
 
@@ -53,6 +56,12 @@ Sonuç olarak, BookSmart projesi öğrencilerin ders çalışma ortamlarını iy
 
 - **Sprint board update:** Sprint board'ımız : [Trello Linki](https://trello.com/invite/b/sVYY7j2L/ATTI3c6820c9fc6c75cea3b25a053d2ec7c34EB168FE/proje-tamamlama-sureci)
 - **Ürün Durumu:** Ekran görüntüleri ekteki gibidir.
+
+
+<p align="center">
+  <img width="500" height="500" src="https://github.com/minaunal/BookCafe/assets/130221407/5df0d16f-7f26-46e0-abf4-7eed48634118">
+</p>
+  
 <p align="center">
   <img width="500" height="1000" src="https://github.com/minaunal/BookCafe/assets/130221407/869864e1-b28d-4220-aa6a-08074b796907">
 </p>
