@@ -1,3 +1,4 @@
+import 'package:fbase/cam.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -147,6 +148,19 @@ class _KayitState extends State<Kayit> {
            // Navigator.of(context).push(MaterialPageRoute(builder: (context) => Giris()));
           },
             child: Text("Manager"),
+          ),
+           ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.black,
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(32.0),
+              ),
+            ),
+           onPressed: () {
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) => QRScanner()));
+          },
+            child: Text("kamera"),
           ),
          ElevatedButton(
             style: ElevatedButton.styleFrom(

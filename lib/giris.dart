@@ -32,8 +32,8 @@ class _GirisState extends State<Giris> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget> [
-    TFdesign(alanadi: "email", onTap:func, degisken: _email),
-    TFdesign(alanadi: "password",onTap: func, degisken: _password),
+    //TFdesign(alanadi: "email", onTap:func, degisken: _email),
+    //TFdesign(alanadi: "password",onTap: func, degisken: _password),
     ElevatedButton(onPressed: () {
             Navigator.of(context).push(MaterialPageRoute(builder: (context) => Kullanici()));
           },
