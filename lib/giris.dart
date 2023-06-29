@@ -1,4 +1,5 @@
 import 'package:fbase/main.dart';
+import 'package:fbase/yoneticiekrani.dart';
 import 'package:fbase/kullaniciekrani.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +25,14 @@ class _GirisState extends State<Giris> {
   void func(){
     return;
   }
+  void pickuser(){
+    if(_email.text=="admin" && _password.text=="12345"){
+Navigator.of(context).push(MaterialPageRoute(builder: (context) => Yonetici()));
+      }
+      else{
+Navigator.of(context).push(MaterialPageRoute(builder: (context) => Kullanici()));
+      }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,11 +41,9 @@ class _GirisState extends State<Giris> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget> [
-    //TFdesign(alanadi: "email", onTap:func, degisken: _email),
-    //TFdesign(alanadi: "password",onTap: func, degisken: _password),
-    ElevatedButton(onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) => Kullanici()));
-          },
+    TFdesign(alanadi: "email", onTap:func, degisken: _email),
+    TFdesign(alanadi: "password",onTap: func, degisken: _password),
+     ElevatedButton(onPressed: () => pickuser(),
            child: Text("Giriş Yap"),),
       ],
       ),

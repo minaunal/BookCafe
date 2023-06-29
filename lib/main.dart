@@ -1,4 +1,6 @@
-import 'package:fbase/cam.dart';
+import 'package:fbase/kullanicigiris.dart';
+import 'package:fbase/yoneticigiris.dart';
+import 'package:fbase/qrscanner.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -67,11 +69,11 @@ class _KayitState extends State<Kayit> {
   final _name = TextEditingController();
   final _surname = TextEditingController();
   double _formProgress = 0;
-  bool _controlprogress=false;
-  
+  bool _controlprogress = false;
+
   void _updateFormProgress() {
     var progress = 0.0;
-    var controllers = [_email, _password,_name,_surname];
+    var controllers = [_email, _password, _name, _surname];
 
     for (var controller in controllers) {
       if (controller.value.text.isNotEmpty) {
@@ -80,8 +82,8 @@ class _KayitState extends State<Kayit> {
     }
     setState(() {
       _formProgress = progress;
-      if(_formProgress==1){
-        _controlprogress=true;
+      if (_formProgress == 1) {
+        _controlprogress = true;
       }
     });
   }
@@ -91,24 +93,28 @@ class _KayitState extends State<Kayit> {
         email: _email.text, password: _password.text);
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return Container(
       child: Column(
         children: [
-          Text("Chill & Study",
-          style: TextStyle(
-            fontFamily: 'Pacifico',
-            fontSize: 25,
-          ),),
+          Text(
+            "BookSmart",
+            style: TextStyle(
+              fontFamily: 'Pacifico',
+              fontSize: 25,
+            ),
+          ),
           SizedBox(
             height: 30,
           ),
           AnimatedProgressIndicator(value: _formProgress),
-          TFdesign(alanadi: "name", onTap:_updateFormProgress,degisken: _name),
-    TFdesign(alanadi: "surname", onTap:_updateFormProgress,degisken: _surname),
+          TFdesign(
+              alanadi: "name", onTap: _updateFormProgress, degisken: _name),
+          TFdesign(
+              alanadi: "surname",
+              onTap: _updateFormProgress,
+              degisken: _surname),
           TFdesign(
               alanadi: "email", onTap: _updateFormProgress, degisken: _email),
           TFdesign(
@@ -124,8 +130,7 @@ class _KayitState extends State<Kayit> {
                 borderRadius: BorderRadius.circular(32.0),
               ),
             ),
-          
-            onPressed: _controlprogress ? () => KayitOl() : null, 
+            onPressed: _controlprogress ? () => KayitOl() : null,
             child: Text("Sign in"),
           ),
           SizedBox(
@@ -135,46 +140,48 @@ class _KayitState extends State<Kayit> {
           Text("Log in."),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget> [
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.black,
-              foregroundColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(32.0),
+            children: <Widget>[
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.black,
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(32.0),
+                  ),
+                ),
+                onPressed: () {
+                   Navigator.of(context).push(MaterialPageRoute(builder: (context) => YoneticiGiris()));
+                },
+                child: Text("Manager"),
               ),
-            ),
-           onPressed: () {
-           // Navigator.of(context).push(MaterialPageRoute(builder: (context) => Giris()));
-          },
-            child: Text("Manager"),
-          ),
-           ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.black,
-              foregroundColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(32.0),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.black,
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(32.0),
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => QRScanner()));
+                },
+                child: Text("kamera"),
               ),
-            ),
-           onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) => QRScanner()));
-          },
-            child: Text("kamera"),
-          ),
-         ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.black,
-              foregroundColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(32.0),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.black,
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(32.0),
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (context) => KullaniciGiris()));
+                },
+                child: Text("Student"),
               ),
-            ),
-            onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) => Giris()));
-          },
-            child: Text("Student"),
-          ),
             ],
           ),
         ],
@@ -265,6 +272,14 @@ class _TFdesignState extends State<TFdesign> {
     widget.degisken.addListener(widget.onTap);
   }
 
+  bool pwsituation() {
+    bool n = false;
+    if (widget.alanadi == "password") {
+      n = true;
+    }
+    return n;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -290,6 +305,7 @@ class _TFdesignState extends State<TFdesign> {
                 borderRadius: BorderRadius.circular(10),
               )),
           controller: widget.degisken,
+          obscureText: pwsituation(),
         ),
         SizedBox(
           height: 10,
