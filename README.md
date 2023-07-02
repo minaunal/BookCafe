@@ -96,3 +96,52 @@ _-_ Sprint Retrospective toplantısında, takımımız sprint boyunca karşıla�
 _-_ Takımımız sprint sürecindeki gelişim fırsatlarını belirlemek ve gelecek sprintlerde daha iyi performans göstermek için eylem adımları belirledi.
 
 _-_ Takımımız geçmiş sprintlerden çıkarılan dersleri paylaştı ve süreçte yapılması gereken iyileştirmeleri tartıştı.
+
+-------------------------
+## Product Backlog URL
+
+[Flutter Team 89 Trello Backlog Board](https://trello.com/invite/b/sVYY7j2L/ATTI3c6820c9fc6c75cea3b25a053d2ec7c34EB168FE/proje-tamamlama-sureci)
+
+![image](https://github.com/minaunal/BookCafe/assets/130221407/f435aaff-8c52-4a6d-bcfb-e971d18dd5fc)
+
+
+---------------------
+# Sprint 2
+- **Sprint içinde tamamlanması tahmin edilen puan:** 100 Puan
+- **Puan tamamlama mantığı:** Toplamda proje boyunca tamamlanması gereken 340 puanlık backlog bulunmaktadır. 3 sprint'e bölündüğünde ikinci sprint'in 110 ile devam etmesi gerektiğine karar verildi.
+- **Daily Scrum**: Daily Scrum toplantılarının Discord ve Whatsapp üzerinden yapılmasına karar verilmiştir. Daily Scrum toplantısı örneği word olarak Readme'de tarafımızdan paylaşılmaktadır:   [Sprint 2 Daily Scrum Chats] ->[Sprint2DailyScrum.docx](https://github.com/minaunal/BookCafe/files/11931252/Sprint2DailyScrum.docx)
+- **Sprint board update:** Sprint board'ımız : [Trello Linki](https://trello.com/invite/b/sVYY7j2L/ATTI3c6820c9fc6c75cea3b25a053d2ec7c34EB168FE/proje-tamamlama-sureci)
+   ![image](https://github.com/minaunal/BookCafe/assets/130221407/f435aaff-8c52-4a6d-bcfb-e971d18dd5fc)
+- **Ürün Durumu:** Ekran görüntüleri ekteki gibidir.
+  
+<p align="center">
+  <img width="500" height="1000" src="https://github.com/minaunal/BookCafe/assets/130221407/a034ecc5-5538-42ef-940f-b29e698e7135">
+</p>
+
+<p align="center">
+  <img width="500" height="1000" src="https://github.com/minaunal/BookCafe/assets/130221407/36b727e1-d718-45a9-8b38-418273b73a7c">
+</p>
+
+<p align="center">
+  <img width="500" height="1000" src="https://github.com/minaunal/BookCafe/assets/130221407/01337450-da7e-4d57-8553-c427d163e6c6">
+</p>
+
+<p align="center">
+  <img width="500" height="1000" src="https://github.com/minaunal/BookCafe/assets/130221407/0c7371c7-eaba-4ee1-90a3-b60c082811ea">
+</p>
+
+<p align="center">
+  <img width="500" height="1000" src="https://github.com/minaunal/BookCafe/assets/130221407/27c1da72-8f0b-44cc-9747-15638921d62d">
+</p>
+
+- **Sprint Review:**
+  
+_-_ Bu sprint sürecinde tamamlanan işlerle birlikte karşılaştığımız engelleri ve öğrendiklerimizi gözden geçirdik. İlerlememizi sağlamak ve gelecek sprintlere daha iyi hazırlanmak için review toplantısında üzerinde durduğumuz değerlendirmeleri kullanacağız.
+
+- **Sprint Retrospective:**
+  
+_-_ Bu sprint sürecinde takımdaki aktifliğin azaldığını fark ettik. Bu durum, sprint hedeflerimize ulaşmamızı ve işlerimizi zamanında tamamlamamızı etkiledi. Bu konuyu gözden geçirerek gelecek sprintlerde daha iyi bir ekip çalışması sağlamayı hedefliyoruz.
+
+_-_ İş yükünü dengelemek için daha iyi bir iş planlaması yapmaya ve takım üyelerinin güçlü yönlerini kullanarak görevleri paylaşmaya karar verdik.
+
+_-_ İletişimi geliştirmek için daha sık ve düzenli toplantılar düzenlemeyi hedefliyoruz.
