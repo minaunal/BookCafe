@@ -1,5 +1,5 @@
+import 'package:fbase/kullaniciekrani.dart';
 import 'package:fbase/main.dart';
-import 'package:fbase/yoneticiekrani.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -14,11 +14,16 @@ class _KullaniciGirisState extends State<KullaniciGiris> {
   final _email = TextEditingController();
   final _password = TextEditingController();
 
-  Future GirisYap() async {
-    await FirebaseAuth.instance.signInWithEmailAndPassword(
+  void GirisYap() {
+    FirebaseAuth.instance
+        .signInWithEmailAndPassword(
       email: _email.text.trim(),
       password: _password.text.trim(),
-    );
+    )
+        .then((userCredential) {
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => Kullanici(email: "mina@ddd.com")));
+    });
   }
 
   void func() {
@@ -43,8 +48,7 @@ class _KullaniciGirisState extends State<KullaniciGiris> {
                 ),
               ),
               onPressed: () {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => KullaniciGiris()));
+                GirisYap();
               },
               child: Text("Log in"),
             ),
