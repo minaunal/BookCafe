@@ -1,5 +1,3 @@
-import 'package:fbase/banka.dart';
-import 'package:fbase/konum.dart';
 import 'package:fbase/kullanicigiris.dart';
 import 'package:fbase/kupon.dart';
 import 'package:fbase/yoneticigiris.dart';
@@ -216,8 +214,7 @@ class _KayitState extends State<Kayit> {
                     ),
                   ),
                   onPressed: () {
-                    Navigator.of(context)
-                        .push(MaterialPageRoute(builder: (context) => Maps()));
+
                   },
                   child: Text("konum"),
                 ),

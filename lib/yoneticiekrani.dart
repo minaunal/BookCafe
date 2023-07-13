@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pie_chart/pie_chart.dart';
+import 'moderator.dart';
 
 class Yonetici extends StatefulWidget {
   const Yonetici({super.key});
@@ -59,11 +60,20 @@ class _YoneticiState extends State<Yonetici> {
             SizedBox(
               height: 20,
             ),
-            Icon(
-              Icons.table_restaurant_sharp,
-              size: 100,
-              color: Colors.black,
+            InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) =>  Moderator()),
+                );
+              },
+              child: Icon(
+                Icons.table_restaurant_sharp,
+                size: 100,
+                color: Colors.black,
+              ),
             ),
+
             SizedBox(
               height: 20,
             ),
