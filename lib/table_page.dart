@@ -28,7 +28,30 @@ class _TablePageState extends State<TablePage> {
     super.initState();
     chairCount = widget.table.chair.count;
     chairCountController.text = chairCount.toString();
+    getTableFullValue();
   }
+
+  void getTableFullValue() async {
+    bool fullValue;
+    DocumentSnapshot docSnapshot = await FirebaseFirestore.instance
+        .collection(name.text)
+        .doc('Masa ${widget.index}')
+        .get();
+    if (docSnapshot.exists) {
+      Map<String, dynamic> data = docSnapshot.data() as Map<String, dynamic>;
+      fullValue = data['full'] ?? false;
+      setState(() {
+        widget.table.full = fullValue;
+        for (int i = 0; i < widget.table.chairStatusList.length; i++) {
+          widget.table.chairStatusList[i] = fullValue;
+        }
+        updateChairStatusList(widget.index, widget.table.chairStatusList);
+      });
+    } else {
+      print('Document does not exist.');
+    }
+  }
+
 
   @override
   void dispose() {
@@ -102,6 +125,11 @@ class _TablePageState extends State<TablePage> {
     final tableReference = FirebaseFirestore.instance.collection(name.text).doc('Masa $tableIndex');
 
     await tableReference.update({'window': windowValue});
+  }
+  void updateFullValue(int tableIndex, bool fullValue) async {
+    final tableReference = FirebaseFirestore.instance.collection(name.text).doc('Masa $tableIndex');
+
+    await tableReference.update({'full': fullValue});
   }
 
 
@@ -208,6 +236,7 @@ class _TablePageState extends State<TablePage> {
                   Switch(
                     value: widget.table.full,
                     onChanged: (bool value) {
+                      updateFullValue(widget.index, value);
                       setState(() {
                         widget.table.full = value;
                         // Doluluk durumuna göre koltukları güncelle

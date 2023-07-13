@@ -132,6 +132,40 @@ class _MainPageState extends State<MainPage> {
     });
   }
 
+  void updateFirebaseTableStatus(String qrText) {
+    // Split the text by space
+    List<String> textParts = qrText.split(' ');
+
+    // Check if the text has at least two parts (e.g., "Masa 1")
+    if (textParts.length >= 2) {
+      // Get the table number after the space
+      String tableNumber = textParts[1];
+
+      // Construct the full table ID in Firebase
+      String fullTableId = 'Masa $tableNumber';
+
+      // Get a reference to the table document in Firestore
+      DocumentReference tableRef = FirebaseFirestore.instance.collection(name.text).doc(fullTableId);
+
+      // Update the 'full' field of the table document to true
+      tableRef.update({'full': true}).then((_) {
+        print('Table status updated successfully.');
+
+      }).catchError((error) {
+        print('Error updating table status: $error');
+      });
+
+
+      //UPDATE IN APP
+
+    } else {
+      print('Invalid QR code format.');
+    }
+
+
+
+  }
+
 
 
   @override
