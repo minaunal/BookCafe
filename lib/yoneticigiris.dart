@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fbase/kullaniciekrani.dart';
 import 'package:fbase/yoneticiekrani.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +16,10 @@ class _YoneticiGirisState extends State<YoneticiGiris> {
 
   void control() {
     if (name.text == "admin" && password.text == "12345") {
+       FirebaseFirestore.instance
+        .collection('aktif')
+        .doc('user')
+        .update({'ogrenci': false});
       Navigator.of(context)
           .push(MaterialPageRoute(builder: (context) => Yonetici()));
     } else {

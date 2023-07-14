@@ -20,6 +20,7 @@ class _QRScannerState extends State<QRScanner> {
 
     setState(() {
       _scanResult = scanResult;
+      
     });
   }
 

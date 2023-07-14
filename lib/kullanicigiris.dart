@@ -1,7 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fbase/kullaniciekrani.dart';
 import 'package:fbase/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animated_icons/icons8.dart';
+import 'package:lottie/src/lottie.dart';
 
 class KullaniciGiris extends StatefulWidget {
   const KullaniciGiris({super.key});
@@ -22,8 +25,13 @@ class _KullaniciGirisState extends State<KullaniciGiris> {
     )
         .then((userCredential) {
       Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => Kullanici(email: "mina@ddd.com")));
+          builder: (context) => Kullanici(email: _email.text.trim())));
     });
+
+    FirebaseFirestore.instance
+        .collection('aktif')
+        .doc('user')
+        .update({'ogrenci': true});
   }
 
   void func() {
@@ -37,6 +45,12 @@ class _KullaniciGirisState extends State<KullaniciGiris> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            IconButton(
+                splashRadius: 50,
+                iconSize: 100,
+                icon: Lottie.asset(Icons8.book,
+                    height: 70, fit: BoxFit.fitHeight),
+                onPressed: null),
             TFdesign(alanadi: "email", onTap: func, degisken: _email),
             TFdesign(alanadi: "password", onTap: func, degisken: _password),
             ElevatedButton(
