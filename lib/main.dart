@@ -1,7 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fbase/hava.dart';
+
 import 'package:fbase/kullanicigiris.dart';
 import 'package:fbase/kupon.dart';
+import 'package:fbase/yildizliste.dart';
 import 'package:fbase/yoneticigiris.dart';
-import 'package:fbase/qrscanner.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -19,6 +23,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(fontFamily: 'TitilliumWeb'),
       title: 'kitapcafe',
       initialRoute: "/",
       routes: {"/": (context) => Iskele()},
@@ -87,6 +92,8 @@ class _KayitState extends State<Kayit> {
     });
   }
 
+  
+
   KayitOl() {
     FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: _email.text, password: _password.text);
@@ -105,7 +112,7 @@ class _KayitState extends State<Kayit> {
             ),
           ),
           SizedBox(
-            height: 30,
+            height: 20,
           ),
           AnimatedProgressIndicator(value: _formProgress),
           TFdesign(
@@ -133,94 +140,103 @@ class _KayitState extends State<Kayit> {
             child: Text("Sign in"),
           ),
           SizedBox(
-            height: 50,
+            height: 20,
           ),
           Text("Already have an account?"),
           Text("Log in."),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Expanded(
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.black,
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(32.0),
-                    ),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.black,
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(32.0),
                   ),
-                  onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => YoneticiGiris()));
-                  },
-                  child: Text("Manager"),
                 ),
+                onPressed: () {
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => YoneticiGiris()));
+                },
+                child: Text("Manager"),
               ),
-              Expanded(
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.black,
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(32.0),
-                    ),
+             
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.black,
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(32.0),
                   ),
-                  onPressed: () {
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => QRScanner()));
-                  },
-                  child: Text("kamera"),
                 ),
-              ),
-              Expanded(
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.black,
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(32.0),
-                    ),
-                  ),
-                  onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => KullaniciGiris()));
-                  },
-                  child: Text("Student"),
-                ),
-              ),
-              Expanded(
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.black,
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(32.0),
-                    ),
-                  ),
-                  onPressed: () {
-                    Navigator.of(context)
-                        .push(MaterialPageRoute(builder: (context) => Kupon()));
-                  },
-                  child: Text("kupon"),
-                ),
-              ),
-              Expanded(
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.black,
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(32.0),
-                    ),
-                  ),
-                  onPressed: () {
-
-                  },
-                  child: Text("konum"),
-                ),
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => KullaniciGiris()));
+                },
+                child: Text("Student"),
               ),
             ],
           ),
+          SizedBox(height: 20),
+          Row(
+            children: [
+              Expanded(
+                flex: 1,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => WeatherScreen()));
+                      },
+                      child: Icon(
+                        Icons.sunny,
+                        color: Colors.amber,
+                        size: 32,
+                      ),
+                    ),
+                    SizedBox(height: 8),
+                    Text(
+                      'Weather condition here',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                flex: 1,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(
+                            MaterialPageRoute(builder: (context) => Stars()));
+                      },
+                      child: Icon(
+                        Icons.star_rounded,
+                        color: Colors.amber,
+                        size: 32,
+                      ),
+                    ),
+                    SizedBox(height: 8),
+                    Text(
+                      'See our scores',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          )
         ],
       ),
     );

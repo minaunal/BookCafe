@@ -1,10 +1,15 @@
 import 'package:fbase/banka.dart';
 import 'package:fbase/kartlarim.dart';
 import 'package:fbase/kullanicigiris.dart';
+import 'package:fbase/qrscanner.dart';
 import 'package:fbase/sepet.dart';
+import 'package:fbase/yoneticigiris.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+
+import 'moderator.dart';
 
 class Kullanici extends StatefulWidget {
   final email;
@@ -16,21 +21,27 @@ class Kullanici extends StatefulWidget {
 }
 
 class _KullaniciState extends State<Kullanici> {
-  String docname = '';
-
-  @override
-  Widget build(BuildContext context) {
-    FirebaseFirestore.instance
+  var docname;
+  Future<dynamic> fetchData() async {
+    final docSnapshot = await FirebaseFirestore.instance
         .collection('Kartlar')
         .doc(widget.email)
-        .get()
-        .then((docSnapshot) {
-      if (docSnapshot.exists) {
-        setState(() {
-          docname = docSnapshot.data()!['isim'];
-        });
-      }
-    });
+        .get();
+    if (docSnapshot.exists) {
+      setState(() {
+        docname = docSnapshot.data()!['isim'];
+      });
+    }
+    return docname;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+
+  Widget build(BuildContext context) {
     return DefaultTabController(
       length: 4,
       child: Scaffold(
@@ -54,7 +65,7 @@ class _KullaniciState extends State<Kullanici> {
         body: TabBarView(
           children: [
             // İlk taba ait widget ve fonksiyonları
-            masa(),
+            masa(docname: docname),
 
             // İkinci taba ait widget ve fonksiyonları
             cuzdan(email: widget.email, docname: docname),
@@ -71,12 +82,96 @@ class _KullaniciState extends State<Kullanici> {
   }
 }
 
-class masa extends StatelessWidget {
-  const masa({super.key});
+class chosentable extends StatelessWidget {
+  const chosentable({super.key});
 
   @override
   Widget build(BuildContext context) {
     return const Placeholder();
+  }
+}
+
+class masa extends StatefulWidget {
+  final docname;
+
+  masa({Key? mykey, this.docname}) : super(key: mykey);
+
+  @override
+  State<masa> createState() => _masaState();
+}
+
+class _masaState extends State<masa> {
+  TextEditingController yorum = TextEditingController();
+  List<bool> starColors = List.filled(5, false);
+  func() {}
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => Moderator()),
+                  );
+                },
+                child: Text('masalar')),
+            TextField(
+              controller: yorum,
+            ),
+            RatingBar.builder(
+                minRating: 1,
+                itemSize: 46,
+                itemPadding: EdgeInsets.symmetric(horizontal: 4),
+                itemBuilder: (context, index) => Icon(Icons.star,
+                    color: starColors[index] ? Colors.amber : Colors.grey),
+                updateOnDrag: true,
+                onRatingUpdate: (rating) {
+                  setState(() {
+                    starColors =
+                        List.generate(5, (index) => index < rating.round());
+                    FirebaseFirestore.instance
+                        .collection('Yildizlar')
+                        .doc(widget.docname)
+                        .set({'yildizlar': starColors, 'yorum': yorum.text});
+                  });
+                }),
+            Expanded(
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.black,
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(32.0),
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => QRScanner()));
+                },
+                child: Text("get a table"),
+              ),
+            ),
+            Expanded(
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.black,
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(32.0),
+                  ),
+                ),
+                onPressed: () {},
+                child: Text("reserve a table"),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 
@@ -180,6 +275,13 @@ class Cafe extends StatefulWidget {
 class _CafeState extends State<Cafe> {
   @override
   Widget build(BuildContext context) {
+    FirebaseFirestore.instance
+        .collection('Kupon')
+        .doc('kupon')
+        .get()
+        .then((value) {
+      Discount = value.data()!['tl'];
+    });
     return Column(
       children: <Widget>[
         Flexible(
@@ -190,41 +292,41 @@ class _CafeState extends State<Cafe> {
                 isim: "su",
                 foto: 'images/su.jpg',
                 old: 5,
-                fiyat: 5 - (5 * Discount / 100),
+                fiyat: 5 - (5 * Discount / 100).toInt(),
                 docname: widget.docname,
               ),
               Makecards(
                 isim: "çay",
                 foto: 'images/cay.jpg',
                 old: 8,
-                fiyat: 8 - (8 * Discount / 100),
+                fiyat: 8 - (8 * Discount / 100).toInt(),
                 docname: widget.docname,
               ),
               Makecards(
                 isim: "filtre kahve",
                 foto: 'images/filtre.jpg',
                 old: 15,
-                fiyat: 15 - (15 * Discount / 100),
+                fiyat: 15 - (15 * Discount / 100).toInt(),
                 docname: widget.docname,
               ),
               Makecards(
                 isim: "maden suyu",
                 foto: 'images/soda.jpg',
                 old: 10,
-                fiyat: 10 - (10 * Discount / 100),
+                fiyat: 10 - (10 * Discount / 100).toInt(),
                 docname: widget.docname,
               ),
               Makecards(
                 isim: "türk kahvesi",
                 foto: 'images/kahve.jpg',
                 old: 20,
-                fiyat: 20 - (20 * Discount / 100),
+                fiyat: 20 - (20 * Discount / 100).toInt(),
                 docname: widget.docname,
               ),
               Makecards(
                 isim: "salep",
                 foto: 'images/salep.jpg',
-                fiyat: 20 - (20 * Discount / 100),
+                fiyat: 20 - (20 * Discount / 100).toInt(),
                 old: 20,
                 docname: widget.docname,
               ),
@@ -280,7 +382,7 @@ class Makecards extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  old.toString()+ "₺",
+                   old.toString() + "₺",
                   style: TextStyle(
                     decoration: TextDecoration.lineThrough,
                     decorationColor: Colors.redAccent[700],
@@ -294,6 +396,7 @@ class Makecards extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 17,
                     fontWeight: FontWeight.bold,
+                    color: Colors.black,
                   ),
                 ),
                 SizedBox(
@@ -470,16 +573,6 @@ class _hesapState extends State<hesap> {
       ],
     );
   }
-}
-
-getDoc() async {
-  final db = FirebaseFirestore.instance;
-  String id = '';
-  var result = await db.collection('Kartlar').get();
-  result.docs.forEach((res) {
-    id = (res.id);
-  });
-  return (id);
 }
 
 int Discount = 0;

@@ -5,6 +5,7 @@ import 'package:fbase/yoneticigiris.dart';
 import 'package:flutter/material.dart';
 
 
+
 class Moderator extends StatelessWidget {
   const Moderator({super.key});
   @override
@@ -51,7 +52,7 @@ class _MainPageState extends State<MainPage> {
 
 
   Future getDocs() async {
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection(name.text).get();
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('Masalar').get();
 
 
     for (int i = 0; i < querySnapshot.docs.length; i++) {
@@ -80,7 +81,7 @@ class _MainPageState extends State<MainPage> {
 
 
   void _makeTablesForFirebase(int masaSayisi) async {
-    final collectionReference = FirebaseFirestore.instance.collection(name.text);
+    final collectionReference = FirebaseFirestore.instance.collection('Masalar');
     // Mevcut masaları sil
     final currentTables = await collectionReference.get();
     for (final doc in currentTables.docs) {
@@ -107,10 +108,10 @@ class _MainPageState extends State<MainPage> {
       'window': false,
     };
 
-    await FirebaseFirestore.instance.collection(name.text ).doc('Masa $tableIndex').set(tableData);
+    await FirebaseFirestore.instance.collection('Masalar').doc('Masa $tableIndex').set(tableData);
   }
   void deleteTableDocument(int tableIndex) async {
-    final tableReference = FirebaseFirestore.instance.collection(name.text).doc('Masa $tableIndex');
+    final tableReference = FirebaseFirestore.instance.collection('Masalar').doc('Masa $tableIndex');
 
     await tableReference.delete();
   }
@@ -144,13 +145,12 @@ class _MainPageState extends State<MainPage> {
       String fullTableId = 'Masa $tableNumber';
 
       // Get a reference to the table document in Firestore
-      DocumentReference tableRef = FirebaseFirestore.instance.collection(name.text).doc(fullTableId);
+      DocumentReference tableRef = FirebaseFirestore.instance.collection('Masalar').doc(fullTableId);
 
       // Update the 'full' field of the table document to true
       tableRef.update({'full': true}).then((_) {
         print('Table status updated successfully.');
 
-        //
       }).catchError((error) {
         print('Error updating table status: $error');
       });

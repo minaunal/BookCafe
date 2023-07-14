@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fbase/kullaniciekrani.dart';
 import 'package:fbase/yoneticiekrani.dart';
 import 'package:flutter/material.dart';
-TextEditingController name = TextEditingController();
 
 class YoneticiGiris extends StatefulWidget {
   const YoneticiGiris({super.key});
@@ -11,13 +11,43 @@ class YoneticiGiris extends StatefulWidget {
 }
 
 class _YoneticiGirisState extends State<YoneticiGiris> {
-
+  TextEditingController name = TextEditingController();
   TextEditingController password = TextEditingController();
-  TextEditingController t1 = TextEditingController();
-  TextEditingController t2 = TextEditingController();
 
-  control() {
+  void control() {
+    if (name.text == "admin" && password.text == "12345") {
+       FirebaseFirestore.instance
+        .collection('aktif')
+        .doc('user')
+        .update({'ogrenci': false});
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => Yonetici()));
+    } else {
+      final snackBar = SnackBar(
+        content: Container(
+          width: 150,
+          height: 50,
+          child: Center(
+            child: Text(
+              'Unvalid name or password.',
+              style: TextStyle(
+                fontSize: 18,
+              ),
+            ),
+          ),
+        ),
+        action: SnackBarAction(
+          
+          label: 'TRY AGAIN', 
+          onPressed: () {
+            name.clear();
+            password.clear();
+          },
+        ),
+      );
 
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
   }
 
   @override
@@ -27,16 +57,6 @@ class _YoneticiGirisState extends State<YoneticiGiris> {
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            TextField(controller: t1),
-            TextField(controller: t2),
-            ElevatedButton(
-                onPressed: () {
-                  FirebaseFirestore.instance
-                      .collection('Yoneticiler')
-                      .doc(t1.text)
-                      .set({'isim':t1.text,'sifre': t2.text});
-                },
-                child: Text("Kullanıcı adı ve Sifre belirle.")),
             TextField(
               style: TextStyle(color: Colors.black),
               decoration: InputDecoration(
@@ -93,43 +113,7 @@ class _YoneticiGirisState extends State<YoneticiGiris> {
                   borderRadius: BorderRadius.circular(32.0),
                 ),
               ),
-              onPressed:(){ FirebaseFirestore.instance
-                  .collection('Yoneticiler')
-                  .doc(name.text)
-                  .get()
-                  .then((value) {
-                String a = value.data()?['isim'];
-                String b = value.data()?['sifre'];
-
-                if (a == name.text && b == password.text) {
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (context) => Yonetici()));
-                } else {
-                  final snackBar = SnackBar(
-                    content: Container(
-                      width: 150,
-                      height: 50,
-                      child: Center(
-                        child: Text(
-                          'Unvalid name or password.',
-                          style: TextStyle(
-                            fontSize: 18,
-                          ),
-                        ),
-                      ),
-                    ),
-                    action: SnackBarAction(
-                      label: 'TRY AGAIN',
-                      onPressed: () {
-                        name.clear();
-                        password.clear();
-                      },
-                    ),
-                  );
-
-                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                }
-              });},
+              onPressed: control,
               child: Text("Log in"),
             ),
           ],
