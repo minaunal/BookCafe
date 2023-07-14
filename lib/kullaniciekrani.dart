@@ -3,18 +3,54 @@ import 'package:fbase/kartlarim.dart';
 import 'package:fbase/kullanicigiris.dart';
 import 'package:fbase/qrscanner.dart';
 import 'package:fbase/sepet.dart';
-import 'package:fbase/yoneticigiris.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-
 import 'moderator.dart';
+
+String qrCode = "none";
+void updateQR(String newQR) {
+  qrCode = newQR;
+}
+
+Future<void> empty(String qrtext) async {
+  // Firebase Firestore bağlantısını al
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+  // Belge referansını al
+  final DocumentReference docRef = firestore.collection('Masalar').doc(qrtext);
+
+  try {
+    // Belgeyi getir
+    final DocumentSnapshot document = await docRef.get();
+
+    if (document.exists) {
+      // "chairs" alanını güncelle
+      final List<dynamic> chairs =
+          List.from(document.get('chairStatusList') as List<dynamic>);
+
+      // False olan bir sandalye bul
+      int indexToUpdate = chairs.indexWhere((chair) => chair == true);
+
+      if (indexToUpdate != -1) {
+        // İlgili sandalyeyi false yap
+        chairs[indexToUpdate] = false;
+
+        // Güncellenmiş sandalye listesini Firestore'a kaydet
+        await docRef.update({'chairStatusList': chairs});
+      }
+    }
+  } catch (e) {
+    // Hata durumunda ilgili işlemleri gerçekleştir
+    print('Hata: $e');
+  }
+}
 
 class Kullanici extends StatefulWidget {
   final email;
 
-  Kullanici({Key? mykey, this.email}) : super(key: mykey);
+  Kullanici({Key? key, this.email}) : super(key: key);
 
   @override
   State<Kullanici> createState() => _KullaniciState();
@@ -22,6 +58,8 @@ class Kullanici extends StatefulWidget {
 
 class _KullaniciState extends State<Kullanici> {
   var docname;
+  int selectedIndex = 0;
+
   Future<dynamic> fetchData() async {
     final docSnapshot = await FirebaseFirestore.instance
         .collection('Kartlar')
@@ -41,42 +79,49 @@ class _KullaniciState extends State<Kullanici> {
     fetchData();
   }
 
+  void onTabTapped(int index) {
+    setState(() {
+      selectedIndex = index;
+    });
+  }
+
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 4,
-      child: Scaffold(
-        appBar: AppBar(
-            bottom: TabBar(
-          tabs: [
-            Tab(
-              icon: Icon(Icons.table_restaurant_outlined),
-            ),
-            Tab(
-              icon: Icon(Icons.account_balance_wallet_outlined),
-            ),
-            Tab(
-              icon: Icon(Icons.emoji_food_beverage),
-            ),
-            Tab(
-              icon: Icon(Icons.account_circle_outlined),
-            ),
-          ],
-        )),
-        body: TabBarView(
-          children: [
-            // İlk taba ait widget ve fonksiyonları
-            masa(docname: docname),
-
-            // İkinci taba ait widget ve fonksiyonları
-            cuzdan(email: widget.email, docname: docname),
-
-            // Üçüncü taba ait widget ve fonksiyonları
-            Cafe(docname: docname),
-
-            // Dördüncü taba ait widget ve fonksiyonları
-            hesap(email: widget.email),
-          ],
-        ),
+    return Scaffold(
+      body: IndexedStack(
+        index: selectedIndex,
+        children: [
+          masa(docname: docname),
+          cuzdan(email: widget.email, docname: docname),
+          Cafe(docname: docname),
+          hesap(email: widget.email),
+        ],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        unselectedLabelStyle:
+            const TextStyle(color: Colors.white, fontSize: 14),
+        backgroundColor: const Color(0xFF084A76),
+        fixedColor: Colors.black,
+        unselectedItemColor: Colors.black,
+        currentIndex: selectedIndex,
+        onTap: onTabTapped,
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.table_restaurant_outlined),
+            label: 'Masa',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.account_balance_wallet_outlined),
+            label: 'Cüzdan',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.emoji_food_beverage),
+            label: 'Cafe',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.account_circle_outlined),
+            label: 'Hesap',
+          ),
+        ],
       ),
     );
   }
@@ -111,14 +156,15 @@ class _masaState extends State<masa> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            Expanded(
+              child: Moderator(),
+            ),
             ElevatedButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => Moderator()),
-                  );
+                  empty(qrCode);
+                  
                 },
-                child: Text('masalar')),
+                child: Text('bosalt')),
             TextField(
               controller: yorum,
             ),
@@ -139,34 +185,19 @@ class _masaState extends State<masa> {
                         .set({'yildizlar': starColors, 'yorum': yorum.text});
                   });
                 }),
-            Expanded(
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.black,
-                  foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(32.0),
-                  ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.black,
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(32.0),
                 ),
-                onPressed: () {
-                  Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => QRScanner()));
-                },
-                child: Text("get a table"),
               ),
-            ),
-            Expanded(
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.black,
-                  foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(32.0),
-                  ),
-                ),
-                onPressed: () {},
-                child: Text("reserve a table"),
-              ),
+              onPressed: () {
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) => QRScanner()));
+              },
+              child: Text("get a table"),
             ),
           ],
         ),
@@ -382,7 +413,7 @@ class Makecards extends StatelessWidget {
                   ),
                 ),
                 Text(
-                   old.toString() + "₺",
+                  old.toString() + "₺",
                   style: TextStyle(
                     decoration: TextDecoration.lineThrough,
                     decorationColor: Colors.redAccent[700],

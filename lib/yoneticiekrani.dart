@@ -1,9 +1,8 @@
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fbase/kupon.dart';
 import 'package:fbase/moderator.dart';
 import 'package:flutter/material.dart';
 import 'package:pie_chart/pie_chart.dart';
-
 
 class Yonetici extends StatefulWidget {
   @override
@@ -28,10 +27,11 @@ class _YoneticiState extends State<Yonetici> {
       ),
       body: _pages[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
-        unselectedLabelStyle: const TextStyle(color: Colors.white, fontSize: 14),
-      backgroundColor: const Color(0xFF084A76),
-      fixedColor: Colors.black,
-      unselectedItemColor: Colors.black,
+        unselectedLabelStyle:
+            const TextStyle(color: Colors.white, fontSize: 14),
+        backgroundColor: const Color(0xFF084A76),
+        fixedColor: Colors.black,
+        unselectedItemColor: Colors.black,
         currentIndex: _currentIndex,
         onTap: (int index) {
           setState(() {
@@ -42,7 +42,6 @@ class _YoneticiState extends State<Yonetici> {
           BottomNavigationBarItem(
             icon: Icon(Icons.table_restaurant_rounded),
             label: 'Tables',
-            
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.group_outlined),
@@ -62,7 +61,6 @@ class _YoneticiState extends State<Yonetici> {
   }
 }
 
-
 class Masa extends StatefulWidget {
   const Masa({super.key});
 
@@ -76,8 +74,15 @@ class _MasaState extends State<Masa> {
     return Moderator();
   }
 }
-class doluluk extends StatelessWidget {
+
+class doluluk extends StatefulWidget {
   doluluk({super.key});
+
+  @override
+  State<doluluk> createState() => _dolulukState();
+}
+
+class _dolulukState extends State<doluluk> {
   Map<String, double> dataMap = {
     "full": 20,
     "empty": 180,
@@ -87,8 +92,36 @@ class doluluk extends StatelessWidget {
     const Color(0xff1fde25),
     const Color(0xff000000),
   ];
+
+  int trueCount = 0;
+  int falseCount = 0;
+  @override
+  void initState() {
+    super.initState();
+    countTrue();
+  }
+
+  void countTrue() async {
+    QuerySnapshot snapshot =
+        await FirebaseFirestore.instance.collection('Masalar').get();
+
+    snapshot.docs.forEach((doc) {
+      List<bool> colors = List<bool>.from(doc['chairStatusList']);
+      trueCount += colors.where((color) => color == true).length;
+      falseCount += colors.where((color) => color == false).length;
+      
+    });
+
+    setState(() {
+      this.trueCount = trueCount;
+      this.falseCount = falseCount;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    dataMap["full"] = trueCount.toDouble();
+    dataMap["empty"] = falseCount.toDouble();
     return PieChart(
       dataMap: dataMap,
       colorList: colorList,
@@ -125,8 +158,29 @@ class Income extends StatefulWidget {
 }
 
 class _IncomeState extends State<Income> {
+  dynamic data;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+
+  Future<void> fetchData() async {
+    DocumentSnapshot snapshot = await FirebaseFirestore.instance
+        .collection('Gelir')
+        .doc('gelir')
+        .get();
+
+    setState(() {
+      data = snapshot['tl'];
+    });
+  }
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+   
+    return Scaffold(
+      body: Text(data.toString()),
+    );
   }
 }
