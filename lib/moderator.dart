@@ -5,7 +5,6 @@ import 'package:fbase/yoneticigiris.dart';
 import 'package:flutter/material.dart';
 
 
-
 class Moderator extends StatelessWidget {
   const Moderator({super.key});
   @override
@@ -151,6 +150,7 @@ class _MainPageState extends State<MainPage> {
       tableRef.update({'full': true}).then((_) {
         print('Table status updated successfully.');
 
+        //
       }).catchError((error) {
         print('Error updating table status: $error');
       });
