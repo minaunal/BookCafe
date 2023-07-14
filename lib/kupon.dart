@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fbase/kullaniciekrani.dart';
 import 'package:flutter/material.dart';
 
@@ -10,26 +11,25 @@ class Kupon extends StatefulWidget {
 
 class _KuponState extends State<Kupon> {
   final indirim = TextEditingController();
-  int? discount;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            TextField(
-              controller: indirim,
-            ),
-            ElevatedButton(
-                onPressed: () {
-                  Discount = int.tryParse(indirim.text)!;
-                   Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (context) => Cafe()));
-                },
-                child: Text("indirim yap"))
-          ],
-        ),
-      
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          TextField(
+            controller: indirim,
+          ),
+          ElevatedButton(
+              onPressed: () {
+                FirebaseFirestore.instance
+                    .collection('Kupon')
+                    .doc('kupon')
+                    .update({'tl': int.tryParse(indirim.text)!});    
+              },
+              child: Text("indirim yap"))
+        ],
+      ),
     );
   }
 }

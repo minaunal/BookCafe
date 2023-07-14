@@ -18,7 +18,6 @@ class Sepet extends StatefulWidget {
 class _SepetState extends State<Sepet> {
   @override
   Widget build(BuildContext context) {
-    //print("sdmf");
     return Scaffold(
       appBar: AppBar(
         title: Text('Sepetim'),
@@ -35,7 +34,7 @@ class _SepetState extends State<Sepet> {
 class Makecards extends StatefulWidget {
   final isim;
   final foto;
- var fiyat;
+  var fiyat;
   final docname;
   Makecards({Key? mykey, this.isim, this.foto, this.fiyat, this.docname})
       : super(key: mykey);
@@ -44,16 +43,16 @@ class Makecards extends StatefulWidget {
   State<Makecards> createState() => _MakecardsState();
 }
 
+int? temp = 0;
+
 class _MakecardsState extends State<Makecards> {
-  int? temp = 0;
   @override
   void initState() {
     super.initState();
-
-    
   }
 
   Widget build(BuildContext context) {
+   
     FirebaseFirestore.instance
         .collection('Cuzdan')
         .doc(widget.docname)
@@ -87,7 +86,7 @@ class _MakecardsState extends State<Makecards> {
                   ),
                 ),
                 Text(
-                  widget.fiyat.toString(),
+                  widget.fiyat.toString()+"₺",
                   style: TextStyle(
                     fontSize: 17,
                     fontWeight: FontWeight.bold,
@@ -100,9 +99,7 @@ class _MakecardsState extends State<Makecards> {
                   children: [
                     ElevatedButton.icon(
                       onPressed: () {
-                        
                         if (temp! >= int.parse(widget.fiyat.toString())) {
-                          
                           temp = (temp! - int.parse(widget.fiyat.toString()));
 
                           FirebaseFirestore.instance
@@ -112,7 +109,7 @@ class _MakecardsState extends State<Makecards> {
                           Navigator.of(context).push(
                               MaterialPageRoute(builder: (context) => Hazir()));
                         } else {
-                          final snackBar=SnackBar(
+                          final snackBar = SnackBar(
                             content: Text("insufficient funds"),
                             duration: const Duration(seconds: 2),
                             action: SnackBarAction(
@@ -123,9 +120,8 @@ class _MakecardsState extends State<Makecards> {
                                         Cafe(docname: widget.docname)));
                               },
                             ),
-                            
                           );
-                           ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
                         }
                       },
                       icon: Icon(
