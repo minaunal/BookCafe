@@ -202,8 +202,26 @@ class _TablePageState extends State<TablePage> {
     super.initState();
     chairCount = widget.table.chair.count;
     chairCountController.text = chairCount.toString();
-
+    getDocs();
   }
+
+  Future<void> getDocs() async {
+    DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance
+        .collection('Masalar')
+        .doc('Masa ${widget.index}')
+        .get();
+
+    if (documentSnapshot.exists) {
+      var tempTable = documentSnapshot.data() as Map<String, dynamic>;
+      setState(() {
+        widget.table.window = tempTable['window'];
+        widget.table.socket = tempTable['socket'];
+        widget.table.chairStatusList =
+        List<bool>.from(tempTable['chairStatusList']);
+      });
+    }
+  }
+
 
   void getTableFullValue() async {
     bool fullValue;
@@ -235,7 +253,6 @@ class _TablePageState extends State<TablePage> {
 
 
   void _toggleChairStatus(int chairIndex) async {
-    showAlertDialog();
     setState(() {
       widget.table.chairStatusList[chairIndex] =
       !widget.table.chairStatusList[chairIndex];
@@ -272,7 +289,7 @@ class _TablePageState extends State<TablePage> {
   }
 
   int temp = 0;
-  void showAlertDialog() {
+  void showAlertDialog(int index) {
     takename().then((name) {
       FirebaseFirestore.instance
           .collection('Cuzdan')
@@ -295,11 +312,24 @@ class _TablePageState extends State<TablePage> {
                     ElevatedButton.styleFrom(backgroundColor: Colors.green),
                     onPressed: () {
                       temp = temp - 35;
-                      FirebaseFirestore.instance
-                          .collection('Cuzdan')
-                          .doc(name)
-                          .update({'para': temp});
-                    },
+
+                      if (temp>=0) {
+                        FirebaseFirestore.instance
+                            .collection('Cuzdan')
+                            .doc(name)
+                            .update({'para': temp});
+                        _toggleChairStatus(index);
+                      }
+                      else{
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Para yeterli değil.'),
+                        ));
+                      }
+                      Navigator.pop(context);
+
+                    }
+                    ,
                     child: const Text('Approve')),
                 ElevatedButton(
                     style:
@@ -367,24 +397,15 @@ class _TablePageState extends State<TablePage> {
       widget.table.chair.count,
           (index) => GestureDetector(
         onTap: () {
-          FirebaseFirestore.instance
-              .collection('aktif')
-              .doc('user')
-              .get()
-              .then((value) {
-            setState(() {
-              if (value.data()!['ogrenci'] == true) {
-                _toggleChairStatus(index);
-              }
-            });
-          });
+          if (widget.table.chairStatusList[index] == false){
+          showAlertDialog(index);}
+
         },
         child: Icon(
           widget.table.chairStatusList[index]
               ? Icons.chair_alt
               : Icons.chair_alt,
-          color:
-          widget.table.chairStatusList[index] ? Colors.red : Colors.green,
+          color: widget.table.chairStatusList[index] ? Colors.red : Colors.green,
           size: 50,
         ),
       ),

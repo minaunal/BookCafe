@@ -1,6 +1,4 @@
 import 'package:fbase/table.dart';
-import 'package:fbase/yoneticigiris.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -29,9 +27,29 @@ class _TablePageState extends State<TablePage> {
     super.initState();
     chairCount = widget.table.chair.count;
     chairCountController.text = chairCount.toString();
+    getDocs();
+
   }
 
-  void getTableFullValue() async {
+  Future<void> getDocs() async {
+    DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance
+        .collection('Masalar')
+        .doc('Masa ${widget.index}')
+        .get();
+
+    if (documentSnapshot.exists) {
+      var tempTable = documentSnapshot.data() as Map<String, dynamic>;
+      setState(() {
+        widget.table.window = tempTable['window'];
+        widget.table.socket = tempTable['socket'];
+        widget.table.chairStatusList =
+        List<bool>.from(tempTable['chairStatusList']);
+      });
+    }
+  }
+
+
+  /*void getTableFullValue() async {
     bool fullValue;
     DocumentSnapshot docSnapshot = await FirebaseFirestore.instance
         .collection('Masalar')
@@ -50,7 +68,7 @@ class _TablePageState extends State<TablePage> {
     } else {
       print('Document does not exist.');
     }
-  }
+  }*/
 
   @override
   void dispose() {
@@ -88,20 +106,9 @@ class _TablePageState extends State<TablePage> {
     );
   }
 
-  void _toggleChairStatus(int chairIndex) async {
-    showAlertDialog();
-    setState(() {
-      widget.table.chairStatusList[chairIndex] =
-          !widget.table.chairStatusList[chairIndex];
-    });
 
-    // Firestore veritabanını güncelle
-    await updateChairStatus(
-        widget.index, chairIndex, widget.table.chairStatusList);
-  }
 
-  Future<void> updateChairStatus(
-      int tableIndex, int chairIndex, List<bool> chairStatusList) async {
+  Future<void> updateChairStatus(int tableIndex, int chairIndex, List<bool> chairStatusList) async {
     final tableReference = FirebaseFirestore.instance
         .collection('Masalar')
         .doc('Masa $tableIndex');
@@ -111,77 +118,7 @@ class _TablePageState extends State<TablePage> {
     });
   }
 
-  Future<String> takename() async {
-    var name;
-    await FirebaseFirestore.instance
-        .collection("Kartlar")
-        .get()
-        .then((QuerySnapshot querySnapshot) {
-      setState(() {
-        var email = querySnapshot.docs[0];
-        name = email['isim'];
-      });
-    });
-    return name;
-  }
-
   int temp = 0;
-  void showAlertDialog() {
-    
-    takename().then((name) {
-      FirebaseFirestore.instance
-          .collection('Cuzdan')
-          .doc(name)
-          .get()
-          .then((value) {
-        setState(() {
-          temp = value.data()!['para'];
-        });
-      });
-      showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: const Text('Reservation'),
-              content: const Text('Reserve this table for 35₺'),
-              actions: [
-                ElevatedButton(
-                    style:
-                        ElevatedButton.styleFrom(backgroundColor: Colors.green),
-                    onPressed: () {
-                      temp = temp - 35;
-                      FirebaseFirestore.instance
-                          .collection('Cuzdan')
-                          .doc(name)
-                          .update({'para': temp});
-
-                      FirebaseFirestore.instance
-                          .collection('Gelir')
-                          .doc('gelir')
-                          .get()
-                          .then((value) {
-                        FirebaseFirestore.instance
-                            .collection('Gelir')
-                            .doc('gelir')
-                            .update(({'tl': 35 + value.data()!['tl']}));
-                      });
-                      Navigator.pop(context);
-                    },
-                    child: const Text('Approve')),
-                ElevatedButton(
-                    style:
-                        ElevatedButton.styleFrom(backgroundColor: Colors.red),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: const Text(
-                      'Decline',
-                    )),
-              ],
-            );
-          });
-    });
-  }
 
   void _updateChairCount(int newCount) {
     setState(() {
@@ -240,19 +177,7 @@ class _TablePageState extends State<TablePage> {
     List<Widget> chairIcons = List.generate(
       widget.table.chair.count,
       (index) => GestureDetector(
-        onTap: () {
-          FirebaseFirestore.instance
-              .collection('aktif')
-              .doc('user')
-              .get()
-              .then((value) {
-            setState(() {
-              if (value.data()!['ogrenci'] == true) {
-                _toggleChairStatus(index);
-              }
-            });
-          });
-        },
+        onTap: null,
         child: Icon(
           widget.table.chairStatusList[index]
               ? Icons.chair_alt

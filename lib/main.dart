@@ -1,8 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fbase/hava.dart';
 
 import 'package:fbase/kullanicigiris.dart';
-import 'package:fbase/kupon.dart';
 import 'package:fbase/yildizliste.dart';
 import 'package:fbase/yoneticigiris.dart';
 
@@ -37,7 +35,6 @@ class Iskele extends StatefulWidget {
   @override
   State<Iskele> createState() => _IskeleState();
 }
-
 class _IskeleState extends State<Iskele> {
   @override
   Widget build(BuildContext context) {
@@ -45,20 +42,25 @@ class _IskeleState extends State<Iskele> {
       resizeToAvoidBottomInset: false,
       body: Container(
         child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              IconButton(
-                  splashRadius: 50,
-                  iconSize: 100,
-                  icon: Lottie.asset(Icons8.book,
-                      height: 70, fit: BoxFit.fitHeight),
-                  onPressed: null),
-              Kayit(),
-            ]),
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            SizedBox(height: 10),
+            IconButton(
+              splashRadius: 50,
+              iconSize: 80,
+              icon: Lottie.asset(Icons8.book, height: 80, fit: BoxFit.fitHeight),
+              onPressed: null,
+            ),
+            Expanded(
+              child: Kayit(),
+            ),
+          ],
+        ),
       ),
     );
   }
 }
+
 
 class Kayit extends StatefulWidget {
   const Kayit({super.key});
@@ -92,7 +94,7 @@ class _KayitState extends State<Kayit> {
     });
   }
 
-  
+
 
   KayitOl() {
     FirebaseAuth.instance.createUserWithEmailAndPassword(
@@ -104,81 +106,101 @@ class _KayitState extends State<Kayit> {
     return Container(
       child: Column(
         children: [
-          Text(
-            "BookSmart",
-            style: TextStyle(
-              fontFamily: 'Pacifico',
-              fontSize: 25,
+          Expanded(
+            child: Column(
+              children: [
+                Text(
+                  "BookSmart",
+                  style: TextStyle(
+                    fontFamily: 'Pacifico',
+                    fontSize: 25,
+                  ),
+                ),
+                SizedBox(height: 20),
+                AnimatedProgressIndicator(value: _formProgress),
+                Expanded(
+                  child: TFdesign(
+                    alanadi: "name",
+                    onTap: _updateFormProgress,
+                    degisken: _name,
+                  ),
+                ),
+                Expanded(
+                  child: TFdesign(
+                    alanadi: "surname",
+                    onTap: _updateFormProgress,
+                    degisken: _surname,
+                  ),
+                ),
+                Expanded(
+                  child: TFdesign(
+                    alanadi: "email",
+                    onTap: _updateFormProgress,
+                    degisken: _email,
+                  ),
+                ),
+                Expanded(
+                  child: TFdesign(
+                    alanadi: "password",
+                    onTap: _updateFormProgress,
+                    degisken: _password,
+                  ),
+                ),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.black,
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(32.0),
+                    ),
+                  ),
+                  onPressed: _controlprogress ? () => KayitOl() : null,
+                  child: Text("Sign in"),
+                ),
+                Text("Already have an account?"),
+                Text("Log in."),
+              ],
             ),
           ),
-          SizedBox(
-            height: 20,
-          ),
-          AnimatedProgressIndicator(value: _formProgress),
-          TFdesign(
-              alanadi: "name", onTap: _updateFormProgress, degisken: _name),
-          TFdesign(
-              alanadi: "surname",
-              onTap: _updateFormProgress,
-              degisken: _surname),
-          TFdesign(
-              alanadi: "email", onTap: _updateFormProgress, degisken: _email),
-          TFdesign(
-            alanadi: "password",
-            onTap: _updateFormProgress,
-            degisken: _password,
-          ),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.black,
-              foregroundColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(32.0),
-              ),
-            ),
-            onPressed: _controlprogress ? () => KayitOl() : null,
-            child: Text("Sign in"),
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          Text("Already have an account?"),
-          Text("Log in."),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.black,
-                  foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(32.0),
+              Flexible(
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.black,
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(32.0),
+                    ),
                   ),
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => YoneticiGiris()),
+                    );
+                  },
+                  child: Text("Manager"),
                 ),
-                onPressed: () {
-                  Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => YoneticiGiris()));
-                },
-                child: Text("Manager"),
               ),
-             
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.black,
-                  foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(32.0),
+              Flexible(
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.black,
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(32.0),
+                    ),
                   ),
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => KullaniciGiris()),
+                    );
+                  },
+                  child: Text("Student"),
                 ),
-                onPressed: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => KullaniciGiris()));
-                },
-                child: Text("Student"),
               ),
             ],
           ),
-          SizedBox(height: 20),
           Row(
             children: [
               Expanded(
@@ -188,8 +210,9 @@ class _KayitState extends State<Kayit> {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => WeatherScreen()));
+                        Navigator.of(context).push(
+                          MaterialPageRoute(builder: (context) => WeatherScreen()),
+                        );
                       },
                       child: Icon(
                         Icons.sunny,
@@ -216,7 +239,8 @@ class _KayitState extends State<Kayit> {
                     GestureDetector(
                       onTap: () {
                         Navigator.of(context).push(
-                            MaterialPageRoute(builder: (context) => Stars()));
+                          MaterialPageRoute(builder: (context) => Stars()),
+                        );
                       },
                       child: Icon(
                         Icons.star_rounded,
@@ -236,7 +260,7 @@ class _KayitState extends State<Kayit> {
                 ),
               ),
             ],
-          )
+          ),
         ],
       ),
     );

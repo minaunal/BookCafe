@@ -3,11 +3,11 @@ import 'package:fbase/kartlarim.dart';
 import 'package:fbase/kullanicigiris.dart';
 import 'package:fbase/qrscanner.dart';
 import 'package:fbase/sepet.dart';
+import 'package:fbase/user_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'moderator.dart';
 
 String qrCode = "none";
 void updateQR(String newQR) {
@@ -157,7 +157,7 @@ class _masaState extends State<masa> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Expanded(
-              child: Moderator(),
+              child: UserPage(),
             ),
             ElevatedButton(
                 onPressed: () {
