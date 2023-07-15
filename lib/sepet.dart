@@ -52,7 +52,6 @@ class _MakecardsState extends State<Makecards> {
   }
 
   Widget build(BuildContext context) {
-   
     FirebaseFirestore.instance
         .collection('Cuzdan')
         .doc(widget.docname)
@@ -86,7 +85,7 @@ class _MakecardsState extends State<Makecards> {
                   ),
                 ),
                 Text(
-                  widget.fiyat.toString()+"₺",
+                  widget.fiyat.toString() + "₺",
                   style: TextStyle(
                     fontSize: 17,
                     fontWeight: FontWeight.bold,
@@ -108,6 +107,12 @@ class _MakecardsState extends State<Makecards> {
                               .update({'para': temp});
                           Navigator.of(context).push(
                               MaterialPageRoute(builder: (context) => Hazir()));
+
+                          FirebaseFirestore.instance
+                              .collection('Gelir')
+                              .doc('gelir')
+                              .update(
+                                  ({'tl': int.parse(widget.fiyat.toString())}));
                         } else {
                           final snackBar = SnackBar(
                             content: Text("insufficient funds"),

@@ -1,9 +1,8 @@
 import 'package:fbase/table.dart';
 import 'package:fbase/table_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fbase/yoneticigiris.dart';
 import 'package:flutter/material.dart';
-
-
 
 class Moderator extends StatelessWidget {
   const Moderator({super.key});
@@ -14,7 +13,7 @@ class Moderator extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.purple,
       ),
-      home:  MainPage(),
+      home: MainPage(),
     );
   }
 }
@@ -33,7 +32,6 @@ class _MainPageState extends State<MainPage> {
 
   var chairStatusList = [];
 
-
   @override
   void initState() {
     super.initState();
@@ -49,38 +47,35 @@ class _MainPageState extends State<MainPage> {
     createTableDocument(number);
   }
 
-
   Future getDocs() async {
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('Masalar').get();
-
+    QuerySnapshot querySnapshot =
+        await FirebaseFirestore.instance.collection('Masalar').get();
 
     for (int i = 0; i < querySnapshot.docs.length; i++) {
       var tempTable = querySnapshot.docs[i];
       bool window = tempTable['window'];
       bool socket = tempTable['socket'];
       List<bool> chairStatusList = tempTable['chairStatusList'].cast<bool>();
-      _makeTableFromDataBase(socket,window,chairStatusList);
+      _makeTableFromDataBase(socket, window, chairStatusList);
     }
     setState(() {
       number = querySnapshot.docs.length;
     });
   }
 
-
-  void _makeTableFromDataBase(bool socket, bool window, List<bool> chairStatusList){
+  void _makeTableFromDataBase(
+      bool socket, bool window, List<bool> chairStatusList) {
     CafeTable tempTable = CafeTable();
     tempTable.socket = socket;
     tempTable.window = window;
     tempTable.chairStatusList = chairStatusList;
     tempTable.chair.count = chairStatusList.length;
     tables.add(tempTable);
-
   }
 
-
-
   void _makeTablesForFirebase(int masaSayisi) async {
-    final collectionReference = FirebaseFirestore.instance.collection('Masalar');
+    final collectionReference =
+        FirebaseFirestore.instance.collection('Masalar');
     // Mevcut masaları sil
     final currentTables = await collectionReference.get();
     for (final doc in currentTables.docs) {
@@ -93,28 +88,32 @@ class _MainPageState extends State<MainPage> {
         'socket': false,
         'window': false,
         'full': false,
-        'chairStatusList': [false,false,false,false],
+        'chairStatusList': [false, false, false, false],
       };
       await collectionReference.doc('Masa $i').set(tableData);
     }
-
   }
-  void createTableDocument(int tableIndex) async {
 
+  void createTableDocument(int tableIndex) async {
     final tableData = {
-      'chairStatusList': [false,false,false,false],
+      'chairStatusList': [false, false, false, false],
       'socket': false,
       'window': false,
     };
 
-    await FirebaseFirestore.instance.collection('Masalar').doc('Masa $tableIndex').set(tableData);
+    await FirebaseFirestore.instance
+        .collection('Masalar')
+        .doc('Masa $tableIndex')
+        .set(tableData);
   }
+
   void deleteTableDocument(int tableIndex) async {
-    final tableReference = FirebaseFirestore.instance.collection('Masalar').doc('Masa $tableIndex');
+    final tableReference = FirebaseFirestore.instance
+        .collection('Masalar')
+        .doc('Masa $tableIndex');
 
     await tableReference.delete();
   }
-
 
   void removeTable(CafeTable table) {
     setState(() {
@@ -122,7 +121,7 @@ class _MainPageState extends State<MainPage> {
     });
   }
 
-  void _makeTables(int number){
+  void _makeTables(int number) {
     setState(() {
       tables = [];
       for (int i = 0; i < number; i++) {
@@ -144,44 +143,53 @@ class _MainPageState extends State<MainPage> {
       String fullTableId = 'Masa $tableNumber';
 
       // Get a reference to the table document in Firestore
-      DocumentReference tableRef = FirebaseFirestore.instance.collection('Masalar').doc(fullTableId);
+      DocumentReference tableRef =
+          FirebaseFirestore.instance.collection('Masalar').doc(fullTableId);
 
       // Update the 'full' field of the table document to true
       tableRef.update({'full': true}).then((_) {
         print('Table status updated successfully.');
-
       }).catchError((error) {
         print('Error updating table status: $error');
       });
 
-
       //UPDATE IN APP
-
     } else {
       print('Invalid QR code format.');
     }
-
-
-
   }
 
-
+   isVisible() {
+    FirebaseFirestore.instance
+        .collection('aktif')
+        .doc('user')
+        .get()
+        .then((value) {
+      setState(() {
+        if (value.data()!['ogrenci'] == true) {
+         
+        }
+      });
+    });
+     return false;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      appBar:  isVisible()
+          ? AppBar(
         backgroundColor: Colors.black,
         title: Row(
           children: [
             IconButton(
               padding: const EdgeInsets.all(16.0),
               onPressed: addTable,
-          icon: const Icon(Icons.add_circle),
+              icon: const Icon(Icons.add_circle),
               iconSize: 35,
             ),
             IconButton(
-              onPressed: (){
+              onPressed: () {
                 setState(() {
                   if (tables.isNotEmpty) {
                     tables.removeLast();
@@ -233,10 +241,15 @@ class _MainPageState extends State<MainPage> {
               },
             ),
             const SizedBox(width: 10),
-            Text('Masa Sayısı: $number  ', style: const TextStyle(fontSize: 20)),
+            Text('Masa Sayısı: $number  ',
+                style: const TextStyle(fontSize: 20)),
           ],
         ),
-      ),
+      )
+      : PreferredSize(
+              preferredSize: Size.fromHeight(0), // AppBar'ı görünmez yapar
+              child: AppBar(),
+            ),
       body: ListView(
         children: [
           Padding(
@@ -247,7 +260,9 @@ class _MainPageState extends State<MainPage> {
                   CardView(
                     table: tables[i],
                     index: i + 1,
-                    onDelete: () { removeTable(tables[i]); },
+                    onDelete: () {
+                      removeTable(tables[i]);
+                    },
                   ),
               ],
             ),
@@ -264,7 +279,6 @@ class CardView extends StatelessWidget {
     required this.table,
     required this.index,
     required this.onDelete,
-
   });
 
   final CafeTable table;
@@ -282,14 +296,13 @@ class CardView extends StatelessWidget {
               table: table,
               index: index,
               onDelete: onDelete,
-
             ),
           ),
         );
       },
       child: Container(
-
         alignment: Alignment.center,
+        color: Colors.white,
         margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         height: 100,
         width: 100,
@@ -309,8 +322,6 @@ class CardView extends StatelessWidget {
           ],
         ),
       ),
-
-
     );
   }
 }

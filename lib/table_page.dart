@@ -29,7 +29,6 @@ class _TablePageState extends State<TablePage> {
     super.initState();
     chairCount = widget.table.chair.count;
     chairCountController.text = chairCount.toString();
-   
   }
 
   void getTableFullValue() async {
@@ -128,6 +127,7 @@ class _TablePageState extends State<TablePage> {
 
   int temp = 0;
   void showAlertDialog() {
+    
     takename().then((name) {
       FirebaseFirestore.instance
           .collection('Cuzdan')
@@ -154,6 +154,18 @@ class _TablePageState extends State<TablePage> {
                           .collection('Cuzdan')
                           .doc(name)
                           .update({'para': temp});
+
+                      FirebaseFirestore.instance
+                          .collection('Gelir')
+                          .doc('gelir')
+                          .get()
+                          .then((value) {
+                        FirebaseFirestore.instance
+                            .collection('Gelir')
+                            .doc('gelir')
+                            .update(({'tl': 35 + value.data()!['tl']}));
+                      });
+                      Navigator.pop(context);
                     },
                     child: const Text('Approve')),
                 ElevatedButton(
