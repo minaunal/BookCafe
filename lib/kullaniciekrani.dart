@@ -3,13 +3,12 @@ import 'package:fbase/kartlarim.dart';
 import 'package:fbase/kullanicigiris.dart';
 import 'package:fbase/qrscanner.dart';
 import 'package:fbase/sepet.dart';
-import 'package:fbase/yoneticigiris.dart';
+import 'package:fbase/user_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
-import 'moderator.dart';
 
 class Kullanici extends StatefulWidget {
   final email;
@@ -18,10 +17,12 @@ class Kullanici extends StatefulWidget {
 
   @override
   State<Kullanici> createState() => _KullaniciState();
+
 }
 
 class _KullaniciState extends State<Kullanici> {
   var docname;
+
   Future<dynamic> fetchData() async {
     final docSnapshot = await FirebaseFirestore.instance
         .collection('Kartlar')
@@ -40,6 +41,7 @@ class _KullaniciState extends State<Kullanici> {
     super.initState();
     fetchData();
   }
+
 
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -115,7 +117,7 @@ class _masaState extends State<masa> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => Moderator()),
+                    MaterialPageRoute(builder: (context) => const UserPage()),
                   );
                 },
                 child: Text('masalar')),
@@ -348,8 +350,8 @@ class _CafeState extends State<Cafe> {
 class Makecards extends StatelessWidget {
   final isim;
   final foto;
-  var old;
-  var fiyat;
+  final old;
+  final fiyat;
   final docname;
 
   Makecards(
@@ -455,6 +457,7 @@ class _hesapState extends State<hesap> {
     await currentUser!
         .reauthenticateWithCredential(cred)
         .then((value) => {currentUser!.updatePassword(newpassword)})
+        // ignore: body_might_complete_normally_catch_error
         .catchError((error) {
       final snackBar = SnackBar(
         content: Container(

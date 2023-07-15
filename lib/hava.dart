@@ -1,5 +1,4 @@
 
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -110,7 +109,7 @@ class _WeatherScreenState extends State<WeatherScreen> {
                 style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20)),
             Text('Humidity: $humidity%',
                 style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20)),
-            Text('$weatherCondition',
+            Text(weatherCondition,
                 style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20)),
           ],
         ),

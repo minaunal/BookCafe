@@ -1,7 +1,6 @@
 import 'package:fbase/table.dart';
 import 'package:fbase/table_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:fbase/yoneticigiris.dart';
 import 'package:flutter/material.dart';
 
 
@@ -291,7 +290,6 @@ class CardView extends StatelessWidget {
       child: Container(
 
         alignment: Alignment.center,
-        color: Colors.white,
         margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         height: 100,
         width: 100,
