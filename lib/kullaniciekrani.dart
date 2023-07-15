@@ -161,30 +161,29 @@ class _masaState extends State<masa> {
             ),
             ElevatedButton(
                 onPressed: () {
-                  empty(qrCode);
-                  
+                    empty(masaAdi);
+                    masaAdi = "";
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text("Yorum Yap"),
+                          content: yorumSor(),
+                          actions: [
+                            ElevatedButton(
+                              onPressed: () {
+                                // Dialog kapatma işlemleri veya diğer işlemler
+                                Navigator.pop(context);
+                              },
+                              child: Text("Tamam"),
+                            ),
+                          ],
+                        );
+                      },
+                    );
                 },
                 child: Text('bosalt')),
-            TextField(
-              controller: yorum,
-            ),
-            RatingBar.builder(
-                minRating: 1,
-                itemSize: 46,
-                itemPadding: EdgeInsets.symmetric(horizontal: 4),
-                itemBuilder: (context, index) => Icon(Icons.star,
-                    color: starColors[index] ? Colors.amber : Colors.grey),
-                updateOnDrag: true,
-                onRatingUpdate: (rating) {
-                  setState(() {
-                    starColors =
-                        List.generate(5, (index) => index < rating.round());
-                    FirebaseFirestore.instance
-                        .collection('Yildizlar')
-                        .doc(widget.docname)
-                        .set({'yildizlar': starColors, 'yorum': yorum.text});
-                  });
-                }),
+
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.black,
@@ -204,6 +203,39 @@ class _masaState extends State<masa> {
       ),
     );
   }
+
+  Widget yorumSor() {
+    TextEditingController yorum = TextEditingController();
+    List<bool> starColors = List.generate(5, (index) => false);
+
+    return Column(
+      children: [
+        TextField(
+          controller: yorum,
+        ),
+        RatingBar.builder(
+          minRating: 1,
+          itemSize: 46,
+          itemPadding: EdgeInsets.symmetric(horizontal: 4),
+          itemBuilder: (context, index) => Icon(
+            Icons.star,
+            color: starColors[index] ? Colors.amber : Colors.grey,
+          ),
+          updateOnDrag: true,
+          onRatingUpdate: (rating) {
+            setState(() {
+              starColors = List.generate(5, (index) => index < rating.round());
+              FirebaseFirestore.instance
+                  .collection('Yildizlar')
+                  .doc(widget.docname)
+                  .set({'yildizlar': starColors, 'yorum': yorum.text});
+            });
+          },
+        ),
+      ],
+    );
+  }
+
 }
 
 class cuzdan extends StatefulWidget {

@@ -1,6 +1,7 @@
 import 'package:fbase/table.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+String masaAdi = "";
 
 
 
@@ -37,7 +38,9 @@ class _MainPageState extends State<MainPage> {
   void initState() {
     super.initState();
     getDocs();
+
   }
+
 
 
   Future getDocs() async {
@@ -188,7 +191,6 @@ class TablePage extends StatefulWidget {
 
   final CafeTable table;
   final int index;
-
   @override
   _TablePageState createState() => _TablePageState();
 }
@@ -196,7 +198,6 @@ class TablePage extends StatefulWidget {
 class _TablePageState extends State<TablePage> {
   TextEditingController chairCountController = TextEditingController();
   int chairCount = 0;
-
   @override
   void initState() {
     super.initState();
@@ -311,8 +312,8 @@ class _TablePageState extends State<TablePage> {
                     style:
                     ElevatedButton.styleFrom(backgroundColor: Colors.green),
                     onPressed: () {
+                      masaAdi ="Masa ${widget.index}";
                       temp = temp - 35;
-
                       if (temp>=0) {
                         FirebaseFirestore.instance
                             .collection('Cuzdan')
