@@ -1,8 +1,8 @@
+import 'package:fbase/kullaniciekrani.dart';
 import 'package:fbase/table.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-String masaAdi = "";
-
+Map<int, String> selectedTables = {};
 
 
 class UserPage extends StatelessWidget {
@@ -40,6 +40,19 @@ class _MainPageState extends State<MainPage> {
     getDocs();
 
   }
+
+  void addSelectedTable(String tableName){
+    setState(() {
+      selectedTables[selectedTableCount] = tableName;
+    });
+    //firebase'e ekle
+  }
+  void removeSelectedTable(int index){
+    setState(() {
+      selectedTables.remove(index);
+    });
+
+}
 
 
 
@@ -224,26 +237,7 @@ class _TablePageState extends State<TablePage> {
   }
 
 
-  void getTableFullValue() async {
-    bool fullValue;
-    DocumentSnapshot docSnapshot = await FirebaseFirestore.instance
-        .collection('Masalar')
-        .doc('Masa ${widget.index}')
-        .get();
-    if (docSnapshot.exists) {
-      Map<String, dynamic> data = docSnapshot.data() as Map<String, dynamic>;
-      fullValue = data['full'] ?? false;
-      setState(() {
-        widget.table.full = fullValue;
-        for (int i = 0; i < widget.table.chairStatusList.length; i++) {
-          widget.table.chairStatusList[i] = fullValue;
-        }
-        updateChairStatusList(widget.index, widget.table.chairStatusList);
-      });
-    } else {
-      print('Document does not exist.');
-    }
-  }
+
 
   @override
   void dispose() {
@@ -312,14 +306,15 @@ class _TablePageState extends State<TablePage> {
                     style:
                     ElevatedButton.styleFrom(backgroundColor: Colors.green),
                     onPressed: () {
-                      masaAdi ="Masa ${widget.index}";
                       temp = temp - 35;
                       if (temp>=0) {
+                        selectedTables[selectedTableCount] = "Masa ${widget.index}";
                         FirebaseFirestore.instance
                             .collection('Cuzdan')
                             .doc(name)
                             .update({'para': temp});
                         _toggleChairStatus(index);
+                        selectedTableCount++;
                       }
                       else{
                         ScaffoldMessenger.of(context).showSnackBar(

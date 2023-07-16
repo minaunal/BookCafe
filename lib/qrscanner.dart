@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fbase/user_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
@@ -56,6 +57,8 @@ class _QRScannerState extends State<QRScanner> {
 
     setState(() {
       _scanResult = scanResult;
+      selectedTables[selectedTableCount] = _scanResult;
+      selectedTableCount++;
       uploadToFirebase(_scanResult);
       updateQR(_scanResult);
       FirebaseFirestore.instance

@@ -9,6 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
+int selectedTableCount=0;
+
 String qrCode = "none";
 void updateQR(String newQR) {
   qrCode = newQR;
@@ -160,29 +162,80 @@ class _masaState extends State<masa> {
               child: UserPage(),
             ),
             ElevatedButton(
-                onPressed: () {
-                    empty(masaAdi);
-                    masaAdi = "";
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          title: Text("Yorum Yap"),
-                          content: yorumSor(),
-                          actions: [
-                            ElevatedButton(
+              onPressed: selectedTables.isNotEmpty
+                  ? () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text("Masa Boşalt"),
+                      content: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: selectedTables.entries
+                            .map((entry) {
+                          int tableIndex = entry.key;
+                          String tableName = entry.value;
+                          return ListTile(
+                            title: Text('$tableName'),
+                            trailing: IconButton(
+                              icon: Icon(Icons.delete),
                               onPressed: () {
-                                // Dialog kapatma işlemleri veya diğer işlemler
-                                Navigator.pop(context);
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: Text("Emin misiniz?"),
+                                      actions: [
+                                        ElevatedButton(
+                                          onPressed: () {
+                                            setState(() {
+                                              selectedTables.remove(tableIndex);
+                                            });
+                                            empty("Masa $tableIndex");
+                                            Navigator.pop(context);
+                                            Navigator.pop(context);
+                                          },
+                                          child: Text("Evet"),
+                                        ),
+                                        ElevatedButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: Text("Hayır"),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
                               },
-                              child: Text("Tamam"),
                             ),
-                          ],
-                        );
-                      },
+                          );
+                        })
+                            .toList(),
+                      ),
+                      actions: [
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: Text("İptal"),
+                        ),
+                      ],
                     );
-                },
-                child: Text('bosalt')),
+                  },
+                );
+              }
+                  : null,
+              child: const Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.delete),
+                  SizedBox(width: 5),
+                  Text("Masa Boşalt"),
+                ],
+              ),
+            ),
+
 
             ElevatedButton(
               style: ElevatedButton.styleFrom(
@@ -193,10 +246,9 @@ class _masaState extends State<masa> {
                 ),
               ),
               onPressed: () {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context) => QRScanner()));
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => QRScanner()));
               },
-              child: Text("get a table"),
+              child: Text("Masa Al"),
             ),
           ],
         ),
