@@ -11,7 +11,7 @@ import 'package:flutter_animated_icons/icons8.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:lottie/lottie.dart';
 
-int selectedTableCount=0;
+int selectedTableCount = 0;
 
 String qrCode = "none";
 void updateQR(String newQR) {
@@ -32,7 +32,7 @@ Future<void> empty(String qrtext) async {
     if (document.exists) {
       // "chairs" alanını güncelle
       final List<dynamic> chairs =
-          List.from(document.get('chairStatusList') as List<dynamic>);
+      List.from(document.get('chairStatusList') as List<dynamic>);
 
       // False olan bir sandalye bul
       int indexToUpdate = chairs.indexWhere((chair) => chair == true);
@@ -102,7 +102,7 @@ class _KullaniciState extends State<Kullanici> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         unselectedLabelStyle:
-            const TextStyle(color: Colors.white, fontSize: 14),
+        const TextStyle(color: Colors.white, fontSize: 14),
         backgroundColor: const Color(0xFF084A76),
         fixedColor: Colors.black,
         unselectedItemColor: Colors.black,
@@ -110,19 +110,31 @@ class _KullaniciState extends State<Kullanici> {
         onTap: onTabTapped,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.table_restaurant_outlined,color: Color(0xFFFF7800),),
+            icon: Icon(
+              Icons.table_restaurant_outlined,
+              color: Color(0xFFFF7800),
+            ),
             label: 'Tables',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.account_balance_wallet_outlined,color: Color(0xFF2EA84A),),
+            icon: Icon(
+              Icons.account_balance_wallet_outlined,
+              color: Color(0xFF2EA84A),
+            ),
             label: 'Wallet',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.emoji_food_beverage,color: Color(0xFFDA1E60),),
+            icon: Icon(
+              Icons.emoji_food_beverage,
+              color: Color(0xFFDA1E60),
+            ),
             label: 'Cafe',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.account_circle_outlined,color: Color(0xFF182B6A),),
+            icon: Icon(
+              Icons.account_circle_outlined,
+              color: Color(0xFF182B6A),
+            ),
             label: 'Account',
           ),
         ],
@@ -164,17 +176,15 @@ class _masaState extends State<masa> {
               child: UserPage(),
             ),
             ElevatedButton(
-              onPressed: selectedTables.isNotEmpty
-                  ? () {
+              onPressed: () {
                 showDialog(
                   context: context,
                   builder: (BuildContext context) {
                     return AlertDialog(
-                      title: Text("Masa Boşalt"),
+                      title: Text("Empty Table"),
                       content: Column(
                         mainAxisSize: MainAxisSize.min,
-                        children: selectedTables.entries
-                            .map((entry) {
+                        children: selectedTables.entries.map((entry) {
                           int tableIndex = entry.key;
                           String tableName = entry.value;
                           return ListTile(
@@ -186,24 +196,25 @@ class _masaState extends State<masa> {
                                   context: context,
                                   builder: (BuildContext context) {
                                     return AlertDialog(
-                                      title: Text("Emin misiniz?"),
+                                      title: Text("Are you sure you want to empty the table?"),
                                       actions: [
                                         ElevatedButton(
                                           onPressed: () {
                                             setState(() {
                                               selectedTables.remove(tableIndex);
                                             });
-                                            empty("Masa $tableIndex");
+                                            empty(tableName);
+                                            setState(() {});
                                             Navigator.pop(context);
                                             Navigator.pop(context);
                                           },
-                                          child: Text("Evet"),
+                                          child: Text("Yes"),
                                         ),
                                         ElevatedButton(
                                           onPressed: () {
                                             Navigator.pop(context);
                                           },
-                                          child: Text("Hayır"),
+                                          child: Text("No"),
                                         ),
                                       ],
                                     );
@@ -212,33 +223,29 @@ class _masaState extends State<masa> {
                               },
                             ),
                           );
-                        })
-                            .toList(),
+                        }).toList(),
                       ),
                       actions: [
                         ElevatedButton(
                           onPressed: () {
                             Navigator.pop(context);
                           },
-                          child: Text("İptal"),
+                          child: Text("Cancel"),
                         ),
                       ],
                     );
                   },
                 );
-              }
-                  : null,
-              child: const Row(
+              },
+              child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Icon(Icons.delete),
                   SizedBox(width: 5),
-                  Text("Masa Boşalt"),
+                  Text("Empty Table"),
                 ],
               ),
             ),
-
-
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.black,
@@ -248,7 +255,8 @@ class _masaState extends State<masa> {
                 ),
               ),
               onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => QRScanner()));
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) => QRScanner()));
               },
               child: Text("Get a Table"),
             ),
@@ -330,121 +338,120 @@ class _cuzdanState extends State<cuzdan> {
     });
     return Scaffold(
       body: Padding(
-      padding: EdgeInsets.all(30.0), // Girinti ayarı
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          IconButton(
-            splashRadius: 50,
-            iconSize: 80,
-            icon: Lottie.asset(Icons8.book, height: 80, fit: BoxFit.fitHeight),
-            onPressed: null,
-          ),
-          Divider(
-            thickness: 3,
-          ),
-          SizedBox(height: 25),
-          Row(
-            children: <Widget>[
-              Icon(
-                Icons.account_balance_wallet_outlined,
-                size: 32,
-              ),
-              SizedBox(
-                width: 20,
-              ),
-              Text(
-                "Money in the wallet: $temp tl",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-            ],
-          ),
-          Row(
-            children: <Widget>[
-              Container(
-                width: 40, // Genişlik ayarı
-                child: TextField(
-                style: TextStyle(fontWeight: FontWeight.bold),
-                  controller: money,
-                  decoration: InputDecoration(
-                    
-                     hintText: 'tl',
-    hintStyle: TextStyle(fontSize: 20.0),
-                     
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black, width: 2.0),
+        padding: EdgeInsets.all(30.0), // Girinti ayarı
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            IconButton(
+              splashRadius: 50,
+              iconSize: 80,
+              icon:
+              Lottie.asset(Icons8.book, height: 80, fit: BoxFit.fitHeight),
+              onPressed: null,
+            ),
+            Divider(
+              thickness: 3,
+            ),
+            SizedBox(height: 25),
+            Row(
+              children: <Widget>[
+                Icon(
+                  Icons.account_balance_wallet_outlined,
+                  size: 32,
+                ),
+                SizedBox(
+                  width: 20,
+                ),
+                Text(
+                  "Money in the wallet: $temp tl",
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+            Row(
+              children: <Widget>[
+                Container(
+                  width: 40, // Genişlik ayarı
+                  child: TextField(
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                    controller: money,
+                    decoration: InputDecoration(
+                      hintText: 'tl',
+                      hintStyle: TextStyle(fontSize: 20.0),
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Colors.black, width: 2.0),
+                      ),
                     ),
                   ),
                 ),
-              ),
-              GestureDetector(
-                onTap: () {
-                  if (widget.docname == null) {
-                    final snackBar = SnackBar(
-                      content: Container(
-                        width: 150,
-                        height: 50,
-                        child: Center(
-                          child: Text(
-                            'You have no saved cards, add a credit card first.',
-                            style: TextStyle(
-                              fontSize: 18,
+                GestureDetector(
+                  onTap: () {
+                    if (widget.docname == null) {
+                      final snackBar = SnackBar(
+                        content: Container(
+                          width: 150,
+                          height: 50,
+                          child: Center(
+                            child: Text(
+                              'You have no saved cards, add a credit card first.',
+                              style: TextStyle(
+                                fontSize: 18,
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      action: SnackBarAction(
-                        label: 'Add credit card',
-                        onPressed: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) =>
-                                  CreditCardPage(email: girismail)));
-                        },
-                      ),
-                    );
-                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                  } else {
-                    temp = (int.tryParse(money.text)! + temp!);
-
-                    FirebaseFirestore.instance
-                        .collection('Kartlar')
-                        .doc(widget.email)
-                        .get()
-                        .then((value) {
-                      setState(() {
-                        control1 = value.data()?['limit'];
-                      });
-                    });
-                    if (sayac == 0) {
-                      FirebaseFirestore.instance
-                          .collection('Cuzdan')
-                          .doc(widget.docname)
-                          .set({'para': temp});
-                      sayac++;
+                        action: SnackBarAction(
+                          label: 'Add credit card',
+                          onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) =>
+                                    CreditCardPage(email: girismail)));
+                          },
+                        ),
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
                     } else {
-                      FirebaseFirestore.instance
-                          .collection('Cuzdan')
-                          .doc(widget.docname)
-                          .update({'para': temp});
-                    }
+                      temp = (int.tryParse(money.text)! + temp!);
 
-                    control = control! - int.tryParse(money.text)!;
-                    FirebaseFirestore.instance
-                        .collection('Kartlar')
-                        .doc(widget.email)
-                        .update({'limit': control});
-                  }
-                },
-                child: Icon(
-                  Icons.add,
-                  color: Colors.black,
-                  size: 32,
+                      FirebaseFirestore.instance
+                          .collection('Kartlar')
+                          .doc(widget.email)
+                          .get()
+                          .then((value) {
+                        setState(() {
+                          control1 = value.data()?['limit'];
+                        });
+                      });
+                      if (sayac == 0) {
+                        FirebaseFirestore.instance
+                            .collection('Cuzdan')
+                            .doc(widget.docname)
+                            .set({'para': temp});
+                        sayac++;
+                      } else {
+                        FirebaseFirestore.instance
+                            .collection('Cuzdan')
+                            .doc(widget.docname)
+                            .update({'para': temp});
+                      }
+
+                      control = control! - int.tryParse(money.text)!;
+                      FirebaseFirestore.instance
+                          .collection('Kartlar')
+                          .doc(widget.email)
+                          .update({'limit': control});
+                    }
+                  },
+                  child: Icon(
+                    Icons.add,
+                    color: Colors.black,
+                    size: 32,
+                  ),
                 ),
-              ),
-            ],
-          ),
-        ],
-      ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -711,8 +718,8 @@ class _hesapState extends State<hesap> {
                     checkDocumentExists();
                     Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => CreditCardPage(
-                              email: widget.email,
-                            )));
+                          email: widget.email,
+                        )));
                   }
                 },
                 child: Icon(
@@ -745,7 +752,7 @@ class _hesapState extends State<hesap> {
                 },
                 child: Icon(
                   Icons.search,
-                  color:Colors.black,
+                  color: Colors.black,
                   size: 32,
                 ),
               ),

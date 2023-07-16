@@ -48,28 +48,6 @@ class _TablePageState extends State<TablePage> {
     }
   }
 
-
-  /*void getTableFullValue() async {
-    bool fullValue;
-    DocumentSnapshot docSnapshot = await FirebaseFirestore.instance
-        .collection('Masalar')
-        .doc('Masa ${widget.index}')
-        .get();
-    if (docSnapshot.exists) {
-      Map<String, dynamic> data = docSnapshot.data() as Map<String, dynamic>;
-      fullValue = data['full'] ?? false;
-      setState(() {
-        widget.table.full = fullValue;
-        for (int i = 0; i < widget.table.chairStatusList.length; i++) {
-          widget.table.chairStatusList[i] = fullValue;
-        }
-        updateChairStatusList(widget.index, widget.table.chairStatusList);
-      });
-    } else {
-      print('Document does not exist.');
-    }
-  }*/
-
   @override
   void dispose() {
     chairCountController.dispose();
@@ -81,15 +59,15 @@ class _TablePageState extends State<TablePage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Masayı Sil'),
-          content: const Text('Bu masayı silmek istediğinize emin misiniz?'),
+          title: const Text('Delete the table'),
+          content: const Text('Are you sure you want to delete the table?'),
           actions: <Widget>[
             TextButton(
               onPressed: () {
                 Navigator.of(context)
                     .pop(); // İptal düğmesine basılınca dialog kapatılır
               },
-              child: const Text('İptal'),
+              child: const Text('Cancel'),
             ),
             TextButton(
               onPressed: () {
@@ -98,7 +76,7 @@ class _TablePageState extends State<TablePage> {
                     .pop(); // Sil düğmesine basılınca dialog kapatılır
                 Navigator.of(context).pop(); // TablePage sayfasına geri dönülür
               },
-              child: const Text('Sil'),
+              child: const Text('Delete'),
             ),
           ],
         );
@@ -193,7 +171,7 @@ class _TablePageState extends State<TablePage> {
       appBar: AppBar(
         backgroundColor: Colors.black,
         centerTitle: true,
-        title: Text("Masa ${widget.index}"),
+        title: Text("Table ${widget.index}"),
         actions: [
           IconButton(
             onPressed: _deleteTable,
@@ -212,7 +190,7 @@ class _TablePageState extends State<TablePage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Text(
-                    "Priz: ",
+                    "Socket: ",
                     style: TextStyle(fontSize: 15),
                   ),
                   const SizedBox(width: 5),
@@ -232,7 +210,7 @@ class _TablePageState extends State<TablePage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Text(
-                    "Pencere kenarı: ",
+                    "Window: ",
                     style: TextStyle(fontSize: 15),
                   ),
                   const SizedBox(width: 10),
@@ -252,7 +230,7 @@ class _TablePageState extends State<TablePage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Text(
-                    "Masa dolu: ",
+                    "Full: ",
                     style: TextStyle(fontSize: 15),
                   ),
                   const SizedBox(width: 10),
@@ -280,7 +258,7 @@ class _TablePageState extends State<TablePage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Text(
-                    "Koltuk Sayısı: ",
+                    "Chair count: ",
                     style: TextStyle(fontSize: 15),
                   ),
                   const SizedBox(width: 10),

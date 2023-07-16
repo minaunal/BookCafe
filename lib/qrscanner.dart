@@ -11,7 +11,7 @@ class QRScanner extends StatefulWidget {
 }
 
 class _QRScannerState extends State<QRScanner> {
-  String _scanResult = 'Henüz bir QR kodu taranmadı';
+  String _scanResult = 'The QR code has not been scanned yet.' ;
 
   Future<void> uploadToFirebase(String qrtext) async {
     // Firebase Firestore bağlantısını al
@@ -55,23 +55,25 @@ class _QRScannerState extends State<QRScanner> {
       ScanMode.QR,
     );
 
-    setState(() {
-      _scanResult = scanResult;
-      selectedTables[selectedTableCount] = _scanResult;
-      selectedTableCount++;
-      uploadToFirebase(_scanResult);
-      updateQR(_scanResult);
-      FirebaseFirestore.instance
-                          .collection('Gelir')
-                          .doc('gelir')
-                          .get()
-                          .then((value) {
-                        FirebaseFirestore.instance
+    if (scanResult != "-1") {
+      setState(() {
+        _scanResult = scanResult;
+        selectedTables[selectedTableCount] = _scanResult;
+        selectedTableCount++;
+        uploadToFirebase(_scanResult);
+        updateQR(_scanResult);
+        FirebaseFirestore.instance
                             .collection('Gelir')
                             .doc('gelir')
-                            .update(({'tl': 35 + value.data()!['tl']}));
-                      });
-    });
+                            .get()
+                            .then((value) {
+                          FirebaseFirestore.instance
+                              .collection('Gelir')
+                              .doc('gelir')
+                              .update(({'tl': 35 + value.data()!['tl']}));
+                        });
+      });
+    }
   }
 
   @override
@@ -91,7 +93,7 @@ class _QRScannerState extends State<QRScanner> {
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: _scanQRCode,
-              child: Text('QR Kodunu Tara'),
+              child: Text('Scan QR Code '),
             ),
           ],
         ),
