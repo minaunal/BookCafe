@@ -102,7 +102,7 @@ class _MainPageState extends State<MainPage> {
         title: Row(
           children: [
             const SizedBox(width: 10),
-            Text('Masa Sayısı: $number  ', style: const TextStyle(fontSize: 20)),
+            Text('Number of Tables: $number  ', style: const TextStyle(fontSize: 20)),
           ],
         ),
       ),

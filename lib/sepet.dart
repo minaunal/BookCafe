@@ -20,7 +20,9 @@ class _SepetState extends State<Sepet> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Sepetim'),
+        backgroundColor: Colors.red[200],
+        foregroundColor: Colors.black,
+        title: Text('My Cart'),
       ),
       body: Makecards(
           isim: widget.isim,
@@ -85,7 +87,7 @@ class _MakecardsState extends State<Makecards> {
                   ),
                 ),
                 Text(
-                  widget.fiyat.toString() + "₺",
+                  widget.fiyat.toString() + "tl",
                   style: TextStyle(
                     fontSize: 17,
                     fontWeight: FontWeight.bold,
@@ -108,11 +110,16 @@ class _MakecardsState extends State<Makecards> {
                           Navigator.of(context).push(
                               MaterialPageRoute(builder: (context) => Hazir()));
 
-                          FirebaseFirestore.instance
-                              .collection('Gelir')
-                              .doc('gelir')
-                              .update(
-                                  ({'tl': int.parse(widget.fiyat.toString())}));
+                           FirebaseFirestore.instance
+                          .collection('Gelir')
+                          .doc('gelir')
+                          .get()
+                          .then((value) {
+                        FirebaseFirestore.instance
+                            .collection('Gelir')
+                            .doc('gelir')
+                            .update(({'tl': int.parse(widget.fiyat.toString()) + value.data()!['tl']}));
+                      });
                         } else {
                           final snackBar = SnackBar(
                             content: Text("insufficient funds"),

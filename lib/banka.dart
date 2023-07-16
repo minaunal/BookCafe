@@ -20,12 +20,6 @@ class _CreditCardPageState extends State<CreditCardPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.teal[50],
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: Text('Flutter Credit Card View'),
-      ),
-      resizeToAvoidBottomInset: true,
       body: SafeArea(
         child: Column(
           children: [
@@ -51,7 +45,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
                     cardHolderName: cardHolderName,
                     cvvCode: cvvCode,
                     onCreditCardModelChange: onCreditCardModelChange,
-                    themeColor: Colors.blue,
+                    themeColor: Colors.red,
                     formKey: formKey,
                     cardNumberDecoration: InputDecoration(
                         border: OutlineInputBorder(),
@@ -78,12 +72,12 @@ class _CreditCardPageState extends State<CreditCardPage> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8.0),
                 ),
-                backgroundColor: Color(0xff1b447b),
+                backgroundColor: Colors.red,
               ),
               child: Container(
                 margin: EdgeInsets.all(8.0),
                 child: Text(
-                  'Kaydet',
+                  'Save',
                   style: TextStyle(
                     color: Colors.white,
                     fontFamily: 'halter',
@@ -103,6 +97,21 @@ class _CreditCardPageState extends State<CreditCardPage> {
                     'limit': 400,
                     'email': widget.email,
                   });
+                  final snackBar = SnackBar(
+                    content: Container(
+                      width: 150,
+                      height: 50,
+                      child: Center(
+                        child: Text(
+                          'Your card is successfully saved',
+                          style: TextStyle(
+                            fontSize: 18,
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
                 }
               },
             ),
