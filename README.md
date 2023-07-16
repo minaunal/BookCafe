@@ -168,7 +168,7 @@ _-_ İletişimi geliştirmek için daha sık ve düzenli toplantılar düzenleme
 
   
 - **Ürün Durumu:** Ekran görüntüleri ekteki gibidir.
-- 
+  
 <p align="center">
   <img width="500" height="1000" src="https://github.com/minaunal/BookCafe/assets/130221407/f789434b-a9ff-48e4-a4e1-ec2dc512f694">
 </p>
