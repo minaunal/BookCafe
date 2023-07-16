@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fbase/kullaniciekrani.dart';
+import 'package:fbase/kullanicigiris.dart';
 import 'package:flutter/material.dart';
 
 class SavedCardsPage extends StatefulWidget {
@@ -9,44 +10,34 @@ class SavedCardsPage extends StatefulWidget {
   _SavedCardsPageState createState() => _SavedCardsPageState();
 }
 
-class _SavedCardsPageState extends State<SavedCardsPage> {
-  CollectionReference<Map<String, dynamic>> collectionRef =
-      FirebaseFirestore.instance.collection('Kartlar');
+String isim = '';
+String kartno = '';
+int limit = 0;
 
+class _SavedCardsPageState extends State<SavedCardsPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Kaydedilen Kartlar'),
-        actions: [],
-      ),
-      body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-        stream: collectionRef.snapshots(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return ListView.builder(
-              shrinkWrap: true,
-              itemCount: snapshot.data!.docs.length,
-              itemBuilder: (context, index) {
-                Map<String, dynamic> data = snapshot.data!.docs[index].data();
+    FirebaseFirestore.instance
+        .collection('Kartlar')
+        .doc(girismail)
+        .get()
+        .then((value) {
+      setState(() {
+        isim = value.data()!['isim'];
+        kartno = value.data()!['kartno'];
+        limit = value.data()!['limit'];
+       
+      });
+    });
 
-                // Başlık ve alt başlık değerlerini alın
-                String isim = data['isim'];
-                String kartno = data['kartno'];
-                int limit = data['limit'];
-                return ListTile(
-                  leading: Icon(Icons.account_balance_wallet_outlined),
-                  title: Text(isim),
-                  subtitle: Text("$kartno     $limit₺"),
-                );
-              },
-            );
-          } else if (snapshot.hasError) {
-            return Text('Hata: ${snapshot.error}');
-          } else {
-            return CircularProgressIndicator();
-          }
-        },
+    return Scaffold(
+      appBar: AppBar(title: Text('My Credit Card'),backgroundColor: Colors.red[200],foregroundColor: Colors.black,),
+      body: SingleChildScrollView(
+        child: ListTile(
+          leading: Icon(Icons.account_balance_wallet_outlined,size: 30.0,color: Colors.black,),
+          title: Text(isim,style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18.0),),
+          subtitle: Text("$kartno     $limit tl",style: TextStyle(fontSize: 16.0),),
+        ),
       ),
     );
   }

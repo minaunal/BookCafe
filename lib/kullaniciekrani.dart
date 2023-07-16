@@ -1,13 +1,15 @@
 import 'package:fbase/banka.dart';
+import 'package:fbase/changepw.dart';
 import 'package:fbase/kartlarim.dart';
 import 'package:fbase/kullanicigiris.dart';
 import 'package:fbase/qrscanner.dart';
 import 'package:fbase/sepet.dart';
 import 'package:fbase/user_page.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_animated_icons/icons8.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:lottie/lottie.dart';
 
 int selectedTableCount=0;
 
@@ -108,20 +110,20 @@ class _KullaniciState extends State<Kullanici> {
         onTap: onTabTapped,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.table_restaurant_outlined),
-            label: 'Masa',
+            icon: Icon(Icons.table_restaurant_outlined,color: Color(0xFFFF7800),),
+            label: 'Tables',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.account_balance_wallet_outlined),
-            label: 'Cüzdan',
+            icon: Icon(Icons.account_balance_wallet_outlined,color: Color(0xFF2EA84A),),
+            label: 'Wallet',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.emoji_food_beverage),
+            icon: Icon(Icons.emoji_food_beverage,color: Color(0xFFDA1E60),),
             label: 'Cafe',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.account_circle_outlined),
-            label: 'Hesap',
+            icon: Icon(Icons.account_circle_outlined,color: Color(0xFF182B6A),),
+            label: 'Account',
           ),
         ],
       ),
@@ -248,7 +250,7 @@ class _masaState extends State<masa> {
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(builder: (context) => QRScanner()));
               },
-              child: Text("Masa Al"),
+              child: Text("Get a Table"),
             ),
           ],
         ),
@@ -287,7 +289,6 @@ class _masaState extends State<masa> {
       ],
     );
   }
-
 }
 
 class cuzdan extends StatefulWidget {
@@ -307,9 +308,7 @@ class _cuzdanState extends State<cuzdan> {
   int? control1 = 0;
 
   @override
-  void initState() {
-    super.initState();
-
+  Widget build(BuildContext context) {
     FirebaseFirestore.instance
         .collection('Cuzdan')
         .doc(widget.docname)
@@ -329,51 +328,123 @@ class _cuzdanState extends State<cuzdan> {
         control = value.data()!['limit'];
       });
     });
-  }
-
-  Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Cüzdan")),
-      body: Column(
+      body: Padding(
+      padding: EdgeInsets.all(30.0), // Girinti ayarı
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          TextField(controller: money),
-          ElevatedButton(
-            child: Text("para ekle"),
-            onPressed: () {
-              temp = (int.tryParse(money.text)! + temp!);
-
-              FirebaseFirestore.instance
-                  .collection('Kartlar')
-                  .doc(widget.email)
-                  .get()
-                  .then((value) {
-                setState(() {
-                  control1 = value.data()?['limit'];
-                });
-              });
-              if (sayac == 0) {
-                FirebaseFirestore.instance
-                    .collection('Cuzdan')
-                    .doc(widget.docname)
-                    .set({'para': temp});
-                sayac++;
-              } else {
-                FirebaseFirestore.instance
-                    .collection('Cuzdan')
-                    .doc(widget.docname)
-                    .update({'para': temp});
-              }
-
-              control = control! - int.tryParse(money.text)!;
-              FirebaseFirestore.instance
-                  .collection('Kartlar')
-                  .doc(widget.email)
-                  .update({'limit': control});
-            },
+          IconButton(
+            splashRadius: 50,
+            iconSize: 80,
+            icon: Lottie.asset(Icons8.book, height: 80, fit: BoxFit.fitHeight),
+            onPressed: null,
           ),
-          Icon(Icons.account_balance_wallet_outlined),
-          Text("$temp₺"),
+          Divider(
+            thickness: 3,
+          ),
+          SizedBox(height: 25),
+          Row(
+            children: <Widget>[
+              Icon(
+                Icons.account_balance_wallet_outlined,
+                size: 32,
+              ),
+              SizedBox(
+                width: 20,
+              ),
+              Text(
+                "Money in the wallet: $temp tl",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+          Row(
+            children: <Widget>[
+              Container(
+                width: 40, // Genişlik ayarı
+                child: TextField(
+                style: TextStyle(fontWeight: FontWeight.bold),
+                  controller: money,
+                  decoration: InputDecoration(
+                    
+                     hintText: 'tl',
+    hintStyle: TextStyle(fontSize: 20.0),
+                     
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black, width: 2.0),
+                    ),
+                  ),
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  if (widget.docname == null) {
+                    final snackBar = SnackBar(
+                      content: Container(
+                        width: 150,
+                        height: 50,
+                        child: Center(
+                          child: Text(
+                            'You have no saved cards, add a credit card first.',
+                            style: TextStyle(
+                              fontSize: 18,
+                            ),
+                          ),
+                        ),
+                      ),
+                      action: SnackBarAction(
+                        label: 'Add credit card',
+                        onPressed: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) =>
+                                  CreditCardPage(email: girismail)));
+                        },
+                      ),
+                    );
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  } else {
+                    temp = (int.tryParse(money.text)! + temp!);
+
+                    FirebaseFirestore.instance
+                        .collection('Kartlar')
+                        .doc(widget.email)
+                        .get()
+                        .then((value) {
+                      setState(() {
+                        control1 = value.data()?['limit'];
+                      });
+                    });
+                    if (sayac == 0) {
+                      FirebaseFirestore.instance
+                          .collection('Cuzdan')
+                          .doc(widget.docname)
+                          .set({'para': temp});
+                      sayac++;
+                    } else {
+                      FirebaseFirestore.instance
+                          .collection('Cuzdan')
+                          .doc(widget.docname)
+                          .update({'para': temp});
+                    }
+
+                    control = control! - int.tryParse(money.text)!;
+                    FirebaseFirestore.instance
+                        .collection('Kartlar')
+                        .doc(widget.email)
+                        .update({'limit': control});
+                  }
+                },
+                child: Icon(
+                  Icons.add,
+                  color: Colors.black,
+                  size: 32,
+                ),
+              ),
+            ],
+          ),
         ],
+      ),
       ),
     );
   }
@@ -404,52 +475,52 @@ class _CafeState extends State<Cafe> {
             crossAxisCount: 2,
             children: <Widget>[
               Makecards(
-                isim: "su",
+                isim: "water",
                 foto: 'images/su.jpg',
                 old: 5,
                 fiyat: 5 - (5 * Discount / 100).toInt(),
                 docname: widget.docname,
               ),
               Makecards(
-                isim: "çay",
-                foto: 'images/cay.jpg',
-                old: 8,
-                fiyat: 8 - (8 * Discount / 100).toInt(),
-                docname: widget.docname,
-              ),
-              Makecards(
-                isim: "filtre kahve",
-                foto: 'images/filtre.jpg',
-                old: 15,
-                fiyat: 15 - (15 * Discount / 100).toInt(),
-                docname: widget.docname,
-              ),
-              Makecards(
-                isim: "maden suyu",
+                isim: "mineral water",
                 foto: 'images/soda.jpg',
                 old: 10,
                 fiyat: 10 - (10 * Discount / 100).toInt(),
                 docname: widget.docname,
               ),
               Makecards(
-                isim: "türk kahvesi",
+                isim: "lemonade",
+                foto: 'images/lim.jpg',
+                old: 18,
+                fiyat: (18 - (18 * Discount / 100)).toInt(),
+                docname: widget.docname,
+              ),
+              Makecards(
+                isim: "tea",
+                foto: 'images/cay.jpg',
+                old: 8,
+                fiyat: 8 - (8 * Discount / 100).toInt(),
+                docname: widget.docname,
+              ),
+              Makecards(
+                isim: "filter coffee",
+                foto: 'images/filtre.jpg',
+                old: 15,
+                fiyat: 15 - (15 * Discount / 100).toInt(),
+                docname: widget.docname,
+              ),
+              Makecards(
+                isim: "turkish coffee",
                 foto: 'images/kahve.jpg',
                 old: 20,
                 fiyat: 20 - (20 * Discount / 100).toInt(),
                 docname: widget.docname,
               ),
               Makecards(
-                isim: "salep",
+                isim: "sahlep",
                 foto: 'images/salep.jpg',
                 fiyat: 20 - (20 * Discount / 100).toInt(),
                 old: 20,
-                docname: widget.docname,
-              ),
-              Makecards(
-                isim: "limonata",
-                foto: 'images/lim.jpg',
-                old: 18,
-                fiyat: (18 - (18 * Discount / 100)).toInt(),
                 docname: widget.docname,
               ),
             ],
@@ -473,6 +544,10 @@ class Makecards extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String price = '';
+    if (old != fiyat) {
+      price = old.toString() + "tl";
+    }
     return Card(
       clipBehavior: Clip.antiAlias,
       child: Column(
@@ -497,7 +572,7 @@ class Makecards extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  old.toString() + "₺",
+                  price,
                   style: TextStyle(
                     decoration: TextDecoration.lineThrough,
                     decorationColor: Colors.redAccent[700],
@@ -507,7 +582,7 @@ class Makecards extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  fiyat.toString() + "₺",
+                  fiyat.toString() + "tl",
                   style: TextStyle(
                     fontSize: 17,
                     fontWeight: FontWeight.bold,
@@ -558,134 +633,136 @@ class hesap extends StatefulWidget {
 }
 
 class _hesapState extends State<hesap> {
-  final oldpwcontroller = TextEditingController();
-  var newpwcontroller = TextEditingController();
+  checkDocumentExists() async {
+    var collection = FirebaseFirestore.instance.collection('Kartlar');
+    var documentSnapshot = await collection.doc(girismail).get();
 
-  var auth = FirebaseAuth.instance;
-  var currentUser = FirebaseAuth.instance.currentUser;
-
-  changepw({email, oldpassword, newpassword}) async {
-    var cred =
-        EmailAuthProvider.credential(email: email, password: oldpassword);
-    await currentUser!
-        .reauthenticateWithCredential(cred)
-        .then((value) => {currentUser!.updatePassword(newpassword)})
-        .catchError((error) {
+    if (documentSnapshot.exists) {
       final snackBar = SnackBar(
         content: Container(
           width: 150,
           height: 50,
           child: Center(
             child: Text(
-              'Wrong Password',
+              'You already saved a credit card',
               style: TextStyle(
                 fontSize: 18,
               ),
             ),
           ),
         ),
-        action: SnackBarAction(
-          label: 'Try Again',
-          onPressed: () {
-            oldpwcontroller.clear();
-            newpwcontroller.clear();
-          },
-        ),
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    });
+    } else {
+      return "valid";
+    }
   }
 
-  String textField = 'Change Password';
-
-  bool isVisible = false;
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Visibility(
-          visible: isVisible,
-          child: TextFormField(
-            autofocus: true,
-            decoration: InputDecoration(
-              labelText: "old password: ",
-              hintText: "enter old password: ",
-              labelStyle: TextStyle(fontSize: 20.0),
-              border: OutlineInputBorder(),
-              errorStyle: TextStyle(color: Colors.black, fontSize: 15.0),
-            ),
-            controller: oldpwcontroller,
+    return Padding(
+      padding: EdgeInsets.all(30.0), // Girinti ayarı
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          IconButton(
+            splashRadius: 50,
+            iconSize: 80,
+            icon: Lottie.asset(Icons8.book, height: 80, fit: BoxFit.fitHeight),
+            onPressed: null,
           ),
-        ),
-        Visibility(
-          visible: isVisible,
-          child: TextFormField(
-            decoration: InputDecoration(
-              labelText: "new password: ",
-              hintText: "enter new password: ",
-              labelStyle: TextStyle(fontSize: 20.0),
-              border: OutlineInputBorder(),
-              errorStyle: TextStyle(color: Colors.black, fontSize: 15.0),
-            ),
-            controller: newpwcontroller,
+          Divider(
+            thickness: 3,
           ),
-        ),
-        ElevatedButton(
-          onPressed: () {
-            setState(() {
-              isVisible = true;
-
-              textField = 'Approve';
-              changepw(
-                email: widget.email,
-                oldpassword: oldpwcontroller.text,
-                newpassword: newpwcontroller.text,
-              ).then((_) {
-                final snackBar = SnackBar(
-                  content: Container(
-                    width: 150,
-                    height: 50,
-                    child: Center(
-                      child: Text(
-                        'Şifre değiştirildi.',
-                        style: TextStyle(
-                          fontSize: 18,
-                        ),
-                      ),
-                    ),
-                  ),
-                  action: SnackBarAction(
-                    label: 'GİRİŞ YAP',
-                    onPressed: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => KullaniciGiris(),
-                      ));
-                    },
-                  ),
-                );
-
-                ScaffoldMessenger.of(context).showSnackBar(snackBar);
-              });
-            });
-          },
-          child: Text(textField),
-        ),
-        ElevatedButton(
-          child: Text("kart ekle"),
-          onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => CreditCardPage(
-                      email: widget.email,
-                    )));
-          },
-        ),
-        ElevatedButton(
-            onPressed: () {
-              Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => SavedCardsPage()));
-            },
-            child: Text("kayıtlı kartlar")),
-      ],
+          SizedBox(height: 20),
+          Row(
+            children: <Widget>[
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => change(email: widget.email)));
+                },
+                child: Icon(
+                  Icons.key,
+                  color: Colors.black,
+                  size: 32,
+                ),
+              ),
+              SizedBox(
+                width: 20,
+              ),
+              Text(
+                'Change Password',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 30,
+          ),
+          Row(
+            children: <Widget>[
+              GestureDetector(
+                onTap: () {
+                  if (checkDocumentExists() == "valid") {
+                    checkDocumentExists();
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => CreditCardPage(
+                              email: widget.email,
+                            )));
+                  }
+                },
+                child: Icon(
+                  Icons.credit_card,
+                  color: Colors.black,
+                  size: 32,
+                ),
+              ),
+              SizedBox(
+                width: 20,
+              ),
+              Text(
+                'Add credit card',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 30,
+          ),
+          Row(
+            children: <Widget>[
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => SavedCardsPage()));
+                },
+                child: Icon(
+                  Icons.search,
+                  color:Colors.black,
+                  size: 32,
+                ),
+              ),
+              SizedBox(
+                width: 20,
+              ),
+              Text(
+                'Check your saved card info',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

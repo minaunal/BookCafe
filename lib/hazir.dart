@@ -59,10 +59,11 @@ class _HazirState extends State<Hazir> {
         child: Scaffold(
           appBar: AppBar(
             automaticallyImplyLeading: false,
+            backgroundColor: Colors.red[200],
             title: Text('Preparing...'),
           ),
           body: Center(
-            child: Text('Please wait'),
+            child: Text('Your order is preparing. \nPlease wait.',style: TextStyle(fontSize: 25,color: Colors.black),),
           ),
         ),
       ),

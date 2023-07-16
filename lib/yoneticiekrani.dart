@@ -2,7 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fbase/kupon.dart';
 import 'package:fbase/moderator.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animated_icons/icons8.dart';
 import 'package:pie_chart/pie_chart.dart';
+import 'package:lottie/lottie.dart';
 
 class Yonetici extends StatefulWidget {
   @override
@@ -22,9 +24,6 @@ class _YoneticiState extends State<Yonetici> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Your App Name'),
-      ),
       body: _pages[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         unselectedLabelStyle:
@@ -40,19 +39,19 @@ class _YoneticiState extends State<Yonetici> {
         },
         items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.table_restaurant_rounded),
+            icon: Icon(Icons.table_restaurant_rounded,color: Color(0xFFFF7800),),
             label: 'Tables',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.group_outlined),
+            icon: Icon(Icons.group_outlined,color: Color(0xFF2EA84A),),
             label: 'Occupancy',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.receipt_outlined),
+            icon: Icon(Icons.receipt_outlined,color: Color(0xFFDA1E60),),
             label: 'Coupon',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.attach_money_rounded),
+            icon: Icon(Icons.attach_money_rounded,color: Color(0xFF182B6A),),
             label: 'Income',
           ),
         ],
@@ -109,7 +108,6 @@ class _dolulukState extends State<doluluk> {
       List<bool> colors = List<bool>.from(doc['chairStatusList']);
       trueCount += colors.where((color) => color == true).length;
       falseCount += colors.where((color) => color == false).length;
-      
     });
 
     setState(() {
@@ -122,7 +120,14 @@ class _dolulukState extends State<doluluk> {
   Widget build(BuildContext context) {
     dataMap["full"] = trueCount.toDouble();
     dataMap["empty"] = falseCount.toDouble();
-    return PieChart(
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Text("instant occupancy in bookcafe", style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25.0),),
+        SizedBox(height: 15,),
+        Divider(thickness: 3,),
+         SizedBox(height: 15,),
+     PieChart(
       dataMap: dataMap,
       colorList: colorList,
       chartRadius: MediaQuery.of(context).size.width / 2,
@@ -146,6 +151,11 @@ class _dolulukState extends State<doluluk> {
           color: Colors.black,
         ),
       ),
+    ),
+     SizedBox(height: 15,),
+    Divider(thickness: 3,),
+     SizedBox(height: 15,),
+      ],
     );
   }
 }
@@ -167,20 +177,48 @@ class _IncomeState extends State<Income> {
   }
 
   Future<void> fetchData() async {
-    DocumentSnapshot snapshot = await FirebaseFirestore.instance
-        .collection('Gelir')
-        .doc('gelir')
-        .get();
+    DocumentSnapshot snapshot =
+        await FirebaseFirestore.instance.collection('Gelir').doc('gelir').get();
 
     setState(() {
       data = snapshot['tl'];
     });
   }
+final indirim = TextEditingController();
   @override
   Widget build(BuildContext context) {
-   
     return Scaffold(
-      body: Text(data.toString()),
+      body: Padding(
+      padding: EdgeInsets.all(30.0), // Girinti ayarı
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          IconButton(
+              splashRadius: 50,
+              iconSize: 80,
+              icon: Lottie.asset(Icons8.book, height: 80, fit: BoxFit.fitHeight),
+              onPressed: null,
+            ),
+          Divider(thickness: 3,),
+          SizedBox(height: 20,),
+          Row(
+            children:<Widget>[
+         Icon(
+                Icons.attach_money_rounded,
+                size: 32,
+              ),
+              SizedBox(
+                width: 20,
+              ),
+              Text(
+                "Your income is : ${data.toString()} tl",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+        ],
+      ),
+      ),
     );
   }
 }

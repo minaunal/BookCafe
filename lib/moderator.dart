@@ -159,26 +159,12 @@ class _MainPageState extends State<MainPage> {
     }
   }
 
-   isVisible() {
-    FirebaseFirestore.instance
-        .collection('aktif')
-        .doc('user')
-        .get()
-        .then((value) {
-      setState(() {
-        if (value.data()!['ogrenci'] == true) {
-         
-        }
-      });
-    });
-     return false;
-  }
-
+   
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:  isVisible()
-          ? AppBar(
+      appBar:  
+           AppBar(
         backgroundColor: Colors.black,
         title: Row(
           children: [
@@ -245,11 +231,8 @@ class _MainPageState extends State<MainPage> {
                 style: const TextStyle(fontSize: 20)),
           ],
         ),
-      )
-      : PreferredSize(
-              preferredSize: Size.fromHeight(0), // AppBar'ı görünmez yapar
-              child: AppBar(),
-            ),
+      ),
+      
       body: ListView(
         children: [
           Padding(

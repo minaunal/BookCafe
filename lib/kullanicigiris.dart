@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animated_icons/icons8.dart';
 import 'package:lottie/src/lottie.dart';
 
+String girismail = '';
+
 class KullaniciGiris extends StatefulWidget {
   const KullaniciGiris({super.key});
 
@@ -27,6 +29,7 @@ class _KullaniciGirisState extends State<KullaniciGiris> {
       Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => Kullanici(email: _email.text.trim())));
     });
+    girismail = _email.text.trim();
 
     FirebaseFirestore.instance
         .collection('aktif')
