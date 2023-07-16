@@ -107,8 +107,8 @@ _-_ Takımımız geçmiş sprintlerden çıkarılan dersleri paylaştı ve süre
 
 ---------------------
 # Sprint 2
-- **Sprint içinde tamamlanması tahmin edilen puan:** 100 Puan
-- **Puan tamamlama mantığı:** Toplamda proje boyunca tamamlanması gereken 340 puanlık backlog bulunmaktadır. 3 sprint'e bölündüğünde ikinci sprint'in 110 ile devam etmesi gerektiğine karar verildi.
+- **Sprint içinde tamamlanması tahmin edilen puan:** 120 Puan
+- **Puan tamamlama mantığı:** Toplamda proje boyunca tamamlanması gereken 340 puanlık backlog bulunmaktadır. 3 sprint'e bölündüğünde ikinci sprint'in 120 ile devam etmesi gerektiğine karar verildi.
 - **Daily Scrum**: Daily Scrum toplantılarının Discord ve Whatsapp üzerinden yapılmasına karar verilmiştir. Daily Scrum toplantısı örneği word olarak Readme'de tarafımızdan paylaşılmaktadır:   [Sprint 2 Daily Scrum Chats] ->[Sprint2DailyScrum.docx](https://github.com/minaunal/BookCafe/files/11931252/Sprint2DailyScrum.docx)
 - **Sprint board update:** Sprint board'ımız : [Trello Linki](https://trello.com/invite/b/sVYY7j2L/ATTI3c6820c9fc6c75cea3b25a053d2ec7c34EB168FE/proje-tamamlama-sureci)
    ![image](https://github.com/minaunal/BookCafe/assets/130221407/f435aaff-8c52-4a6d-bcfb-e971d18dd5fc)
@@ -145,3 +145,67 @@ _-_ Bu sprint sürecinde takımdaki aktifliğin azaldığını fark ettik. Bu du
 _-_ İş yükünü dengelemek için daha iyi bir iş planlaması yapmaya ve takım üyelerinin güçlü yönlerini kullanarak görevleri paylaşmaya karar verdik.
 
 _-_ İletişimi geliştirmek için daha sık ve düzenli toplantılar düzenlemeyi hedefliyoruz.
+
+---------------------------
+
+## Product Backlog URL
+
+[Flutter Team 89 Trello Backlog Board](https://trello.com/invite/b/sVYY7j2L/ATTI3c6820c9fc6c75cea3b25a053d2ec7c34EB168FE/proje-tamamlama-sureci)
+
+------------------------
+
+# Sprint 3
+- **Sprint içinde tamamlanması tahmin edilen puan:** 120 Puan
+- **Puan tamamlama mantığı:** Toplamda proje boyunca tamamlanması gereken 340 puanlık backlog bulunmaktadır. 3 sprint'e bölündüğünde ikinci sprint'in 120 ile devam etmesi gerektiğine karar verildi.
+- **Daily Scrum**: Daily Scrum toplantılarının Discord ve Whatsapp üzerinden yapılmasına karar verilmiştir. Daily Scrum toplantısı örneği word olarak Readme'de tarafımızdan paylaşılmaktadır:   [Sprint 2 Daily Scrum Chats] ->[Sprint2DailyScrum.docx](https://github.com/minaunal/BookCafe/files/11931252/Sprint2DailyScrum.docx)
+- **Sprint board update:** Sprint board'ımız : [Trello Linki](https://trello.com/invite/b/sVYY7j2L/ATTI3c6820c9fc6c75cea3b25a053d2ec7c34EB168FE/proje-tamamlama-sureci)
+   ![image](https://github.com/minaunal/BookCafe/assets/130221407/f435aaff-8c52-4a6d-bcfb-e971d18dd5fc)
+- **Ürün Durumu:** Ekran görüntüleri ekteki gibidir.
+- 
+<p align="center">
+  <img width="500" height="1000" src="(https://github.com/minaunal/BookCafe/assets/130221407/0263af42-2dd7-453f-9ba6-6bbc0a0c4cf0)">
+</p>
+![image](https://github.com/minaunal/BookCafe/assets/130221407/0263af42-2dd7-453f-9ba6-6bbc0a0c4cf0)
+
+<p align="center">
+  <img width="500" height="1000" src="(https://github.com/minaunal/BookCafe/assets/130221407/1d66085e-c822-470e-9beb-a5594d7197f4)">
+</p>
+
+<p align="center">
+  <img width="500" height="1000" src="(https://github.com/minaunal/BookCafe/assets/130221407/ed2168c5-a430-4fe6-907b-99441bbdb2c9)">
+</p>
+
+<p align="center">
+  <img width="500" height="1000" src="(https://github.com/minaunal/BookCafe/assets/130221407/560c7cb6-897b-4efb-b654-69ffbf24228b)
+">
+</p>
+
+<p align="center">
+  <img width="500" height="1000" src="(https://github.com/minaunal/BookCafe/assets/130221407/55e438f7-f993-4a5b-855f-3bab37c52658)
+">
+</p>
+
+<p align="center">
+  <img width="500" height="1000" src="(https://github.com/minaunal/BookCafe/assets/130221407/fc8d1fd3-9c22-4851-b17a-648155eb92e5)
+">
+</p>
+
+<p align="center">
+  <img width="500" height="1000" src="(https://github.com/minaunal/BookCafe/assets/130221407/702b6928-0156-49b9-a29a-6564e7327375)
+">
+</p>
+
+
+<p align="center">
+  <img width="500" height="1000" src="(https://github.com/minaunal/BookCafe/assets/130221407/abd498dc-d2f2-4e0f-979d-7f7dc08ac238)
+
+">
+</p>
+
+
+<p align="center">
+  <img width="500" height="1000" src="(https://github.com/minaunal/BookCafe/assets/130221407/02ad52af-7558-4912-ab82-30997c6a5e9c)
+
+">
+</p>
+
