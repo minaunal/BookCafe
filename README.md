@@ -152,60 +152,85 @@ _-_ İletişimi geliştirmek için daha sık ve düzenli toplantılar düzenleme
 
 [Flutter Team 89 Trello Backlog Board](https://trello.com/invite/b/sVYY7j2L/ATTI3c6820c9fc6c75cea3b25a053d2ec7c34EB168FE/proje-tamamlama-sureci)
 
+![image](https://github.com/minaunal/BookCafe/assets/130221407/bd16fac5-4970-47a8-b350-9891220f0a71)
+
+
 ------------------------
 
 # Sprint 3
+
 - **Sprint içinde tamamlanması tahmin edilen puan:** 120 Puan
-- **Puan tamamlama mantığı:** Toplamda proje boyunca tamamlanması gereken 340 puanlık backlog bulunmaktadır. 3 sprint'e bölündüğünde ikinci sprint'in 120 ile devam etmesi gerektiğine karar verildi.
-- **Daily Scrum**: Daily Scrum toplantılarının Discord ve Whatsapp üzerinden yapılmasına karar verilmiştir. Daily Scrum toplantısı örneği word olarak Readme'de tarafımızdan paylaşılmaktadır:   [Sprint 2 Daily Scrum Chats] ->[Sprint2DailyScrum.docx](https://github.com/minaunal/BookCafe/files/11931252/Sprint2DailyScrum.docx)
+- **Puan tamamlama mantığı:** Toplamda proje boyunca tamamlanması gereken 340 puanlık backlog bulunmaktadır. 3 sprint'e bölündüğünde üçüncü sprint'in 120 ile bitirilmesi gerektiğine karar verildi.
+- **Daily Scrum**: Daily Scrum toplantılarının Discord ve Whatsapp üzerinden yapılmasına karar verilmiştir. Daily Scrum toplantısı örneği word olarak Readme'de tarafımızdan paylaşılmaktadır:   [Sprint 3 Daily Scrum Chats] ->[Sprint3DailyScrum.docx](https://github.com/minaunal/BookCafe/files/12065099/Sprint3DailyScrum.docx)
 - **Sprint board update:** Sprint board'ımız : [Trello Linki](https://trello.com/invite/b/sVYY7j2L/ATTI3c6820c9fc6c75cea3b25a053d2ec7c34EB168FE/proje-tamamlama-sureci)
-   ![image](https://github.com/minaunal/BookCafe/assets/130221407/f435aaff-8c52-4a6d-bcfb-e971d18dd5fc)
+
+![image](https://github.com/minaunal/BookCafe/assets/130221407/3ba1407c-d343-430d-941e-3334de780c28)
+
+  
 - **Ürün Durumu:** Ekran görüntüleri ekteki gibidir.
 - 
 <p align="center">
-  <img width="500" height="1000" src="(https://github.com/minaunal/BookCafe/assets/130221407/0263af42-2dd7-453f-9ba6-6bbc0a0c4cf0)">
-</p>
-![image](https://github.com/minaunal/BookCafe/assets/130221407/0263af42-2dd7-453f-9ba6-6bbc0a0c4cf0)
-
-<p align="center">
-  <img width="500" height="1000" src="(https://github.com/minaunal/BookCafe/assets/130221407/1d66085e-c822-470e-9beb-a5594d7197f4)">
-</p>
-
-<p align="center">
-  <img width="500" height="1000" src="(https://github.com/minaunal/BookCafe/assets/130221407/ed2168c5-a430-4fe6-907b-99441bbdb2c9)">
-</p>
-
-<p align="center">
-  <img width="500" height="1000" src="(https://github.com/minaunal/BookCafe/assets/130221407/560c7cb6-897b-4efb-b654-69ffbf24228b)
-">
-</p>
-
-<p align="center">
-  <img width="500" height="1000" src="(https://github.com/minaunal/BookCafe/assets/130221407/55e438f7-f993-4a5b-855f-3bab37c52658)
-">
-</p>
-
-<p align="center">
-  <img width="500" height="1000" src="(https://github.com/minaunal/BookCafe/assets/130221407/fc8d1fd3-9c22-4851-b17a-648155eb92e5)
-">
-</p>
-
-<p align="center">
-  <img width="500" height="1000" src="(https://github.com/minaunal/BookCafe/assets/130221407/702b6928-0156-49b9-a29a-6564e7327375)
-">
+  <img width="500" height="1000" src="https://github.com/minaunal/BookCafe/assets/130221407/f789434b-a9ff-48e4-a4e1-ec2dc512f694">
 </p>
 
 
 <p align="center">
-  <img width="500" height="1000" src="(https://github.com/minaunal/BookCafe/assets/130221407/abd498dc-d2f2-4e0f-979d-7f7dc08ac238)
+  <img width="500" height="1000" src="https://github.com/minaunal/BookCafe/assets/130221407/1d66085e-c822-470e-9beb-a5594d7197f4">
+</p>
 
-">
+<p align="center">
+  <img width="500" height="1000" src="https://github.com/minaunal/BookCafe/assets/130221407/ed2168c5-a430-4fe6-907b-99441bbdb2c9">
+</p>
+
+<p align="center">
+  <img width="500" height="1000" src="https://github.com/minaunal/BookCafe/assets/130221407/560c7cb6-897b-4efb-b654-69ffbf24228b">
+</p>
+
+<p align="center">
+  <img width="500" height="1000" src="https://github.com/minaunal/BookCafe/assets/130221407/55e438f7-f993-4a5b-855f-3bab37c52658">
+</p>
+
+<p align="center">
+  <img width="500" height="1000" src="https://github.com/minaunal/BookCafe/assets/130221407/fc8d1fd3-9c22-4851-b17a-648155eb92e5">
+</p>
+
+<p align="center">
+  <img width="500" height="1000" src="https://github.com/minaunal/BookCafe/assets/130221407/702b6928-0156-49b9-a29a-6564e7327375">
 </p>
 
 
 <p align="center">
-  <img width="500" height="1000" src="(https://github.com/minaunal/BookCafe/assets/130221407/02ad52af-7558-4912-ab82-30997c6a5e9c)
-
-">
+  <img width="500" height="1000" src="https://github.com/minaunal/BookCafe/assets/130221407/abd498dc-d2f2-4e0f-979d-7f7dc08ac238">
 </p>
 
+-Aşağıda oluşturulan QR kodlar ile uygulama üzerinde deneme yapılabilir.
+
+<p align="center">
+  <img width="1000" height="500" src="https://github.com/minaunal/BookCafe/assets/130221407/02ad52af-7558-4912-ab82-30997c6a5e9c">
+</p>
+
+<p align="center">
+  <img width="1000" height="500" src="https://github.com/minaunal/BookCafe/assets/130221407/db5fd993-8206-416f-b3f2-8323f069fa7a">
+</p>
+
+<p align="center">
+  <img width="1000" height="500" src="https://github.com/minaunal/BookCafe/assets/130221407/7cbb21e6-f0ff-4cb0-b6d2-75af79a26af3">
+</p>
+
+<p align="center">
+  <img width="1000" height="500" src="https://github.com/minaunal/BookCafe/assets/130221407/6dd3d043-8005-41a3-88b3-ebf023f39018">
+</p>
+
+<p align="center">
+  <img width="1000" height="500" src="https://github.com/minaunal/BookCafe/assets/130221407/5b2c9e0e-42c0-45cf-a3ae-f5f65ddab9d0">
+</p>
+
+- **Sprint Review:**
+  
+_-_ Bu sprint boyunca ekibimizle birlikte ürünün son teslimi için son düzeltmeleri yaptık ve sonuçlar oldukça olumlu oldu. Kullanıcıların kullandığı tüm özellikler eksiksiz bir şekilde tamamlandı ve test edildi.
+
+_-_ Önemli çalışmalar doğrultusunda gerekli düzeltmeler yapıldı ve son ürün kullanıcıya hazır hale getirildi.
+
+- **Sprint Retrospective:**
+  
+ _-_ İlk sprintten bugüne kadar ekibimiz başarılı bir şekilde çalışmıştır ve elde edilen sonuçlardan memnunuz.
