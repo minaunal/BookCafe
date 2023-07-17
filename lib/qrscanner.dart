@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
 import 'kullaniciekrani.dart';
+import 'kullanicigiris.dart';
 
 class QRScanner extends StatefulWidget {
   @override
@@ -19,7 +20,7 @@ class _QRScannerState extends State<QRScanner> {
 
     // Belge referansını al
     final DocumentReference docRef =
-    firestore.collection('Masalar').doc(qrtext);
+        firestore.collection('Masalar').doc(qrtext);
 
     try {
       // Belgeyi getir
@@ -28,7 +29,7 @@ class _QRScannerState extends State<QRScanner> {
       if (document.exists) {
         // "chairs" alanını güncelle
         final List<dynamic> chairs =
-        List.from(document.get('chairStatusList') as List<dynamic>);
+            List.from(document.get('chairStatusList') as List<dynamic>);
 
         // False olan bir sandalye bul
         int indexToUpdate = chairs.indexWhere((chair) => chair == false);
@@ -47,6 +48,7 @@ class _QRScannerState extends State<QRScanner> {
     }
   }
 
+  int temp = 0;
   Future<void> _scanQRCode() async {
     String scanResult = await FlutterBarcodeScanner.scanBarcode(
       '#ff6666',
@@ -72,8 +74,40 @@ class _QRScannerState extends State<QRScanner> {
               .doc('gelir')
               .update(({'tl': 35 + value.data()!['tl']}));
         });
+        takename().then((name) {
+          FirebaseFirestore.instance
+              .collection('Cuzdan')
+              .doc(name)
+              .get()
+              .then((value) {
+            setState(() {
+              temp = value.data()!['para'];
+              if ((temp - 35) >= 0) {
+                temp = temp - 35;
+                FirebaseFirestore.instance
+                    .collection('Cuzdan')
+                    .doc(name)
+                    .update({'para':temp});
+              }
+            });
+          });
+        });
       });
     }
+  }
+
+  Future<String> takename() async {
+    var name;
+    await FirebaseFirestore.instance
+        .collection("Kartlar")
+        .doc(girismail)
+        .get()
+        .then((value) {
+      setState(() {
+        name = value.data()!['isim'];
+      });
+    });
+    return name;
   }
 
   @override
@@ -111,7 +145,6 @@ class _QRScannerState extends State<QRScanner> {
                 fontWeight: FontWeight.bold,
               ),
             ),
-
           ],
         ),
       ),

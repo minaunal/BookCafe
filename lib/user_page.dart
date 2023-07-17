@@ -41,10 +41,9 @@ class _MainPageState extends State<MainPage> {
     getDocs();
   }
 
-
   Future getDocs() async {
     QuerySnapshot querySnapshot =
-    await FirebaseFirestore.instance.collection('Masalar').get();
+        await FirebaseFirestore.instance.collection('Masalar').get();
 
     for (int i = 0; i < querySnapshot.docs.length; i++) {
       var tempTable = querySnapshot.docs[i];
@@ -113,7 +112,6 @@ class _MainPageState extends State<MainPage> {
                     table: tables[i],
                     index: i + 1,
                   ),
-
               ],
             ),
           ),
@@ -209,7 +207,7 @@ class _TablePageState extends State<TablePage> {
         widget.table.window = tempTable['window'];
         widget.table.socket = tempTable['socket'];
         widget.table.chairStatusList =
-        List<bool>.from(tempTable['chairStatusList']);
+            List<bool>.from(tempTable['chairStatusList']);
       });
     }
   }
@@ -223,7 +221,7 @@ class _TablePageState extends State<TablePage> {
   void _toggleChairStatus(int chairIndex) async {
     setState(() {
       widget.table.chairStatusList[chairIndex] =
-      !widget.table.chairStatusList[chairIndex];
+          !widget.table.chairStatusList[chairIndex];
     });
 
     // Firestore veritabanını güncelle
@@ -245,7 +243,8 @@ class _TablePageState extends State<TablePage> {
   Future<String> takename() async {
     var name;
     await FirebaseFirestore.instance
-        .collection("Kartlar").doc(girismail)
+        .collection("Kartlar")
+        .doc(girismail)
         .get()
         .then((value) {
       setState(() {
@@ -254,6 +253,7 @@ class _TablePageState extends State<TablePage> {
     });
     return name;
   }
+
   int temp = 0;
   void showAlertDialog(int index) {
     takename().then((name) {
@@ -275,23 +275,21 @@ class _TablePageState extends State<TablePage> {
               actions: [
                 ElevatedButton(
                     style:
-                    ElevatedButton.styleFrom(backgroundColor: Colors.green),
+                        ElevatedButton.styleFrom(backgroundColor: Colors.green),
                     onPressed: () {
-                      print("tempilk $temp");
-                      temp = temp - 35;
-                      if (temp >= 0) {
+                      if (temp - 35 >= 0) {
+                        temp = temp - 35;
                         selectedTables[selectedTableCount] =
-                        "Masa ${widget.index}";
+                            "Masa ${widget.index}";
                         FirebaseFirestore.instance
                             .collection('Cuzdan')
                             .doc(name)
                             .update({'para': temp});
                         _toggleChairStatus(index);
                         selectedTableCount++;
-
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                          content: Text("temp$temp"),
+                          content: Text("insufficient money"),
                         ));
                       }
                       Navigator.pop(context);
@@ -299,7 +297,7 @@ class _TablePageState extends State<TablePage> {
                     child: const Text('Approve')),
                 ElevatedButton(
                     style:
-                    ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                        ElevatedButton.styleFrom(backgroundColor: Colors.red),
                     onPressed: () {
                       Navigator.pop(context);
                     },
@@ -360,10 +358,10 @@ class _TablePageState extends State<TablePage> {
   Widget build(BuildContext context) {
     List<Widget> chairIcons = List.generate(
       widget.table.chair.count,
-          (index) => GestureDetector(
+      (index) => GestureDetector(
         onTap: () {
           if (widget.table.chairStatusList[index] == false) {
-              showAlertDialog(index);
+            showAlertDialog(index);
           }
         },
         child: Icon(
@@ -371,7 +369,7 @@ class _TablePageState extends State<TablePage> {
               ? Icons.chair_alt
               : Icons.chair_alt,
           color:
-          widget.table.chairStatusList[index] ? Colors.red : Colors.green,
+              widget.table.chairStatusList[index] ? Colors.red : Colors.green,
           size: 50,
         ),
       ),

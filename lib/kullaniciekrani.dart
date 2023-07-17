@@ -32,7 +32,7 @@ Future<void> empty(String qrtext) async {
     if (document.exists) {
       // "chairs" alanını güncelle
       final List<dynamic> chairs =
-      List.from(document.get('chairStatusList') as List<dynamic>);
+          List.from(document.get('chairStatusList') as List<dynamic>);
 
       // False olan bir sandalye bul
       int indexToUpdate = chairs.indexWhere((chair) => chair == true);
@@ -102,7 +102,7 @@ class _KullaniciState extends State<Kullanici> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         unselectedLabelStyle:
-        const TextStyle(color: Colors.white, fontSize: 14),
+            const TextStyle(color: Colors.white, fontSize: 14),
         backgroundColor: const Color(0xFF084A76),
         fixedColor: Colors.black,
         unselectedItemColor: Colors.black,
@@ -175,10 +175,8 @@ class _masaState extends State<masa> {
             Expanded(
               child: UserPage(),
             ),
-
             Divider(thickness: 2),
             ElevatedButton(
-
               onPressed: () {
                 showDialog(
                   context: context,
@@ -199,7 +197,8 @@ class _masaState extends State<masa> {
                                   context: context,
                                   builder: (BuildContext context) {
                                     return AlertDialog(
-                                      title: Text("Are you sure you want to empty the table?"),
+                                      title: Text(
+                                          "Are you sure you want to empty the table?"),
                                       actions: [
                                         ElevatedButton(
                                           onPressed: () {
@@ -209,7 +208,6 @@ class _masaState extends State<masa> {
                                             empty(tableName);
                                             Navigator.pop(context);
                                             Navigator.pop(context);
-
                                           },
                                           child: Text("Yes"),
                                         ),
@@ -244,23 +242,23 @@ class _masaState extends State<masa> {
                 backgroundColor: Colors.lightBlueAccent,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(32.0),
-                ),// Arkaplan rengini burada belirleyebilirsiniz
+                ), // Arkaplan rengini burada belirleyebilirsiniz
               ),
               child: const Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Icon(
-                      Icons.delete,
+                    Icons.delete,
                   ),
                   SizedBox(width: 5),
                   Text("Empty table"),
                 ],
               ),
             ),
-
             ElevatedButton.icon(
               onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => QRScanner()));
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) => QRScanner()));
               },
               icon: Icon(
                 Icons.camera_alt,
@@ -277,7 +275,8 @@ class _masaState extends State<masa> {
             ),
             ElevatedButton.icon(
               onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => QRScanner()));
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) => yorumSor()));
               },
               icon: Icon(
                 Icons.comment,
@@ -302,31 +301,35 @@ class _masaState extends State<masa> {
     TextEditingController yorum = TextEditingController();
     List<bool> starColors = List.generate(5, (index) => false);
 
-    return Column(
-      children: [
-        TextField(
-          controller: yorum,
-        ),
-        RatingBar.builder(
-          minRating: 1,
-          itemSize: 46,
-          itemPadding: EdgeInsets.symmetric(horizontal: 4),
-          itemBuilder: (context, index) => Icon(
-            Icons.star,
-            color: starColors[index] ? Colors.amber : Colors.grey,
+    return Scaffold(
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          TextField(
+            controller: yorum,
           ),
-          updateOnDrag: true,
-          onRatingUpdate: (rating) {
-            setState(() {
-              starColors = List.generate(5, (index) => index < rating.round());
-              FirebaseFirestore.instance
-                  .collection('Yildizlar')
-                  .doc(widget.docname)
-                  .set({'yildizlar': starColors, 'yorum': yorum.text});
-            });
-          },
-        ),
-      ],
+          RatingBar.builder(
+            minRating: 1,
+            itemSize: 46,
+            itemPadding: EdgeInsets.symmetric(horizontal: 4),
+            itemBuilder: (context, index) => Icon(
+              Icons.star,
+              color: starColors[index] ? Colors.amber : Colors.grey,
+            ),
+            updateOnDrag: true,
+            onRatingUpdate: (rating) {
+              setState(() {
+                starColors =
+                    List.generate(5, (index) => index < rating.round());
+                FirebaseFirestore.instance
+                    .collection('Yildizlar')
+                    .doc(widget.docname)
+                    .set({'yildizlar': starColors, 'yorum': yorum.text});
+              });
+            },
+          ),
+        ],
+      ),
     );
   }
 }
@@ -378,7 +381,7 @@ class _cuzdanState extends State<cuzdan> {
               splashRadius: 50,
               iconSize: 80,
               icon:
-              Lottie.asset(Icons8.book, height: 80, fit: BoxFit.fitHeight),
+                  Lottie.asset(Icons8.book, height: 80, fit: BoxFit.fitHeight),
               onPressed: null,
             ),
             Divider(
@@ -672,10 +675,10 @@ class hesap extends StatefulWidget {
 }
 
 class _hesapState extends State<hesap> {
-  checkDocumentExists() async {
+  Future<bool> checkDocumentExists() async {
     var collection = FirebaseFirestore.instance.collection('Kartlar');
     var documentSnapshot = await collection.doc(girismail).get();
-
+    bool n = false;
     if (documentSnapshot.exists) {
       final snackBar = SnackBar(
         content: Container(
@@ -693,8 +696,9 @@ class _hesapState extends State<hesap> {
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     } else {
-      return "valid";
+      n = true;
     }
+    return n;
   }
 
   @override
@@ -746,13 +750,14 @@ class _hesapState extends State<hesap> {
             children: <Widget>[
               GestureDetector(
                 onTap: () {
-                  if (checkDocumentExists() == "valid") {
-                    checkDocumentExists();
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => CreditCardPage(
-                          email: widget.email,
-                        )));
-                  }
+                  checkDocumentExists().then((value) {
+                    if (value == true) {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => CreditCardPage(
+                                email: widget.email,
+                              )));
+                    }
+                  });
                 },
                 child: Icon(
                   Icons.credit_card,
