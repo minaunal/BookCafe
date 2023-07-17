@@ -11,7 +11,7 @@ class QRScanner extends StatefulWidget {
 }
 
 class _QRScannerState extends State<QRScanner> {
-  String _scanResult = 'The QR code has not been scanned yet.' ;
+  String _scanResult = 'Not scanned any QR code yet';
 
   Future<void> uploadToFirebase(String qrtext) async {
     // Firebase Firestore bağlantısını al
@@ -19,7 +19,7 @@ class _QRScannerState extends State<QRScanner> {
 
     // Belge referansını al
     final DocumentReference docRef =
-        firestore.collection('Masalar').doc(qrtext);
+    firestore.collection('Masalar').doc(qrtext);
 
     try {
       // Belgeyi getir
@@ -28,7 +28,7 @@ class _QRScannerState extends State<QRScanner> {
       if (document.exists) {
         // "chairs" alanını güncelle
         final List<dynamic> chairs =
-            List.from(document.get('chairStatusList') as List<dynamic>);
+        List.from(document.get('chairStatusList') as List<dynamic>);
 
         // False olan bir sandalye bul
         int indexToUpdate = chairs.indexWhere((chair) => chair == false);
@@ -54,24 +54,24 @@ class _QRScannerState extends State<QRScanner> {
       true,
       ScanMode.QR,
     );
-
     if (scanResult != "-1") {
       setState(() {
         _scanResult = scanResult;
         selectedTables[selectedTableCount] = _scanResult;
         selectedTableCount++;
+        _scanResult = scanResult;
         uploadToFirebase(_scanResult);
         updateQR(_scanResult);
         FirebaseFirestore.instance
-                            .collection('Gelir')
-                            .doc('gelir')
-                            .get()
-                            .then((value) {
-                          FirebaseFirestore.instance
-                              .collection('Gelir')
-                              .doc('gelir')
-                              .update(({'tl': 35 + value.data()!['tl']}));
-                        });
+            .collection('Gelir')
+            .doc('gelir')
+            .get()
+            .then((value) {
+          FirebaseFirestore.instance
+              .collection('Gelir')
+              .doc('gelir')
+              .update(({'tl': 35 + value.data()!['tl']}));
+        });
       });
     }
   }
@@ -80,6 +80,8 @@ class _QRScannerState extends State<QRScanner> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.black,
         title: Text('QR Scanner'),
       ),
       body: Center(
@@ -88,13 +90,28 @@ class _QRScannerState extends State<QRScanner> {
           children: [
             Text(
               _scanResult,
-              style: TextStyle(fontSize: 16),
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _scanQRCode,
-              child: Text('Scan QR Code '),
+            GestureDetector(
+              onTap: () {
+                _scanQRCode();
+              },
+              child: Icon(
+                Icons.camera_alt_rounded,
+                color: Colors.black,
+                size: 32,
+              ),
             ),
+            SizedBox(width: 8),
+            Text(
+              'Scan a QR',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+
           ],
         ),
       ),

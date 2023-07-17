@@ -175,7 +175,10 @@ class _masaState extends State<masa> {
             Expanded(
               child: UserPage(),
             ),
+
+            Divider(thickness: 2),
             ElevatedButton(
+
               onPressed: () {
                 showDialog(
                   context: context,
@@ -204,9 +207,9 @@ class _masaState extends State<masa> {
                                               selectedTables.remove(tableIndex);
                                             });
                                             empty(tableName);
-                                            setState(() {});
                                             Navigator.pop(context);
                                             Navigator.pop(context);
+
                                           },
                                           child: Text("Yes"),
                                         ),
@@ -237,28 +240,57 @@ class _masaState extends State<masa> {
                   },
                 );
               },
-              child: Row(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.lightBlueAccent,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(32.0),
+                ),// Arkaplan rengini burada belirleyebilirsiniz
+              ),
+              child: const Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(Icons.delete),
+                  Icon(
+                      Icons.delete,
+                  ),
                   SizedBox(width: 5),
-                  Text("Empty Table"),
+                  Text("Empty table"),
                 ],
               ),
             ),
-            ElevatedButton(
+
+            ElevatedButton.icon(
+              onPressed: () {
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => QRScanner()));
+              },
+              icon: Icon(
+                Icons.camera_alt,
+                color: Colors.white,
+              ),
+              label: Text('Get a table'),
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.black,
+                backgroundColor: Colors.deepOrange,
                 foregroundColor: Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(32.0),
                 ),
               ),
+            ),
+            ElevatedButton.icon(
               onPressed: () {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context) => QRScanner()));
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => QRScanner()));
               },
-              child: Text("Get a Table"),
+              icon: Icon(
+                Icons.comment,
+                color: Colors.white,
+              ),
+              label: Text('Comment'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.green,
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(32.0),
+                ),
+              ),
             ),
           ],
         ),
