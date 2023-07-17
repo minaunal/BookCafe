@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fbase/kullanicigiris.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
 
@@ -11,6 +12,7 @@ class CreditCardPage extends StatefulWidget {
 }
 
 class _CreditCardPageState extends State<CreditCardPage> {
+
   String cardNumber = '';
   String expiryDate = '';
   String cardHolderName = '';
@@ -19,6 +21,7 @@ class _CreditCardPageState extends State<CreditCardPage> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -90,12 +93,12 @@ class _CreditCardPageState extends State<CreditCardPage> {
                 if (formKey.currentState!.validate()) {
                   FirebaseFirestore.instance
                       .collection('Kartlar')
-                      .doc(widget.email)
+                      .doc(girismail)
                       .set({
                     'isim': cardHolderName,
                     'kartno': cardNumber,
                     'limit': 400,
-                    'email': widget.email,
+                    'email': girismail,
                   });
                   final snackBar = SnackBar(
                     content: Container(
@@ -106,9 +109,20 @@ class _CreditCardPageState extends State<CreditCardPage> {
                           'Your card is successfully saved',
                           style: TextStyle(
                             fontSize: 18,
+                            
                           ),
                         ),
+                        
                       ),
+                      
+                    ),
+                     action: SnackBarAction(
+                      label: 'Log in again',
+                      onPressed: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => KullaniciGiris(),
+                        ));
+                      },
                     ),
                   );
                   ScaffoldMessenger.of(context).showSnackBar(snackBar);

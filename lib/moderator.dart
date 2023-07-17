@@ -1,7 +1,6 @@
 import 'package:fbase/table.dart';
 import 'package:fbase/table_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:fbase/yoneticigiris.dart';
 import 'package:flutter/material.dart';
 
 class Moderator extends StatelessWidget {
@@ -194,12 +193,12 @@ class _MainPageState extends State<MainPage> {
                   context: context,
                   builder: (BuildContext context) {
                     return AlertDialog(
-                      title: const Text('Kaç masa olacak?'),
+                      title: const Text('"How many tables will there be?" '),
                       content: TextFormField(
                         controller: numberController,
                         keyboardType: TextInputType.number,
                         decoration: const InputDecoration(
-                          hintText: 'Masa sayısı',
+                          hintText: 'Table count',
                         ),
                       ),
                       actions: [
@@ -212,7 +211,7 @@ class _MainPageState extends State<MainPage> {
                             });
                             Navigator.of(context).pop();
                           },
-                          child: const Text('Tamam'),
+                          child: const Text('Okey'),
                         ),
                         TextButton(
                           onPressed: () {
@@ -227,7 +226,7 @@ class _MainPageState extends State<MainPage> {
               },
             ),
             const SizedBox(width: 10),
-            Text('Masa Sayısı: $number  ',
+            Text('Table Count: $number  ',
                 style: const TextStyle(fontSize: 20)),
           ],
         ),

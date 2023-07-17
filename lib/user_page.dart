@@ -1,9 +1,11 @@
+import 'package:fbase/kullaniciekrani.dart';
 import 'package:fbase/table.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-String masaAdi = "";
 
+import 'kullanicigiris.dart';
 
+Map<int, String> selectedTables = {};
 
 class UserPage extends StatelessWidget {
   const UserPage({super.key});
@@ -14,7 +16,7 @@ class UserPage extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.purple,
       ),
-      home:  const MainPage(),
+      home: const MainPage(),
     );
   }
 }
@@ -33,34 +35,30 @@ class _MainPageState extends State<MainPage> {
 
   var chairStatusList = [];
 
-
   @override
   void initState() {
     super.initState();
     getDocs();
-
   }
 
-
-
   Future getDocs() async {
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('Masalar').get();
-
+    QuerySnapshot querySnapshot =
+        await FirebaseFirestore.instance.collection('Masalar').get();
 
     for (int i = 0; i < querySnapshot.docs.length; i++) {
       var tempTable = querySnapshot.docs[i];
       bool window = tempTable['window'];
       bool socket = tempTable['socket'];
       List<bool> chairStatusList = tempTable['chairStatusList'].cast<bool>();
-      _makeTableFromDataBase(socket,window,chairStatusList);
+      _makeTableFromDataBase(socket, window, chairStatusList);
     }
     setState(() {
       number = querySnapshot.docs.length;
     });
   }
 
-
-  void _makeTableFromDataBase(bool socket, bool window, List<bool> chairStatusList){
+  void _makeTableFromDataBase(
+      bool socket, bool window, List<bool> chairStatusList) {
     CafeTable tempTable = CafeTable();
     tempTable.socket = socket;
     tempTable.window = window;
@@ -69,30 +67,26 @@ class _MainPageState extends State<MainPage> {
     tables.add(tempTable);
   }
 
-
-
   void createTableDocument(int tableIndex) async {
-
     final tableData = {
-      'chairStatusList': [false,false,false,false],
+      'chairStatusList': [false, false, false, false],
       'socket': false,
       'window': false,
     };
 
-    await FirebaseFirestore.instance.collection('Masalar').doc('Masa $tableIndex').set(tableData);
+    await FirebaseFirestore.instance
+        .collection('Masalar')
+        .doc('Masa $tableIndex')
+        .set(tableData);
   }
 
   void deleteTableDocument(int tableIndex) async {
-    final tableReference = FirebaseFirestore.instance.collection('Masalar').doc('Masa $tableIndex');
+    final tableReference = FirebaseFirestore.instance
+        .collection('Masalar')
+        .doc('Masa $tableIndex');
 
     await tableReference.delete();
   }
-
-
-
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -102,7 +96,8 @@ class _MainPageState extends State<MainPage> {
         title: Row(
           children: [
             const SizedBox(width: 10),
-            Text('Number of Tables: $number  ', style: const TextStyle(fontSize: 20)),
+            Text('Number of Tables: $number  ',
+                style: const TextStyle(fontSize: 20)),
           ],
         ),
       ),
@@ -131,7 +126,6 @@ class CardView extends StatelessWidget {
     super.key,
     required this.table,
     required this.index,
-
   });
 
   final CafeTable table;
@@ -147,13 +141,11 @@ class CardView extends StatelessWidget {
             builder: (context) => TablePage(
               table: table,
               index: index,
-
             ),
           ),
         );
       },
       child: Container(
-
         alignment: Alignment.center,
         color: Colors.white,
         margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
@@ -175,12 +167,9 @@ class CardView extends StatelessWidget {
           ],
         ),
       ),
-
-
     );
   }
 }
-
 
 class TablePage extends StatefulWidget {
   const TablePage({
@@ -218,30 +207,8 @@ class _TablePageState extends State<TablePage> {
         widget.table.window = tempTable['window'];
         widget.table.socket = tempTable['socket'];
         widget.table.chairStatusList =
-        List<bool>.from(tempTable['chairStatusList']);
+            List<bool>.from(tempTable['chairStatusList']);
       });
-    }
-  }
-
-
-  void getTableFullValue() async {
-    bool fullValue;
-    DocumentSnapshot docSnapshot = await FirebaseFirestore.instance
-        .collection('Masalar')
-        .doc('Masa ${widget.index}')
-        .get();
-    if (docSnapshot.exists) {
-      Map<String, dynamic> data = docSnapshot.data() as Map<String, dynamic>;
-      fullValue = data['full'] ?? false;
-      setState(() {
-        widget.table.full = fullValue;
-        for (int i = 0; i < widget.table.chairStatusList.length; i++) {
-          widget.table.chairStatusList[i] = fullValue;
-        }
-        updateChairStatusList(widget.index, widget.table.chairStatusList);
-      });
-    } else {
-      print('Document does not exist.');
     }
   }
 
@@ -251,12 +218,10 @@ class _TablePageState extends State<TablePage> {
     super.dispose();
   }
 
-
-
   void _toggleChairStatus(int chairIndex) async {
     setState(() {
       widget.table.chairStatusList[chairIndex] =
-      !widget.table.chairStatusList[chairIndex];
+          !widget.table.chairStatusList[chairIndex];
     });
 
     // Firestore veritabanını güncelle
@@ -279,11 +244,11 @@ class _TablePageState extends State<TablePage> {
     var name;
     await FirebaseFirestore.instance
         .collection("Kartlar")
+        .doc(girismail)
         .get()
-        .then((QuerySnapshot querySnapshot) {
+        .then((value) {
       setState(() {
-        var email = querySnapshot.docs[0];
-        name = email['isim'];
+        name = value.data()!['isim'];
       });
     });
     return name;
@@ -310,31 +275,29 @@ class _TablePageState extends State<TablePage> {
               actions: [
                 ElevatedButton(
                     style:
-                    ElevatedButton.styleFrom(backgroundColor: Colors.green),
+                        ElevatedButton.styleFrom(backgroundColor: Colors.green),
                     onPressed: () {
-                      masaAdi ="Masa ${widget.index}";
-                      temp = temp - 35;
-                      if (temp>=0) {
+                      if (temp - 35 >= 0) {
+                        temp = temp - 35;
+                        selectedTables[selectedTableCount] =
+                            "Masa ${widget.index}";
                         FirebaseFirestore.instance
                             .collection('Cuzdan')
                             .doc(name)
                             .update({'para': temp});
                         _toggleChairStatus(index);
-                      }
-                      else{
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text('Para yeterli değil.'),
+                        selectedTableCount++;
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text("insufficient money"),
                         ));
                       }
                       Navigator.pop(context);
-
-                    }
-                    ,
+                    },
                     child: const Text('Approve')),
                 ElevatedButton(
                     style:
-                    ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                        ElevatedButton.styleFrom(backgroundColor: Colors.red),
                     onPressed: () {
                       Navigator.pop(context);
                     },
@@ -346,7 +309,6 @@ class _TablePageState extends State<TablePage> {
           });
     });
   }
-
 
   void updateSocketValue(int tableIndex, bool socketValue) async {
     final tableReference = FirebaseFirestore.instance
@@ -396,17 +358,18 @@ class _TablePageState extends State<TablePage> {
   Widget build(BuildContext context) {
     List<Widget> chairIcons = List.generate(
       widget.table.chair.count,
-          (index) => GestureDetector(
+      (index) => GestureDetector(
         onTap: () {
-          if (widget.table.chairStatusList[index] == false){
-          showAlertDialog(index);}
-
+          if (widget.table.chairStatusList[index] == false) {
+            showAlertDialog(index);
+          }
         },
         child: Icon(
           widget.table.chairStatusList[index]
               ? Icons.chair_alt
               : Icons.chair_alt,
-          color: widget.table.chairStatusList[index] ? Colors.red : Colors.green,
+          color:
+              widget.table.chairStatusList[index] ? Colors.red : Colors.green,
           size: 50,
         ),
       ),
@@ -416,8 +379,7 @@ class _TablePageState extends State<TablePage> {
       appBar: AppBar(
         backgroundColor: Colors.black,
         centerTitle: true,
-        title: Text("Masa ${widget.index}"),
-
+        title: Text("Table ${widget.index}"),
       ),
       body: Center(
         child: Padding(
@@ -430,7 +392,7 @@ class _TablePageState extends State<TablePage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Text(
-                    "Priz: ",
+                    "Socket: ",
                     style: TextStyle(fontSize: 15),
                   ),
                   const SizedBox(width: 5),
@@ -440,13 +402,12 @@ class _TablePageState extends State<TablePage> {
                   ),
                 ],
               ),
-
               const SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Text(
-                    "Pencere kenarı: ",
+                    "Window: ",
                     style: TextStyle(fontSize: 15),
                   ),
                   const SizedBox(width: 10),
@@ -461,7 +422,7 @@ class _TablePageState extends State<TablePage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Text(
-                    "Koltuk Sayısı: ",
+                    "Chairs: ",
                     style: TextStyle(fontSize: 15),
                   ),
                   const SizedBox(width: 10),
@@ -471,7 +432,6 @@ class _TablePageState extends State<TablePage> {
                   ),
                 ],
               ),
-
               const SizedBox(height: 20),
               Expanded(
                 child: ListView.builder(
