@@ -164,7 +164,7 @@ class _MainPageState extends State<MainPage> {
     return Scaffold(
       appBar:  
            AppBar(
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.deepPurpleAccent,
         title: Row(
           children: [
             IconButton(
@@ -193,7 +193,7 @@ class _MainPageState extends State<MainPage> {
                   context: context,
                   builder: (BuildContext context) {
                     return AlertDialog(
-                      title: const Text('"How many tables will there be?" '),
+                      title: const Text('How many tables will there be? '),
                       content: TextFormField(
                         controller: numberController,
                         keyboardType: TextInputType.number,

@@ -164,7 +164,11 @@ class masa extends StatefulWidget {
 class _masaState extends State<masa> {
   TextEditingController yorum = TextEditingController();
   List<bool> starColors = List.filled(5, false);
+
+
+
   func() {}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -172,10 +176,10 @@ class _masaState extends State<masa> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Expanded(
+            const Expanded(
               child: UserPage(),
             ),
-            Divider(thickness: 2),
+            const Divider(thickness: 2),
             ElevatedButton(
               onPressed: () {
                 showDialog(
@@ -197,8 +201,8 @@ class _masaState extends State<masa> {
                                   context: context,
                                   builder: (BuildContext context) {
                                     return AlertDialog(
-                                      title: Text(
-                                          "Are you sure you want to empty the table?"),
+                                      title:
+                                      Text("Are you sure you want to empty the table?"),
                                       actions: [
                                         ElevatedButton(
                                           onPressed: () {
@@ -242,7 +246,7 @@ class _masaState extends State<masa> {
                 backgroundColor: Colors.lightBlueAccent,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(32.0),
-                ), // Arkaplan rengini burada belirleyebilirsiniz
+                ),
               ),
               child: const Row(
                 mainAxisSize: MainAxisSize.min,
@@ -257,8 +261,7 @@ class _masaState extends State<masa> {
             ),
             ElevatedButton.icon(
               onPressed: () {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context) => QRScanner()));
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => QRScanner()));
               },
               icon: Icon(
                 Icons.camera_alt,
@@ -275,8 +278,7 @@ class _masaState extends State<masa> {
             ),
             ElevatedButton.icon(
               onPressed: () {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context) => yorumSor()));
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => yorumSor()));
               },
               icon: Icon(
                 Icons.comment,
@@ -291,6 +293,7 @@ class _masaState extends State<masa> {
                 ),
               ),
             ),
+
           ],
         ),
       ),
@@ -319,8 +322,7 @@ class _masaState extends State<masa> {
             updateOnDrag: true,
             onRatingUpdate: (rating) {
               setState(() {
-                starColors =
-                    List.generate(5, (index) => index < rating.round());
+                starColors = List.generate(5, (index) => index < rating.round());
                 FirebaseFirestore.instance
                     .collection('Yildizlar')
                     .doc(widget.docname)

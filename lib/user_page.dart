@@ -32,7 +32,9 @@ class _MainPageState extends State<MainPage> {
   List<CafeTable> tables = [];
   int number = 0;
   TextEditingController numberController = TextEditingController();
-
+  bool filterBySocket = false;
+  bool filterByWindow = false;
+  bool filterByAvailable = false;
   var chairStatusList = [];
 
   @override
@@ -41,21 +43,28 @@ class _MainPageState extends State<MainPage> {
     getDocs();
   }
 
-  Future getDocs() async {
+  Future<void> getDocs() async {
     QuerySnapshot querySnapshot =
-        await FirebaseFirestore.instance.collection('Masalar').get();
+    await FirebaseFirestore.instance.collection('Masalar').get();
 
-    for (int i = 0; i < querySnapshot.docs.length; i++) {
-      var tempTable = querySnapshot.docs[i];
-      bool window = tempTable['window'];
-      bool socket = tempTable['socket'];
-      List<bool> chairStatusList = tempTable['chairStatusList'].cast<bool>();
+    for (int i =1; i <= querySnapshot.docs.length; i++) {
+      DocumentSnapshot snapshot = await FirebaseFirestore.instance
+          .collection('Masalar')
+          .doc("Masa $i")
+          .get();
+      bool window = snapshot['window'];
+      bool socket = snapshot['socket'];
+      List<bool> chairStatusList = snapshot['chairStatusList'].cast<bool>();
       _makeTableFromDataBase(socket, window, chairStatusList);
     }
+
     setState(() {
       number = querySnapshot.docs.length;
     });
   }
+
+
+
 
   void _makeTableFromDataBase(
       bool socket, bool window, List<bool> chairStatusList) {
@@ -65,40 +74,27 @@ class _MainPageState extends State<MainPage> {
     tempTable.chairStatusList = chairStatusList;
     tempTable.chair.count = chairStatusList.length;
     tables.add(tempTable);
+
   }
 
-  void createTableDocument(int tableIndex) async {
-    final tableData = {
-      'chairStatusList': [false, false, false, false],
-      'socket': false,
-      'window': false,
-    };
 
-    await FirebaseFirestore.instance
+
+  Stream<QuerySnapshot> getFilteredDocuments(String filter) {
+    return FirebaseFirestore.instance
         .collection('Masalar')
-        .doc('Masa $tableIndex')
-        .set(tableData);
+        .where(filter, isEqualTo: true)
+        .snapshots();
   }
 
-  void deleteTableDocument(int tableIndex) async {
-    final tableReference = FirebaseFirestore.instance
-        .collection('Masalar')
-        .doc('Masa $tableIndex');
-
-    await tableReference.delete();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.black,
-        title: Row(
-          children: [
-            const SizedBox(width: 10),
-            Text('Number of Tables: $number  ',
-                style: const TextStyle(fontSize: 20)),
-          ],
+        backgroundColor: Colors.deepPurple,
+        title: Text(
+          'Number of Tables: $number',
+          style: const TextStyle(fontSize: 20),
         ),
       ),
       body: ListView(
@@ -107,11 +103,79 @@ class _MainPageState extends State<MainPage> {
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
             child: Wrap(
               children: [
-                for (int i = 0; i < tables.length; i++)
-                  CardView(
-                    table: tables[i],
-                    index: i + 1,
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          filterBySocket = !filterBySocket;
+                        });
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: filterBySocket ? Colors.green : Colors.grey,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(32.0),
+                        ),
+                      ),
+                      child: const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+                        child: Text("Socket"),
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          filterByWindow = !filterByWindow;
+                        });
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: filterByWindow ? Colors.green : Colors.grey,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(32.0),
+                        ),
+                      ),
+                      child: const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+                        child: Text("Window"),
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          filterByAvailable = !filterByAvailable;
+                        });
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: filterByAvailable ? Colors.green : Colors.grey,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(32.0),
+                        ),
+                      ),
+                      child: const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+                        child: Text("Available"),
+                      ),
+                    ),
+
+                  ],
+                ),
+                Wrap(
+                  children: tables
+                      .where((table) =>
+                  (!filterBySocket || table.socket == filterBySocket) &&
+                      (!filterByWindow || table.window == filterByWindow) &&
+                      (!filterByAvailable || table.chairStatusList.contains(false) == filterByAvailable)
+                  )
+                      .map((table) => CardView(
+                    table: table,
+                    index: tables.indexOf(table) + 1,
+                  ))
+                      .toList(),
+                ),
+
+
+
               ],
             ),
           ),
@@ -131,6 +195,7 @@ class CardView extends StatelessWidget {
   final CafeTable table;
   final int index;
 
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -147,7 +212,6 @@ class CardView extends StatelessWidget {
       },
       child: Container(
         alignment: Alignment.center,
-        color: Colors.white,
         margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
         height: 100,
         width: 100,
