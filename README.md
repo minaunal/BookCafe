@@ -26,16 +26,20 @@ BookSmart, akıllı bir masa rezervasyon uygulamasıdır ve mekanda bulunan masa
 
 Ancak, BookSmart sadece masa rezervasyonuyla sınırlı kalmadı. Proje ekibi, öğrencilerin diğer ihtiyaçlarını da göz önünde bulundurarak sistemlerini genişletti. Bir kafe ve kütüphane gibi düşünülen alan, öğrencilere rahat bir çalışma ortamı sunuyordu. Uygulama üzerinden kafeteryadan sipariş verebilme, ödemeleri yapabilme ve siparişlerin hazır olduğunda bildirim alarak alıp çalışmaya devam etme gibi hizmetler sunuluyordu.
 
+BookSmart ayrıca öğrencilerin motivasyonunu artırmak ve işbirliğini teşvik etmek için bir ödül sistemi içeriyordu. Öğrenciler, tamamladıkları görevlere bağlı olarak sanal puanlar kazanıyorlardı. Bu puanlar, öğrencilerin sosyal sorumluluk projelerine katkıda bulunmalarını teşvik etmek için kullanılıyordu.
+
 BookSmart'ın hedefi, tüm üniversite kampüslerinde kullanılan ve öğrencilere çalışma ortamlarında konfor sağlayan bir çözüm haline gelmekti. Projeyi yürüten ekip, öğrencilerin derslerine daha iyi odaklanmalarını, daha verimli çalışmalarını ve birbirleriyle etkileşimde bulunarak büyüyen bir topluluk olmalarını amaçlıyordu.
 
 Sonuç olarak, BookSmart projesi öğrencilerin ders çalışma ortamlarını iyileştirmek için atılan önemli bir adımdı. Öğrencilerin hayatında büyük bir etki yaratmayı başaran bu girişim, verimli çalışma ve öğrenci işbirliği konularında yeni bir dönem başlatmayı hedefliyordu.
 
 - **Uygulama Birincil Fonksiyonu :** BookSmart, ders çalışma süreçlerini daha verimli hale getirmek için geliştirilen bir projedir. Akıllı masa rezervasyonu uygulaması, öğrencilere uygun çalışma masalarını rezerve etme imkanı sunar.
-- **Uygulama İkincil Fonksiyonu :**  Ayrıca, bir kafe ve kütüphane gibi çalışma alanlarıyla da hizmet verir. Öğrenciler, uygulama üzerinden kafeterya siparişleri verebilir ve ödeme yapabilirler. 
+- **Uygulama İkincil Fonksiyonu :**  Ayrıca, bir kafe ve kütüphane gibi çalışma alanlarıyla da hizmet verir. Öğrenciler, uygulama üzerinden kafeterya siparişleri verebilir ve ödeme yapabilirler. Proje aynı zamanda öğrencilere sanal puanlar kazandırarak sosyal sorumluluk projelerine katılımlarını teşvik eder.
 ## Ürün Özellikleri
-- **_Akıllı Masa Rezervasyonu_**: BookSmart, öğrencilere ders çalışma masalarını akıllı bir rezervasyon sistemi aracılığıyla ayırtma imkanı sağlar. 
-- **_Masaların Durumunu Gösterme_**: BookSmart'ın akıllı paneli, mekandaki masaların doluluk durumunu gerçek zamanlı olarak gösterir. Öğrenciler, boş masaları hızlıca bulabilir ve dolu masaları önemli bir zaman kaybı yaşamadan tespit edebilirler. 
-- **_Kafe ve Kütüphane Hizmetleri_**: BookSmart, bir kafe ve kütüphane gibi çalışma alanlarını da içerir. Öğrenciler, kafeteryadan uygulama üzerinden sipariş verebilir, ödemelerini yapabilir ve siparişlerin hazır olduğunda bildirim alarak alıp çalışmaya devam edebilirler.
+- **_Akıllı Masa Rezervasyonu_**: BookSmart, öğrencilere ders çalışma masalarını akıllı bir rezervasyon sistemi aracılığıyla ayırtma imkanı sağlar. Öğrenciler, uygulama üzerinden istedikleri saatleri seçerek boş masaları rezerve edebilirler.
+- **_Filtreleme Özelliği_**: Priz, pencere ve masanın uygunluk durumuna göre filtreler.
+- **_Masaların Durumunu Gösterme_**: BookSmart'ın akıllı paneli, mekandaki masaların doluluk durumunu gerçek zamanlı olarak gösterir. Öğrenciler, boş masaları hızlıca bulabilir ve dolu masaları önemli bir zaman kaybı yaşamadan tespit edebilirler.
+- **_Özelleştirilebilir Seçenekler_**: Uygulama, masa rezervasyonu sırasında öğrencilere farklı seçenekler sunar. Öğrenciler, masanın prize sahip olup olmadığını, cam kenarında olup olmadığını veya sessiz bir bölgede bulunup bulunmadığını gibi tercihlerine göre filtreleme yapabilirler.
+- **_Kafe ve Kütüphane Hizmetleri_**: BookSmart, bir kafe ve kütüphane gibi çalışma alanlarını da içerir. Öğrenciler, kafeteryadan uygulama üzerinden sipariş verebilir, ödemelerini yapabilir ve siparişlerin hazır olduğunda bildirim alarak alıp çalışmaya devam edebilirler
 - **_Kullanıcı Dostu Arayüz_**: BookSmart'ın kullanıcı dostu arayüzü, öğrencilerin kolayca uygulamayı kullanmalarını sağlar. Hızlı ve sezgisel bir şekilde masaları arama, rezervasyon yapma ve diğer hizmetleri kullanma imkanı sunar.
 ## Hedef Kitle
 - Üniversite öğrencileri
@@ -194,9 +198,12 @@ _-_ İletişimi geliştirmek için daha sık ve düzenli toplantılar düzenleme
   <img width="500" height="1000" src="https://github.com/minaunal/BookCafe/assets/130221407/702b6928-0156-49b9-a29a-6564e7327375">
 </p>
 
-
 <p align="center">
   <img width="500" height="1000" src="https://github.com/minaunal/BookCafe/assets/130221407/abd498dc-d2f2-4e0f-979d-7f7dc08ac238">
+</p>
+
+<p align="center">
+  <img width="500" height="1000" src="https://github.com/minaunal/BookCafe/assets/130221407/ff966495-882c-44e6-b8c5-c5a3f6d44ac5">
 </p>
 
 -Aşağıda oluşturulan QR kodlar ile uygulama üzerinde deneme yapılabilir.
@@ -220,6 +227,8 @@ _-_ İletişimi geliştirmek için daha sık ve düzenli toplantılar düzenleme
 <p align="center">
   <img width="1000" height="500" src="https://github.com/minaunal/BookCafe/assets/130221407/5b2c9e0e-42c0-45cf-a3ae-f5f65ddab9d0">
 </p>
+
+
 
 - **Sprint Review:**
   
