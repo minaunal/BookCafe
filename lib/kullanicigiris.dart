@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fbase/kullaniciekrani.dart';
 import 'package:fbase/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -31,10 +30,6 @@ class _KullaniciGirisState extends State<KullaniciGiris> {
     });
     girismail = _email.text.trim();
 
-    FirebaseFirestore.instance
-        .collection('aktif')
-        .doc('user')
-        .update({'ogrenci': true});
   }
 
   void func() {

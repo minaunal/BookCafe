@@ -30,6 +30,7 @@ environment:
 dependencies:
   flutter_rating_bar: ^4.0.1
   http: ^1.1.0
+  google_sign_in: ^6.1.4
   flutter_credit_card: ^3.0.7
   pie_chart: ^5.3.2
   flutter_animated_icons: ^1.0.1
@@ -70,19 +71,8 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - images/filtre.jpg
-    - images/su.jpg
-    - images/salep.jpg
-    - images/cay.jpg
-    - images/kahve.jpg
-    - images/lim.jpg
-    - images/soda.jpg
-    - images/bulut.png
-    - images/sun.jpg
-    - images/snowy.png
-    - images/rain.jpg
-    - images/parcalibulut.png
-    - images/clear.jpg
+    - images/
+
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
