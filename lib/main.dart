@@ -1,16 +1,16 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fbase/hava.dart';
-
 import 'package:fbase/kullanicigiris.dart';
-import 'package:fbase/kupon.dart';
+import 'package:fbase/logging%20in/google_sign_in.dart';
 import 'package:fbase/yildizliste.dart';
 import 'package:fbase/yoneticigiris.dart';
-
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_animated_icons/icons8.dart';
 import 'package:lottie/lottie.dart';
+
+import 'kullaniciekrani.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -100,6 +100,7 @@ class _KayitState extends State<Kayit> {
         email: _email.text, password: _password.text);
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -113,7 +114,7 @@ class _KayitState extends State<Kayit> {
             ),
           ),
           SizedBox(
-            height: 20,
+            height: 10,
           ),
           AnimatedProgressIndicator(value: _formProgress),
           TFdesign(
@@ -162,14 +163,15 @@ class _KayitState extends State<Kayit> {
                   },
             child: Text("Sign in"),
           ),
-          SizedBox(
-            height: 20,
-          ),
+          signIn(),
           Text("Already have an account?"),
           Text("Log in."),
+
+
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
+
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.black,
@@ -201,7 +203,8 @@ class _KayitState extends State<Kayit> {
               ),
             ],
           ),
-          SizedBox(height: 20),
+          SizedBox(height: 10),
+          /*
           Row(
             children: [
               Expanded(
@@ -259,7 +262,7 @@ class _KayitState extends State<Kayit> {
                 ),
               ),
             ],
-          )
+          )*/
         ],
       ),
     );
