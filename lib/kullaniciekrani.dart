@@ -389,14 +389,14 @@ class _cuzdanState extends State<cuzdan> {
             Divider(
               thickness: 3,
             ),
-            SizedBox(height: 25),
+            const SizedBox(height: 25),
             Row(
               children: <Widget>[
-                Icon(
+                const Icon(
                   Icons.account_balance_wallet_outlined,
                   size: 32,
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 20,
                 ),
                 Text(
@@ -410,9 +410,9 @@ class _cuzdanState extends State<cuzdan> {
                 Container(
                   width: 40, // Genişlik ayarı
                   child: TextField(
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                    style: const TextStyle(fontWeight: FontWeight.bold),
                     controller: money,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       hintText: 'tl',
                       hintStyle: TextStyle(fontSize: 20.0),
                       enabledBorder: UnderlineInputBorder(
@@ -428,7 +428,7 @@ class _cuzdanState extends State<cuzdan> {
                         content: Container(
                           width: 150,
                           height: 50,
-                          child: Center(
+                          child: const Center(
                             child: Text(
                               'You have no saved cards, add a credit card first.',
                               style: TextStyle(
