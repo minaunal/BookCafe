@@ -4,7 +4,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 import '../kullaniciekrani.dart';
 
-class signIn extends StatelessWidget {
+class googleSignIn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
@@ -13,7 +13,7 @@ class signIn extends StatelessWidget {
       },
 
       style: ElevatedButton.styleFrom(
-        primary: Colors.white, // Buton rengini değiştirmek için
+        primary: Colors.greenAccent, // Buton rengini değiştirmek için
         onPrimary: Colors.black, // Buton metin rengini değiştirmek için
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(32),
