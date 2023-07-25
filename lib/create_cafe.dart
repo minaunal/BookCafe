@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:fbase/admin_screen.dart';
+import 'package:fbase/main.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -7,7 +7,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
 
+import 'admin_screen.dart';
+
 class CafeCreationPage extends StatefulWidget {
+  final String uid;
+  CafeCreationPage(this.uid);
+
   @override
   _CafeCreationPageState createState() => _CafeCreationPageState();
 }
@@ -16,49 +21,14 @@ class _CafeCreationPageState extends State<CafeCreationPage> {
   final ImagePicker picker = ImagePicker();
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
-  final _cityController = TextEditingController();
   final _tableCountController = TextEditingController();
   List<File> selectedImages = []; // List of selected image
-
+  String? selectedCity;
   bool _isLoading = false;
 
   // Function to pick an image from the gallery
-  Future getImages() async {
-    final pickedFile = await picker.pickMultiImage(
-        imageQuality: 100, maxHeight: 1000, maxWidth: 1000);
-    List<XFile> xfilePick = pickedFile;
 
-    setState(
-          () {
-        if (xfilePick.isNotEmpty) {
-          for (var i = 0; i < xfilePick.length; i++) {
-            selectedImages.add(File(xfilePick[i].path));
-          }
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Nothing is selected')));
-        }
-      },
-    );
-  }
 
-  // Function to upload the selected image to Firebase Storage
-  Future<List<String>> _uploadImages(List<File> images) async {
-    List<String> imageUrls = [];
-
-    for (var image in images) {
-      final reference = FirebaseStorage.instance.ref().child('cafe_images/${DateTime.now()}.png');
-      final uploadTask = reference.putFile(image);
-      final snapshot = await uploadTask.whenComplete(() {});
-
-      if (snapshot.state == TaskState.success) {
-        final imageUrl = await reference.getDownloadURL();
-        imageUrls.add(imageUrl);
-      }
-    }
-
-    return imageUrls;
-  }
 
 
   // Function to handle cafe creation
@@ -69,31 +39,45 @@ class _CafeCreationPageState extends State<CafeCreationPage> {
       _isLoading = true;
     });
 
+
     final User? user = FirebaseAuth.instance.currentUser;
     final adminEmail = user?.email;
     final name = _nameController.text;
-    final city = _cityController.text;
-    final tableCount = int.parse(_tableCountController.text);
-    List<String> uploadedImageUrls = await _uploadImages(selectedImages);
+    final tableCount = int.tryParse(_tableCountController.text) ?? 0;
 
-    if (name.isNotEmpty && city.isNotEmpty && tableCount > 0) {
+    final cafeSnapshot = await FirebaseFirestore.instance
+        .collection('cafes')
+        .doc(name)
+        .get();
+
+    if (!cafeSnapshot.exists && name.isNotEmpty && selectedCity != null && tableCount > 0 && selectedImages.isNotEmpty) {
       try {
         await FirebaseFirestore.instance.collection('cafes').doc(name).set({
           'name': name,
-          'city': city,
+          'city': selectedCity,
           'tableCount': tableCount,
-          'imagesUrlList': uploadedImageUrls,
           'available': true,
           'adminEmail': adminEmail,
         });
 
+
+
+        // Upload images to Firebase Storage and add their download URLs to the subcollection
+
+        // Add admin's uid
+        await FirebaseFirestore.instance.collection('users').doc(widget.uid).set({
+          'cafe': name,
+        });
+        currentCafe = name;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Cafe created successfully!')),
         );
+
+        // Replace this with your desired navigation logic after cafe creation
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => Yonetici(),
+            builder: (context) => Yonetici(email: adminEmail!),
           ),
         );
       } catch (e) {
@@ -103,6 +87,11 @@ class _CafeCreationPageState extends State<CafeCreationPage> {
       }
     }
 
+    if (cafeSnapshot.exists){
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Cafe name is not available. It already exists.')),
+      );
+    }
     setState(() {
       _isLoading = false;
     });
@@ -130,12 +119,27 @@ class _CafeCreationPageState extends State<CafeCreationPage> {
                   return null;
                 },
               ),
-              TextFormField(
-                controller: _cityController,
-                decoration: InputDecoration(labelText: 'City'),
+              DropdownButtonFormField<String>(
+                value: selectedCity,
+                onChanged: (String? newValue) {
+                  setState(() {
+                    selectedCity = newValue;
+                  });
+                },
+                items: CityData().turkishCities.map((String city) {
+                  return DropdownMenuItem<String>(
+                    value: city,
+                    child: Text(city),
+                  );
+                }).toList(),
+                decoration: InputDecoration(
+                  labelText: 'City',
+                  border: OutlineInputBorder(),
+                  // Add any additional styling here if needed
+                ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please enter the city';
+                    return 'Please select a city';
                   }
                   return null;
                 },
@@ -155,49 +159,34 @@ class _CafeCreationPageState extends State<CafeCreationPage> {
                 },
               ),
               SizedBox(height: 16),
-              ElevatedButton(
-                style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(Colors.blue)),
-                child: const Text('Select Image from Gallery and Camera'),
-                onPressed: () {
-                  getImages();
-                },
-              ),
-              const Padding(
-                padding: EdgeInsets.symmetric(vertical: 18.0),
-                child: Text(
-                  "GFG",
-                  textScaleFactor: 3,
-                  style: TextStyle(color: Colors.green),
-                ),
-              ),
+
               Expanded(
                 child: SizedBox(
-                  width: 300.0,
+                  width: 150.0,
                   child: selectedImages.isEmpty
-                      ? const Center(child: Text('Sorry nothing selected!!'))
+                      ? const Center(child: Text('Nothing selected!!'))
                       : GridView.builder(
                     itemCount: selectedImages.length,
                     gridDelegate:
                     const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3),
+                      crossAxisCount: 3,
+                    ),
                     itemBuilder: (BuildContext context, int index) {
                       return Center(
-                          child: kIsWeb
-                              ? Image.network(selectedImages[index].path)
-                              : Image.file(selectedImages[index]));
+                        child: kIsWeb
+                            ? Image.network(selectedImages[index].path)
+                            : Image.file(selectedImages[index]),
+                      );
                     },
                   ),
                 ),
               ),
-
-
-              SizedBox(height: 16),
               ElevatedButton(
+
                 onPressed: _isLoading ? null : _createCafe,
                 child: _isLoading
-                    ? CircularProgressIndicator()
-                    : Text('Create Cafe'),
+                    ? const CircularProgressIndicator()
+                    : const Text('Create Cafe'),
               ),
             ],
           ),
@@ -205,4 +194,98 @@ class _CafeCreationPageState extends State<CafeCreationPage> {
       ),
     );
   }
+}
+
+class CityData {
+  static final CityData _instance = CityData._internal();
+
+  factory CityData() {
+    return _instance;
+  }
+
+  CityData._internal();
+  List<String> turkishCities = [
+    'İstanbul',
+    'Ankara',
+    'İzmir',
+    'Adana',
+    'Adıyaman',
+    'Afyonkarahisar',
+    'Ağrı',
+    'Amasya',
+    'Antalya',
+    'Artvin',
+    'Aydın',
+    'Balıkesir',
+    'Bilecik',
+    'Bingöl',
+    'Bitlis',
+    'Bolu',
+    'Burdur',
+    'Bursa',
+    'Çanakkale',
+    'Çankırı',
+    'Çorum',
+    'Denizli',
+    'Diyarbakır',
+    'Edirne',
+    'Elazığ',
+    'Erzincan',
+    'Erzurum',
+    'Eskişehir',
+    'Gaziantep',
+    'Giresun',
+    'Gümüşhane',
+    'Hakkâri',
+    'Hatay',
+    'Isparta',
+    'Mersin',
+
+    'Kars',
+    'Kastamonu',
+    'Kayseri',
+    'Kırklareli',
+    'Kırşehir',
+    'Kocaeli',
+    'Konya',
+    'Kütahya',
+    'Malatya',
+    'Manisa',
+    'Kahramanmaraş',
+    'Mardin',
+    'Muğla',
+    'Muş',
+    'Nevşehir',
+    'Niğde',
+    'Ordu',
+    'Rize',
+    'Sakarya',
+    'Samsun',
+    'Siirt',
+    'Sinop',
+    'Sivas',
+    'Tekirdağ',
+    'Tokat',
+    'Trabzon',
+    'Tunceli',
+    'Şanlıurfa',
+    'Uşak',
+    'Van',
+    'Yozgat',
+    'Zonguldak',
+    'Aksaray',
+    'Bayburt',
+    'Karaman',
+    'Kırıkkale',
+    'Batman',
+    'Şırnak',
+    'Bartın',
+    'Ardahan',
+    'Iğdır',
+    'Yalova',
+    'Karabük',
+    'Kilis',
+    'Osmaniye',
+    'Düzce',
+  ];
 }

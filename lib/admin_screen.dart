@@ -7,6 +7,11 @@ import 'package:pie_chart/pie_chart.dart';
 import 'package:lottie/lottie.dart';
 
 class Yonetici extends StatefulWidget {
+  final email;
+
+  const Yonetici({super.key, required this.email});
+
+
   @override
   _YoneticiState createState() => _YoneticiState();
 }

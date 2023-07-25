@@ -1,6 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fbase/create_cafe.dart';
+import 'package:fbase/logging_in/user_logging_in.dart';
+import 'package:fbase/main.dart';
 import 'package:fbase/user_screen.dart';
 import 'package:fbase/admin_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class YoneticiGiris extends StatefulWidget {
@@ -11,44 +15,44 @@ class YoneticiGiris extends StatefulWidget {
 }
 
 class _YoneticiGirisState extends State<YoneticiGiris> {
-  TextEditingController name = TextEditingController();
-  TextEditingController password = TextEditingController();
+  TextEditingController _email = TextEditingController();
+  TextEditingController _password = TextEditingController();
 
   void control() {
-    if (name.text == "admin" && password.text == "12345") {
-       FirebaseFirestore.instance
-        .collection('aktif')
-        .doc('user')
-        .update({'ogrenci': false});
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => Yonetici()));
-    } else {
-      final snackBar = SnackBar(
-        content: Container(
-          width: 150,
-          height: 50,
-          child: Center(
-            child: Text(
-              'Unvalid name or password.',
-              style: TextStyle(
-                fontSize: 18,
-              ),
-            ),
-          ),
-        ),
-        action: SnackBarAction(
-          
-          label: 'TRY AGAIN', 
-          onPressed: () {
-            name.clear();
-            password.clear();
-          },
-        ),
-      );
+    FirebaseAuth.instance
+        .signInWithEmailAndPassword(
+      email: _email.text.trim(),
+      password: _password.text.trim(),
+    )
+        .then((userCredential) async {
+      var snapshot = await FirebaseFirestore.instance.collection('users').doc(userCredential.user!.uid).get();
+      var data = snapshot.data();
 
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    }
+      if (data != null) {
+        if (data['role'] == "admin") {
+          // Admin doesn't have a cafe yet. Navigating to cafe creating page.
+          if (data.containsKey('cafe')){
+            currentCafe = data['cafe'];
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => Yonetici(email: _email.text.trim()),
+            ));
+
+          }
+          else {
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => CafeCreationPage(userCredential.user!.uid),
+            ));
+          }
+        } else {
+          Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => Kullanici(email: _email.text.trim()),
+          ));
+        }
+      }
+    });
+    girismail = _email.text.trim();
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +81,7 @@ class _YoneticiGirisState extends State<YoneticiGiris> {
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
                   )),
-              controller: name,
+              controller: _email,
             ),
             SizedBox(
               height: 10,
@@ -102,7 +106,7 @@ class _YoneticiGirisState extends State<YoneticiGiris> {
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
                   )),
-              controller: password,
+              controller: _password,
               obscureText: true,
             ),
             ElevatedButton(

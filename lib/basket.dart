@@ -87,7 +87,7 @@ class _MakecardsState extends State<Makecards> {
                   ),
                 ),
                 Text(
-                  widget.fiyat.toString() + "tl",
+                  widget.fiyat.toString() + "TL",
                   style: TextStyle(
                     fontSize: 17,
                     fontWeight: FontWeight.bold,
