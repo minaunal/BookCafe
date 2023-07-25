@@ -26,6 +26,7 @@ class _SignUpPageState extends State<SignUpPage> {
   final _surname = TextEditingController();
   double _formProgress = 0;
   bool _isLoading = false;
+  bool _isEmailAvailable = true;
   String role;
   _SignUpPageState(this.role);
 
@@ -49,7 +50,21 @@ class _SignUpPageState extends State<SignUpPage> {
 
 
 
-  KayitOl() {
+  Future<void> _checkEmailAvailability() async {
+    final email = _email.text.trim().toLowerCase();
+
+    // Check if the email is already in use
+    final snapshot = await FirebaseFirestore.instance
+        .collection('users')
+        .where('email', isEqualTo: email)
+        .get();
+
+    setState(() {
+      _isEmailAvailable = snapshot.docs.isEmpty;
+    });
+  }
+
+  SignUpFirebase() {
     FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: _email.text, password: _password.text);
   }
@@ -80,6 +95,21 @@ class _SignUpPageState extends State<SignUpPage> {
         return;
       }
 
+      // Check email availability
+      await _checkEmailAvailability();
+      if (!_isEmailAvailable) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Email is already in use.'),
+            duration: Duration(seconds: 2),
+          ),
+        );
+        setState(() {
+          _isLoading = false;
+        });
+        return;
+      }
+
       // Sign up with Firebase Authentication
       final UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email,
@@ -99,18 +129,21 @@ class _SignUpPageState extends State<SignUpPage> {
 
         // Navigate to home page or another appropriate page
         // For example:
-        if (role == "admin") {
-          Navigator.of(context).pushReplacement(MaterialPageRoute(
-            builder: (context) => CafeCreationPage(),
-          ));
-        }
+          showDialog(
+            context: context,
+            builder: (context) => const AlertDialog(
+              title: Text('Signed up!'),
+              content: Text('Successfully signed up.\nReturning to the main screen.'),
 
-        else {
-          Navigator.of(context).pushReplacement(MaterialPageRoute(
-            builder: (context) => Kullanici(),
-          ));
+            ),
+          );
 
-      }}
+          // Biraz bekle ve sonra ana ekrana dön
+          await Future.delayed(const Duration(seconds: 3));
+          Navigator.pop(context);
+          Navigator.pop(context);
+
+      }
       setState(() {
         _isLoading = false; // Kayıt işlemi tamamlandığında isLoading durumunu false olarak güncelle
       });
@@ -134,6 +167,8 @@ class _SignUpPageState extends State<SignUpPage> {
       });
     }
   }
+
+
 
 
   @override
@@ -174,11 +209,12 @@ class _SignUpPageState extends State<SignUpPage> {
               degisken: _password,
             ),
             const SizedBox(height: 10),
+
+            const SizedBox(height: 10),
+
             ElevatedButton(
-              onPressed: _isLoading ? _signUp : _signUp,
-              child: _isLoading
-                  ? const CircularProgressIndicator()
-                  : const Text('Sign Up'),
+              onPressed: _signUp,
+              child: const Text('Sign Up'),
             ),
           ],
         ),],
@@ -284,7 +320,7 @@ class _TFdesignState extends State<TFdesign> {
     return Column(
       children: <Widget>[
         TextField(
-          style: TextStyle(color: Colors.black),
+          style: const TextStyle(color: Colors.black),
           decoration: InputDecoration(
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
@@ -294,7 +330,7 @@ class _TFdesignState extends State<TFdesign> {
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide(
+                borderSide: const BorderSide(
                   color: Colors.black,
                 ),
               ),

@@ -29,7 +29,6 @@ class _KullaniciGirisState extends State<KullaniciGiris> {
           builder: (context) => Kullanici(email: _email.text.trim())));
     });
     girismail = _email.text.trim();
-
   }
 
   void func() {

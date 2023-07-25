@@ -4,9 +4,7 @@ import 'package:fbase/logging_in/sign_up.dart';
 import 'package:fbase/logging_in/admin_logging_in.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter_animated_icons/icons8.dart';
-import 'package:lottie/lottie.dart';
-
+String currentCafe="";
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -53,7 +51,7 @@ class _IskeleState extends State<Iskele> {
             ),
           ),
               KullaniciGiris(),
-          SizedBox(height:20),
+          const SizedBox(height:20),
           Text("Still not signed-up?"),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -70,13 +68,13 @@ class _IskeleState extends State<Iskele> {
                   Navigator.of(context).push(
                       MaterialPageRoute(builder: (context) => SignUpPage(role: 'user')));
                 },
-                child: const Text("User Sign Up"),
+                child: const Text("Sign Up"),
               ),
               googleSignIn(),],
           ),
 
 
-          SizedBox(height:50),
+          const SizedBox(height:50),
 
           const Text("Are you a manager?"),
           Row(

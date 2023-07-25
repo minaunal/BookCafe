@@ -1,3 +1,4 @@
+import 'package:fbase/main.dart';
 import 'package:fbase/table.dart';
 import 'package:fbase/table_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -45,6 +46,10 @@ class _MainPageState extends State<MainPage> {
 
     createTableDocument(number);
   }
+
+
+
+
 
   Future getDocs() async {
     QuerySnapshot querySnapshot =
