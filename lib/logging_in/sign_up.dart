@@ -1,12 +1,12 @@
 import 'package:fbase/create_cafe.dart';
-import 'package:fbase/yoneticiekrani.dart';
+import 'package:fbase/admin_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animated_icons/icons8.dart';
 import 'package:lottie/lottie.dart';
 
-import '../kullaniciekrani.dart';
+import '../user_screen.dart';
 
 
 class SignUpPage extends StatefulWidget {

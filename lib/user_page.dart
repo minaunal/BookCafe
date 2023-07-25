@@ -1,9 +1,9 @@
-import 'package:fbase/kullaniciekrani.dart';
+import 'package:fbase/user_screen.dart';
 import 'package:fbase/table.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-import 'kullanicigiris.dart';
+import 'logging_in/user_logging_in.dart';
 
 Map<int, String> selectedTables = {};
 

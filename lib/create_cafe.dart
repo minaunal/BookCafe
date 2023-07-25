@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:fbase/yoneticiekrani.dart';
+import 'package:fbase/admin_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
