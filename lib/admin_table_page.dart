@@ -1,3 +1,4 @@
+import 'package:fbase/main.dart';
 import 'package:fbase/table.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -33,6 +34,8 @@ class _TablePageState extends State<TablePage> {
 
   Future<void> getDocs() async {
     DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance
+        .collection('cafes')
+        .doc(currentCafe)
         .collection('Masalar')
         .doc('Masa ${widget.index}')
         .get();
@@ -88,6 +91,8 @@ class _TablePageState extends State<TablePage> {
 
   Future<void> updateChairStatus(int tableIndex, int chairIndex, List<bool> chairStatusList) async {
     final tableReference = FirebaseFirestore.instance
+        .collection('cafes')
+        .doc(currentCafe)
         .collection('Masalar')
         .doc('Masa $tableIndex');
 
@@ -108,6 +113,8 @@ class _TablePageState extends State<TablePage> {
 
   void updateSocketValue(int tableIndex, bool socketValue) async {
     final tableReference = FirebaseFirestore.instance
+        .collection('cafes')
+        .doc(currentCafe)
         .collection('Masalar')
         .doc('Masa $tableIndex');
 
@@ -116,6 +123,8 @@ class _TablePageState extends State<TablePage> {
 
   void updateWindowValue(int tableIndex, bool windowValue) async {
     final tableReference = FirebaseFirestore.instance
+        .collection('cafes')
+        .doc(currentCafe)
         .collection('Masalar')
         .doc('Masa $tableIndex');
 
@@ -124,6 +133,8 @@ class _TablePageState extends State<TablePage> {
 
   void updateFullValue(int tableIndex, bool fullValue) async {
     final tableReference = FirebaseFirestore.instance
+        .collection('cafes')
+        .doc(currentCafe)
         .collection('Masalar')
         .doc('Masa $tableIndex');
 
@@ -132,6 +143,8 @@ class _TablePageState extends State<TablePage> {
 
   void updateChairStatusList(int tableIndex, List<bool> chairStatusList) async {
     final tableReference = FirebaseFirestore.instance
+        .collection('cafes')
+        .doc(currentCafe)
         .collection('Masalar')
         .doc('Masa $tableIndex');
 
@@ -140,6 +153,8 @@ class _TablePageState extends State<TablePage> {
 
   void updateChairCount(int tableIndex, int newCount) async {
     final tableReference = FirebaseFirestore.instance
+        .collection('cafes')
+        .doc(currentCafe)
         .collection('Masalar')
         .doc('Masa $tableIndex');
 

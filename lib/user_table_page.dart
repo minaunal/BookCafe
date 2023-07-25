@@ -1,3 +1,4 @@
+import 'package:fbase/selectCafe.dart';
 import 'package:fbase/user_screen.dart';
 import 'package:fbase/table.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -8,7 +9,7 @@ import 'logging_in/user_logging_in.dart';
 Map<int, String> selectedTables = {};
 
 class UserPage extends StatelessWidget {
-  const UserPage({super.key});
+  UserPage(  {super.key});
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -16,13 +17,13 @@ class UserPage extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.purple,
       ),
-      home: const MainPage(),
+      home: MainPage(),
     );
   }
 }
 
 class MainPage extends StatefulWidget {
-  const MainPage({super.key});
+  MainPage({super.key});
 
   @override
   _MainPageState createState() => _MainPageState();
@@ -45,10 +46,12 @@ class _MainPageState extends State<MainPage> {
 
   Future<void> getDocs() async {
     QuerySnapshot querySnapshot =
-    await FirebaseFirestore.instance.collection('Masalar').get();
+    await FirebaseFirestore.instance.collection('cafes').doc(selectedCafe).collection('Masalar').get();
 
     for (int i =1; i <= querySnapshot.docs.length; i++) {
       DocumentSnapshot snapshot = await FirebaseFirestore.instance
+          .collection('cafes')
+          .doc(selectedCafe)
           .collection('Masalar')
           .doc("Masa $i")
           .get();

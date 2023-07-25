@@ -1,5 +1,8 @@
+import 'dart:ffi';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fbase/discount.dart';
+import 'package:fbase/main.dart';
 import 'package:fbase/moderator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animated_icons/icons8.dart';
@@ -96,6 +99,7 @@ class _dolulukState extends State<doluluk> {
     const Color(0xff1fde25),
     const Color(0xff000000),
   ];
+  String occupancyMessage = "";
 
   int trueCount = 0;
   int falseCount = 0;
@@ -107,7 +111,7 @@ class _dolulukState extends State<doluluk> {
 
   void countTrue() async {
     QuerySnapshot snapshot =
-        await FirebaseFirestore.instance.collection('Masalar').get();
+        await FirebaseFirestore.instance.collection('cafes').doc(currentCafe).collection('Masalar').get();
 
     snapshot.docs.forEach((doc) {
       List<bool> colors = List<bool>.from(doc['chairStatusList']);
@@ -115,10 +119,16 @@ class _dolulukState extends State<doluluk> {
       falseCount += colors.where((color) => color == false).length;
     });
 
-    setState(() {
-      this.trueCount = trueCount;
-      this.falseCount = falseCount;
-    });
+    if (trueCount == 0 && falseCount == 0) {
+      setState(() {
+        occupancyMessage = "No chair available. Try to add a table.";
+      });
+    } else {
+      setState(() {
+        occupancyMessage = "Instant occupancy in $currentCafe.";
+      });
+    }
+
   }
 
   @override
@@ -128,7 +138,7 @@ class _dolulukState extends State<doluluk> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        Text("instant occupancy in bookcafe", style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25.0),),
+        Text(occupancyMessage, style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25.0),),
         SizedBox(height: 15,),
         Divider(thickness: 3,),
          SizedBox(height: 15,),
@@ -182,14 +192,28 @@ class _IncomeState extends State<Income> {
   }
 
   Future<void> fetchData() async {
-    DocumentSnapshot snapshot =
-        await FirebaseFirestore.instance.collection('Gelir').doc('gelir').get();
+    DocumentSnapshot snapshot = await FirebaseFirestore.instance
+        .collection("cafes")
+        .doc(currentCafe)
+        .collection('Gelir')
+        .doc('gelir')
+        .get();
 
-    setState(() {
-      data = snapshot['tl'];
-    });
+    if (snapshot.exists) {
+      setState(() {
+        data = snapshot['tl'];
+      });
+    } else {
+      setState(() {
+        data = 0; // Set data to 0 or any default value you prefer when the document doesn't exist
+      });
+    }
   }
+
+
 final indirim = TextEditingController();
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
