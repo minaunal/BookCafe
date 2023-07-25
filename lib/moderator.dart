@@ -1,6 +1,6 @@
 import 'package:fbase/main.dart';
 import 'package:fbase/table.dart';
-import 'package:fbase/table_page.dart';
+import 'package:fbase/admin_table_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -53,7 +53,7 @@ class _MainPageState extends State<MainPage> {
 
   Future getDocs() async {
     QuerySnapshot querySnapshot =
-        await FirebaseFirestore.instance.collection('Masalar').get();
+        await FirebaseFirestore.instance.collection('cafes').doc(currentCafe).collection('Masalar').get();
 
     for (int i = 0; i < querySnapshot.docs.length; i++) {
       var tempTable = querySnapshot.docs[i];
@@ -79,7 +79,7 @@ class _MainPageState extends State<MainPage> {
 
   void _makeTablesForFirebase(int masaSayisi) async {
     final collectionReference =
-        FirebaseFirestore.instance.collection('Masalar');
+        FirebaseFirestore.instance.collection('cafes').doc(currentCafe).collection('Masalar');
     // Mevcut masaları sil
     final currentTables = await collectionReference.get();
     for (final doc in currentTables.docs) {
@@ -106,13 +106,15 @@ class _MainPageState extends State<MainPage> {
     };
 
     await FirebaseFirestore.instance
-        .collection('Masalar')
+        .collection('cafes').doc(currentCafe).collection('Masalar')
         .doc('Masa $tableIndex')
         .set(tableData);
   }
 
   void deleteTableDocument(int tableIndex) async {
     final tableReference = FirebaseFirestore.instance
+        .collection('cafes')
+        .doc(currentCafe)
         .collection('Masalar')
         .doc('Masa $tableIndex');
 
@@ -148,7 +150,7 @@ class _MainPageState extends State<MainPage> {
 
       // Get a reference to the table document in Firestore
       DocumentReference tableRef =
-          FirebaseFirestore.instance.collection('Masalar').doc(fullTableId);
+          FirebaseFirestore.instance.collection('cafes').doc(currentCafe).collection('Masalar').doc(fullTableId);
 
       // Update the 'full' field of the table document to true
       tableRef.update({'full': true}).then((_) {
