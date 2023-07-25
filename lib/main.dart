@@ -1,7 +1,7 @@
-import 'package:fbase/kullanicigiris.dart';
+import 'package:fbase/logging_in/user_logging_in.dart';
 import 'package:fbase/logging_in/google_sign_in.dart';
 import 'package:fbase/logging_in/sign_up.dart';
-import 'package:fbase/yoneticigiris.dart';
+import 'package:fbase/logging_in/admin_logging_in.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_animated_icons/icons8.dart';
