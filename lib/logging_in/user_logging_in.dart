@@ -27,13 +27,29 @@ class _KullaniciGirisState extends State<KullaniciGiris> {
         .then((userCredential) {
       Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => Kullanici(email: _email.text.trim())));
+    }).catchError((error) {
+      // Handle login errors here
+      String errorMessage = "An error occurred. Please check your email and password.";
+
+      if (error is FirebaseAuthException) {
+        if (error.code == 'user-not-found') {
+          errorMessage = "No user found with this email.";
+        } else if (error.code == 'wrong-password') {
+          errorMessage = "Wrong password. Please try again.";
+        }
+      }
+
+      // Show the error message using a SnackBar
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(errorMessage),
+      ));
     });
     girismail = _email.text.trim();
   }
 
-  void func() {
+  void uselessFunc(){
     return;
-  }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -46,8 +62,8 @@ class _KullaniciGirisState extends State<KullaniciGiris> {
           icon: Lottie.asset(Icons8.book, height: 70, fit: BoxFit.fitHeight),
           onPressed: null,
         ),
-        TFdesign(alanadi: "email", onTap: func, degisken: _email),
-        TFdesign(alanadi: "password", onTap: func, degisken: _password),
+        TFdesign(alanadi: "email", onTap: uselessFunc, degisken: _email),
+        TFdesign(alanadi: "password", onTap: uselessFunc, degisken: _password),
         ElevatedButton(
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.green,

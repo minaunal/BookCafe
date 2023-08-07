@@ -2,14 +2,11 @@ import 'package:fbase/credit_card.dart';
 import 'package:fbase/changepw.dart';
 import 'package:fbase/cards.dart';
 import 'package:fbase/logging_in/user_logging_in.dart';
-import 'package:fbase/qrscanner.dart';
 import 'package:fbase/basket.dart';
 import 'package:fbase/selectCafe.dart';
-import 'package:fbase/user_table_page.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_animated_icons/icons8.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:lottie/lottie.dart';
 
 int selectedTableCount = 0;

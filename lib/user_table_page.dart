@@ -93,13 +93,7 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.deepPurple,
-        title: Text(
-          'Number of Tables: $number',
-          style: const TextStyle(fontSize: 20),
-        ),
-      ),
+
       body: ListView(
         children: [
           Padding(

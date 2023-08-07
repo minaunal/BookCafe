@@ -4,7 +4,7 @@ import 'package:fbase/logging_in/sign_up.dart';
 import 'package:fbase/logging_in/admin_logging_in.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-String currentCafe="";
+String currentCafe="BookSmart";
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -49,8 +49,7 @@ class _IskeleState extends State<Iskele> {
               fontFamily: 'Pacifico',
               fontSize: 25,
             ),
-          ),
-              KullaniciGiris(),
+          ), const KullaniciGiris(),
           const SizedBox(height:20),
           Text("Still not signed-up?"),
           Row(
