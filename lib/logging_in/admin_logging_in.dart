@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fbase/create_cafe.dart';
 import 'package:fbase/logging_in/user_logging_in.dart';
 import 'package:fbase/main.dart';
+import 'package:fbase/moderator.dart';
 import 'package:fbase/user_screen.dart';
 import 'package:fbase/admin_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -49,6 +50,22 @@ class _YoneticiGirisState extends State<YoneticiGiris> {
           ));
         }
       }
+    }).catchError((error) {
+      // Handle login errors here
+      String errorMessage = "An error occurred. Please check your email and password.";
+
+      if (error is FirebaseAuthException) {
+        if (error.code == 'user-not-found') {
+          errorMessage = "No manager found with this email.";
+        } else if (error.code == 'wrong-password') {
+          errorMessage = "Wrong password. Please try again.";
+        }
+      }
+
+      // Show the error message using a SnackBar
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(errorMessage),
+      ));
     });
     girismail = _email.text.trim();
   }

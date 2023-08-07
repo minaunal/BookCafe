@@ -1,3 +1,4 @@
+import 'package:fbase/main.dart';
 import 'package:fbase/qrscanner.dart';
 import 'package:fbase/user_table_page.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +13,6 @@ class SelectCafe extends StatefulWidget {
 
 class _SelectCafeState extends State<SelectCafe> {
   List<String> cafeNames = [];
-
   @override
   void initState() {
     super.initState();
@@ -36,12 +36,13 @@ class _SelectCafeState extends State<SelectCafe> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.coffee),
+              Icon(Icons.book_online),
               SizedBox(width: 10),
               Text(
-                "Cafes",
+                currentCafe,
                 style: TextStyle(
-                  fontSize: 24,
+                  fontSize: 25,
+                  fontFamily: 'Pacifico',
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
                 ),
@@ -64,7 +65,7 @@ class _SelectCafeState extends State<SelectCafe> {
             return GestureDetector(
               onTap: () {
                 selectedCafe = cafeName;
-                showModalBottomSheet(
+                showBottomSheet(
                   context: context,
                   builder: (context) => masa(),
                 );
@@ -137,7 +138,10 @@ class _masaState extends State<masa> {
               child: UserPage(),
             ),
             const Divider(thickness: 2),
-            ElevatedButton(
+            Row(
+              children:[
+                SizedBox(width:5),
+                ElevatedButton(
               onPressed: () {
                 showDialog(
                   context: context,
@@ -216,7 +220,8 @@ class _masaState extends State<masa> {
                 ],
               ),
             ),
-            ElevatedButton.icon(
+                SizedBox(width:5),
+                ElevatedButton.icon(
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(builder: (context) => QRScanner()));
               },
@@ -233,7 +238,8 @@ class _masaState extends State<masa> {
                 ),
               ),
             ),
-            ElevatedButton.icon(
+                SizedBox(width:5),
+                ElevatedButton.icon(
               onPressed: () {
                 Navigator.of(context).push(MaterialPageRoute(builder: (context) => yorumSor()));
               },
@@ -249,8 +255,8 @@ class _masaState extends State<masa> {
                   borderRadius: BorderRadius.circular(32.0),
                 ),
               ),
+            ),]
             ),
-
           ],
         ),
       ),

@@ -4,8 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:file_picker/file_picker.dart';
 
 import 'admin_screen.dart';
 
@@ -18,7 +17,6 @@ class CafeCreationPage extends StatefulWidget {
 }
 
 class _CafeCreationPageState extends State<CafeCreationPage> {
-  final ImagePicker picker = ImagePicker();
   final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController();
   final _tableCountController = TextEditingController();
@@ -50,7 +48,7 @@ class _CafeCreationPageState extends State<CafeCreationPage> {
         .doc(name)
         .get();
 
-    if (!cafeSnapshot.exists && name.isNotEmpty && selectedCity != null && tableCount > 0 && selectedImages.isNotEmpty) {
+    if (!cafeSnapshot.exists && name.isNotEmpty && selectedCity != null && tableCount > 0 ) {
       try {
         await FirebaseFirestore.instance.collection('cafes').doc(name).set({
           'name': name,
@@ -111,7 +109,13 @@ class _CafeCreationPageState extends State<CafeCreationPage> {
             children: [
               TextFormField(
                 controller: _nameController,
-                decoration: InputDecoration(labelText: 'Cafe Name'),
+                decoration: InputDecoration(
+                  labelText: 'Cafe Name',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0), // Set border radius as you like
+                    borderSide: BorderSide(color: Colors.grey), // Set border color
+                  ),
+                ),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please enter a cafe name';
@@ -119,6 +123,8 @@ class _CafeCreationPageState extends State<CafeCreationPage> {
                   return null;
                 },
               ),
+              SizedBox(height: 5),
+
               DropdownButtonFormField<String>(
                 value: selectedCity,
                 onChanged: (String? newValue) {
@@ -144,9 +150,17 @@ class _CafeCreationPageState extends State<CafeCreationPage> {
                   return null;
                 },
               ),
+              SizedBox(height: 5),
+
               TextFormField(
                 controller: _tableCountController,
-                decoration: InputDecoration(labelText: 'Table Count'),
+                decoration: InputDecoration(
+                labelText: 'Table Count',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0), // Set border radius as you like
+                  borderSide: BorderSide(color: Colors.grey), // Set border color
+                ),
+              ),
                 keyboardType: TextInputType.number,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -160,11 +174,12 @@ class _CafeCreationPageState extends State<CafeCreationPage> {
               ),
               SizedBox(height: 16),
 
+              ElevatedButton(onPressed: null, child: Text("Select Images")),
               Expanded(
                 child: SizedBox(
                   width: 150.0,
                   child: selectedImages.isEmpty
-                      ? const Center(child: Text('Nothing selected!!'))
+                      ? const Center(child: Text('No image is selected!'))
                       : GridView.builder(
                     itemCount: selectedImages.length,
                     gridDelegate:
@@ -194,6 +209,8 @@ class _CafeCreationPageState extends State<CafeCreationPage> {
       ),
     );
   }
+
+
 }
 
 class CityData {
