@@ -1,6 +1,6 @@
 import 'package:fbase/main.dart';
 import 'package:fbase/table.dart';
-import 'package:fbase/admin_table_page.dart';
+import 'package:fbase/admin/admin_table_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -13,19 +13,19 @@ class Moderator extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.purple,
       ),
-      home: MainPage(),
+      home: const ModeratorPage(),
     );
   }
 }
 
-class MainPage extends StatefulWidget {
-  const MainPage({super.key});
+class ModeratorPage extends StatefulWidget {
+  const ModeratorPage({super.key});
 
   @override
-  _MainPageState createState() => _MainPageState();
+  _ModeratorPageState createState() => _ModeratorPageState();
 }
 
-class _MainPageState extends State<MainPage> {
+class _ModeratorPageState extends State<ModeratorPage> {
   List<CafeTable> tables = [];
   int number = 0;
   TextEditingController numberController = TextEditingController();

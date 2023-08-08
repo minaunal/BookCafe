@@ -1,9 +1,9 @@
 import 'dart:ffi';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:fbase/discount.dart';
+import 'package:fbase/admin/discount.dart';
 import 'package:fbase/main.dart';
-import 'package:fbase/moderator.dart';
+import 'package:fbase/admin/moderator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animated_icons/icons8.dart';
 import 'package:pie_chart/pie_chart.dart';
@@ -23,7 +23,7 @@ class _YoneticiState extends State<Yonetici> {
   int _currentIndex = 0;
 
   final List<Widget> _pages = [
-    Masa(),
+    const Masa(),
     doluluk(),
     Kupon(),
     Income(),
@@ -45,7 +45,7 @@ class _YoneticiState extends State<Yonetici> {
             _currentIndex = index;
           });
         },
-        items: [
+        items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.table_restaurant_rounded,color: Color(0xFFFF7800),),
             label: 'Tables',
@@ -78,7 +78,7 @@ class Masa extends StatefulWidget {
 class _MasaState extends State<Masa> {
   @override
   Widget build(BuildContext context) {
-    return Moderator();
+    return const Moderator();
   }
 }
 

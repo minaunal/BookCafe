@@ -1,5 +1,5 @@
-import 'package:fbase/create_cafe.dart';
-import 'package:fbase/admin_screen.dart';
+import 'package:fbase/admin/create_cafe.dart';
+import 'package:fbase/admin/admin_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';

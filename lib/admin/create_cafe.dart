@@ -28,6 +28,25 @@ class _CafeCreationPageState extends State<CafeCreationPage> {
 
 
 
+  Future<void> _makeTablesForFirebase(int number) async {
+
+    final collectionReference =
+    FirebaseFirestore.instance.collection('cafes').doc(currentCafe).collection('Masalar');
+    final currentTables = await collectionReference.get();
+    for (final doc in currentTables.docs) {
+      await doc.reference.delete();
+    }
+
+    for (int i = 1; i <= number; i++) {
+      final tableData = {
+        'socket': false,
+        'window': false,
+        'full': false,
+        'chairStatusList': [false, false, false, false],
+      };
+      await collectionReference.doc('Masa $i').set(tableData);
+    }
+  }
 
   // Function to handle cafe creation
   Future<void> _createCafe() async {
@@ -60,27 +79,30 @@ class _CafeCreationPageState extends State<CafeCreationPage> {
 
 
 
-        // Upload images to Firebase Storage and add their download URLs to the subcollection
-
         // Add admin's uid
         await FirebaseFirestore.instance.collection('users').doc(widget.uid).set({
           'cafe': name,
-        });
+        }, SetOptions(merge: true));
+
         currentCafe = name;
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Cafe created successfully!')),
+          const SnackBar(content: Text('Cafe created successfully!')),
         );
+        _makeTablesForFirebase(tableCount);
 
-        // Replace this with your desired navigation logic after cafe creation
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => Yonetici(email: adminEmail!),
-          ),
-        );
+
+        Future.delayed(const Duration(seconds: 1), () {
+          // Replace this with your desired navigation logic after the delay
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => Yonetici(email: adminEmail!),
+            ),
+          );
+        });
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('An error occurred. Please try again later.')),
+          const SnackBar(content: Text('An error occurred. Please try again later.')),
         );
       }
     }

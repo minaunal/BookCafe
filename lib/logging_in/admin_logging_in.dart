@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:fbase/create_cafe.dart';
+import 'package:fbase/admin/create_cafe.dart';
 import 'package:fbase/logging_in/user_logging_in.dart';
 import 'package:fbase/main.dart';
-import 'package:fbase/moderator.dart';
+import 'package:fbase/admin/moderator.dart';
 import 'package:fbase/user_screen.dart';
-import 'package:fbase/admin_screen.dart';
+import 'package:fbase/admin/admin_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
