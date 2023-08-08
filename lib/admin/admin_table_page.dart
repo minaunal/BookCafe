@@ -45,8 +45,7 @@ class _TablePageState extends State<TablePage> {
       setState(() {
         widget.table.window = tempTable['window'];
         widget.table.socket = tempTable['socket'];
-        widget.table.chairStatusList =
-        List<bool>.from(tempTable['chairStatusList']);
+        widget.table.chairStatusList = List<bool>.from(tempTable['chairStatusList']);
       });
     }
   }
@@ -68,16 +67,16 @@ class _TablePageState extends State<TablePage> {
             TextButton(
               onPressed: () {
                 Navigator.of(context)
-                    .pop(); // İptal düğmesine basılınca dialog kapatılır
+                    .pop();
               },
               child: const Text('Cancel'),
             ),
             TextButton(
               onPressed: () {
-                widget.onDelete(); // onDelete işlevini çağırarak masayı sil
+                widget.onDelete();
                 Navigator.of(context)
-                    .pop(); // Sil düğmesine basılınca dialog kapatılır
-                Navigator.of(context).pop(); // TablePage sayfasına geri dönülür
+                    .pop();
+                Navigator.of(context).pop();
               },
               child: const Text('Delete'),
             ),

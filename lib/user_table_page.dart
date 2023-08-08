@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'logging_in/user_logging_in.dart';
+import 'main.dart';
 
 Map<int, String> selectedTables = {};
 
@@ -46,12 +47,12 @@ class _MainPageState extends State<MainPage> {
 
   Future<void> getDocs() async {
     QuerySnapshot querySnapshot =
-    await FirebaseFirestore.instance.collection('cafes').doc(selectedCafe).collection('Masalar').get();
+    await FirebaseFirestore.instance.collection('cafes').doc(currentCafe).collection('Masalar').get();
 
     for (int i =1; i <= querySnapshot.docs.length; i++) {
       DocumentSnapshot snapshot = await FirebaseFirestore.instance
           .collection('cafes')
-          .doc(selectedCafe)
+          .doc(currentCafe)
           .collection('Masalar')
           .doc("Masa $i")
           .get();
@@ -258,7 +259,7 @@ class _TablePageState extends State<TablePage> {
 
   Future<void> getDocs() async {
     DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance
-        .collection('Masalar')
+        .collection('cafes').doc(currentCafe).collection('Masalar')
         .doc('Masa ${widget.index}')
         .get();
 
@@ -293,7 +294,7 @@ class _TablePageState extends State<TablePage> {
   Future<void> updateChairStatus(
       int tableIndex, int chairIndex, List<bool> chairStatusList) async {
     final tableReference = FirebaseFirestore.instance
-        .collection('Masalar')
+        .collection('cafes').doc(currentCafe).collection('Masalar')
         .doc('Masa $tableIndex');
 
     await tableReference.update({
@@ -303,6 +304,7 @@ class _TablePageState extends State<TablePage> {
 
   Future<String> takename() async {
     var name;
+    try{
     await FirebaseFirestore.instance
         .collection("Kartlar")
         .doc(girismail)
@@ -310,8 +312,18 @@ class _TablePageState extends State<TablePage> {
         .then((value) {
       setState(() {
         name = value.data()!['isim'];
+
       });
-    });
+    });}
+    catch(e){
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('No credit card is saved! Not possible to reservate.'),
+          backgroundColor: Colors.red,
+        ),
+      );
+
+    }
     return name;
   }
 
@@ -325,8 +337,11 @@ class _TablePageState extends State<TablePage> {
           .then((value) {
         setState(() {
           temp = value.data()!['para'];
+
+
         });
       });
+
       showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -373,7 +388,7 @@ class _TablePageState extends State<TablePage> {
 
   void updateSocketValue(int tableIndex, bool socketValue) async {
     final tableReference = FirebaseFirestore.instance
-        .collection('Masalar')
+        .collection('cafes').doc(currentCafe).collection('Masalar')
         .doc('Masa $tableIndex');
 
     await tableReference.update({'socket': socketValue});
@@ -381,7 +396,7 @@ class _TablePageState extends State<TablePage> {
 
   void updateWindowValue(int tableIndex, bool windowValue) async {
     final tableReference = FirebaseFirestore.instance
-        .collection('Masalar')
+        .collection('cafes').doc(currentCafe).collection('Masalar')
         .doc('Masa $tableIndex');
 
     await tableReference.update({'window': windowValue});
@@ -389,7 +404,7 @@ class _TablePageState extends State<TablePage> {
 
   void updateFullValue(int tableIndex, bool fullValue) async {
     final tableReference = FirebaseFirestore.instance
-        .collection('Masalar')
+        .collection('cafes').doc(currentCafe).collection('Masalar')
         .doc('Masa $tableIndex');
 
     await tableReference.update({'full': fullValue});
@@ -397,7 +412,7 @@ class _TablePageState extends State<TablePage> {
 
   void updateChairStatusList(int tableIndex, List<bool> chairStatusList) async {
     final tableReference = FirebaseFirestore.instance
-        .collection('Masalar')
+        .collection('cafes').doc(currentCafe).collection('Masalar')
         .doc('Masa $tableIndex');
 
     await tableReference.update({'chairStatusList': chairStatusList});
@@ -405,7 +420,7 @@ class _TablePageState extends State<TablePage> {
 
   void updateChairCount(int tableIndex, int newCount) async {
     final tableReference = FirebaseFirestore.instance
-        .collection('Masalar')
+        .collection('cafes').doc(currentCafe).collection('Masalar')
         .doc('Masa $tableIndex');
 
     final chairStatusList = List<bool>.filled(newCount, false);

@@ -1,6 +1,9 @@
+import 'dart:ffi';
+
 import 'package:fbase/main.dart';
 import 'package:fbase/qrscanner.dart';
 import 'package:fbase/user_table_page.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -26,20 +29,35 @@ class _SelectCafeState extends State<SelectCafe> {
       cafeNames = names;
     });
   }
+  Future<String> getCafeImageURL(String cafeName) async {
+    try {
+      final docSnapshot = await FirebaseFirestore.instance.collection('cafes').doc(cafeName).get();
+      final icon = docSnapshot.data()?['icon'] ?? 'images/default_cafe.png';
+
+      final ref = FirebaseStorage.instance.ref().child('icon.jpg');
+      final url = await ref.getDownloadURL();
+
+      return url;
+    } catch (e) {
+      // If the image is not available, return the default image URL
+      return 'images/default_cafe.png';
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Center(
+        title: const Center(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(Icons.book_online),
               SizedBox(width: 10),
               Text(
-                currentCafe,
+                "BookSmart",
                 style: TextStyle(
                   fontSize: 25,
                   fontFamily: 'Pacifico',
@@ -52,9 +70,9 @@ class _SelectCafeState extends State<SelectCafe> {
         ),
       ),
       body: Padding(
-        padding: EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(8.0),
         child: GridView.builder(
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 3, // cafe count by row
             crossAxisSpacing: 4.0,
             mainAxisSpacing: 4.0,
@@ -64,29 +82,83 @@ class _SelectCafeState extends State<SelectCafe> {
             String cafeName = cafeNames[index];
             return GestureDetector(
               onTap: () {
-                selectedCafe = cafeName;
+                currentCafe = cafeName;
                 showBottomSheet(
                   context: context,
                   builder: (context) => masa(),
                 );
               },
-              child: Container(
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.green),
-                  borderRadius: BorderRadius.circular(12.0),
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.coffee),
-                    SizedBox(height: 10),
-                    Text(
-                      cafeName,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                ),
+              child: FutureBuilder<String>(
+                future: getCafeImageURL(cafeName),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    // While the image URL is being fetched, show a loading indicator or a placeholder image
+                    return CircularProgressIndicator();
+                  } else if (snapshot.hasError) {
+                    // If there was an error while fetching the image URL, show an error message or a placeholder image
+                    return Text('Error loading image');
+                  } else {
+                    // If the image URL is available, use it to display the image
+                    final imageUrl = snapshot.data;
+                    return Container(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12.0), // Set the border radius here
+                              border: Border.all(
+                                color: Colors.black, // Set the border color here
+                                width: 1.0, // Set the border width here
+                              ),
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10.0), // Set the border radius here
+                              child: Image.network(
+                                imageUrl!,
+                                width: 70,
+                                height: 70,
+                                errorBuilder: (context, error, stackTrace) {
+                                  // If there was an error loading the image, show a placeholder image
+                                  return Image.asset(
+                                    'images/default_cafe.png',
+                                    width: 120,
+                                    height: 100,
+                                    fit: BoxFit.fitWidth,
+                                  );
+                                },
+                              ),
+                            ),
+                          ),
+                          Container(
+                            width:125,
+
+                            padding: EdgeInsets.all(2.0), // Add padding around the text
+                            decoration: BoxDecoration(
+
+                              color: Colors.black12, // Set the background color
+                              borderRadius: BorderRadius.circular(10.0), // Set the border radius for the background
+                            ),
+                            child: Center(
+                              child: Text(
+                                cafeName,
+                                style: const TextStyle(
+                                  fontFamily: 'Pacifico',
+                                  //fontWeight: FontWeight.bold,
+                                  color: Colors.black, // Set the text color
+                                  fontSize: 12, // Set the font size
+                                ),
+                              ),
+                  )
+
+                          ),
+
+                        ],
+                      ),
+                    );
+                  }
+                },
               ),
             );
           },
@@ -122,9 +194,6 @@ class masa extends StatefulWidget {
 class _masaState extends State<masa> {
   TextEditingController yorum = TextEditingController();
   List<bool> starColors = List.filled(5, false);
-
-
-
 
 
   @override
