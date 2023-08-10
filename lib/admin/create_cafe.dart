@@ -4,8 +4,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:file_picker/file_picker.dart';
-
+import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'admin_screen.dart';
 
 class CafeCreationPage extends StatefulWidget {
@@ -117,6 +117,35 @@ class _CafeCreationPageState extends State<CafeCreationPage> {
     });
   }
 
+  Future<void> uploadImages() async {
+    final picker = ImagePicker();
+
+    // Allow the user to select multiple images
+    List<XFile>? imageFiles = await picker.pickMultiImage();
+
+    for (XFile imageFile in imageFiles) {
+      firebase_storage.Reference storageReference = firebase_storage.FirebaseStorage.instance.ref().child('deneme').child('deneme').child("icon.jpg");
+      //firebase_storage.UploadTask uploadTask = storageReference.putFile(File(imageFile.path));
+      firebase_storage.UploadTask uploadTask = storageReference.putFile(File(imageFile.path) );
+
+      await uploadTask.whenComplete(() {
+        print('Image uploaded');
+      }).catchError((error) {
+        print('Error uploading image: $error');
+        print(storageReference);
+      });
+    }
+
+    // Display a success message to the user
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Images uploaded successfully!'),
+        backgroundColor: Colors.green,
+      ),
+    );
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -194,9 +223,14 @@ class _CafeCreationPageState extends State<CafeCreationPage> {
                   return null;
                 },
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
 
-              ElevatedButton(onPressed: null, child: Text("Select Images")),
+              ElevatedButton(
+                onPressed: () async {
+                  await uploadImages();
+                },
+                child: const Text('Select Images'),
+              ),
               Expanded(
                 child: SizedBox(
                   width: 150.0,

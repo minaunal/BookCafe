@@ -4,6 +4,7 @@
     "project_id": "projem-87fd8",
     "storage_bucket": "projem-87fd8.appspot.com"
   },
+
   "client": [
     {
       "client_info": {
@@ -36,4 +37,5 @@
     }
   ],
   "configuration_version": "1"
+
 }

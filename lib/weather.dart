@@ -71,9 +71,9 @@ class _WeatherScreenState extends State<WeatherScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text('Weather Condition',
+            const Text('Weather Condition',
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             photo(),
