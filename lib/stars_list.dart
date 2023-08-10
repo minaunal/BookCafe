@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fbase/main.dart';
 import 'package:flutter/material.dart';
 
 class Stars extends StatefulWidget {
@@ -21,7 +22,9 @@ class _StarsState extends State<Stars> {
 
   void fetchData() {
     FirebaseFirestore.instance
-        .collection("Yildizlar")
+        .collection("cafes")
+        .doc(currentCafe)
+        .collection("Comments")
         .get()
         .then((QuerySnapshot querySnapshot) {
       setState(() {
@@ -29,10 +32,10 @@ class _StarsState extends State<Stars> {
         starLabels = List.generate(querySnapshot.docs.length, (_) => "");
         for (int i = 0; i < querySnapshot.docs.length; i++) {
           var a = querySnapshot.docs[i];
-          List<dynamic> dynamicList = a['yildizlar'];
+          List<dynamic> dynamicList = a['rating'];
           List<bool> colors = dynamicList.cast<bool>();
           starColorsList![i] = colors;
-          starLabels[i] = a['yorum'];
+          starLabels[i] = a['comment'];
         }
       });
     });

@@ -1,4 +1,3 @@
-import 'dart:ffi';
 
 import 'package:fbase/main.dart';
 import 'package:fbase/qrscanner.dart';
@@ -31,8 +30,6 @@ class _SelectCafeState extends State<SelectCafe> {
   }
   Future<String> getCafeImageURL(String cafeName) async {
     try {
-      final docSnapshot = await FirebaseFirestore.instance.collection('cafes').doc(cafeName).get();
-      final icon = docSnapshot.data()?['icon'] ?? 'images/default_cafe.png';
 
       final ref = FirebaseStorage.instance.ref().child('icon.jpg');
       final url = await ref.getDownloadURL();
@@ -209,7 +206,7 @@ class _masaState extends State<masa> {
             const Divider(thickness: 2),
             Row(
               children:[
-                SizedBox(width:5),
+                const SizedBox(width:5),
                 ElevatedButton(
               onPressed: () {
                 showDialog(
@@ -355,18 +352,51 @@ class _masaState extends State<masa> {
             onRatingUpdate: (rating) {
               setState(() {
                 starColors = List.generate(5, (index) => index < rating.round());
-                /*FirebaseFirestore.instance
-                    .collection('cafes')
-                    .doc(cafeName)
-                    .set({'Stars': starColors, 'Comment': .text});*/
               });
             },
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              String newComment = yorum.text;
+              int starRating = starColors.where((color) => color).length;
+
+              if (newComment.isNotEmpty && starRating > 0) {
+                try {
+
+
+                    await FirebaseFirestore.instance
+                      .collection('cafes')
+                      .doc(currentCafe)
+                      .collection('Comments')
+                      .add({
+                    'comment': newComment,
+                    'rating': starRating,
+                    'timestamp': FieldValue.serverTimestamp(),
+                  });
+
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Yorumunuz başarıyla eklendi!')),
+                  );
+                } catch (e) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Yorum eklenirken bir hata oluştu.')),
+                  );
+                }
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Lütfen puan ve yorum alanlarını doldurun.')),
+                );
+              }
+            },
+            child: Text('Tamam'),
           ),
         ],
       ),
     );
   }
+
 }
+
 Future<void> empty(String qrtext) async {
   // Firebase Firestore bağlantısını al
   final FirebaseFirestore firestore = FirebaseFirestore.instance;

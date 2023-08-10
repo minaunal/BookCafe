@@ -1,4 +1,3 @@
-import 'package:fbase/selectCafe.dart';
 import 'package:fbase/user_screen.dart';
 import 'package:fbase/table.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -18,19 +17,19 @@ class UserPage extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.purple,
       ),
-      home: MainPage(),
+      home: UserTablePage(),
     );
   }
 }
 
-class MainPage extends StatefulWidget {
-  MainPage({super.key});
+class UserTablePage extends StatefulWidget {
+  UserTablePage({super.key});
 
   @override
-  _MainPageState createState() => _MainPageState();
+  _UserTablePageState createState() => _UserTablePageState();
 }
 
-class _MainPageState extends State<MainPage> {
+class _UserTablePageState extends State<UserTablePage> {
   List<CafeTable> tables = [];
   int number = 0;
   TextEditingController numberController = TextEditingController();
@@ -117,8 +116,8 @@ class _MainPageState extends State<MainPage> {
                         ),
                       ),
                       child: const Padding(
-                        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
-                        child: Text("Socket"),
+                        padding: EdgeInsets.symmetric(vertical: 2, horizontal: 2),
+                        child: Icon(Icons.electrical_services_outlined),
                       ),
                     ),
                     ElevatedButton(
@@ -134,8 +133,8 @@ class _MainPageState extends State<MainPage> {
                         ),
                       ),
                       child: const Padding(
-                        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
-                        child: Text("Window"),
+                        padding: EdgeInsets.symmetric(vertical: 2, horizontal: 2),
+                        child: Icon(Icons.window_outlined),
                       ),
                     ),
                     ElevatedButton(
@@ -151,8 +150,8 @@ class _MainPageState extends State<MainPage> {
                         ),
                       ),
                       child: const Padding(
-                        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 16),
-                        child: Text("Available"),
+                        padding: EdgeInsets.symmetric(vertical: 2, horizontal: 2),
+                        child: Icon(Icons.event_available_outlined),
                       ),
                     ),
 
@@ -217,13 +216,13 @@ class CardView extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Icon(
-              Icons.table_restaurant,
-              color: Colors.black,
-              size: 50,
+              Icons.table_restaurant_rounded,
+              color: Colors.blueGrey,
+              size: 60,
             ),
             const SizedBox(height: 5),
             Text(
-              index.toString(),
+              "Table "+ index.toString(),
               style: const TextStyle(color: Colors.black, fontSize: 20),
             ),
           ],
