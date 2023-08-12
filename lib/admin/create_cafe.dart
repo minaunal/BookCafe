@@ -124,8 +124,7 @@ class _CafeCreationPageState extends State<CafeCreationPage> {
     List<XFile>? imageFiles = await picker.pickMultiImage();
 
     for (XFile imageFile in imageFiles) {
-      firebase_storage.Reference storageReference = firebase_storage.FirebaseStorage.instance.ref().child('deneme').child('deneme').child("icon.jpg");
-      //firebase_storage.UploadTask uploadTask = storageReference.putFile(File(imageFile.path));
+      firebase_storage.Reference storageReference = firebase_storage.FirebaseStorage.instance.ref().child('cafes').child(currentCafe).child("icon.jpg");
       firebase_storage.UploadTask uploadTask = storageReference.putFile(File(imageFile.path) );
 
       await uploadTask.whenComplete(() {

@@ -1,3 +1,4 @@
+import 'package:fbase/selectCafe.dart';
 import 'package:fbase/user_screen.dart';
 import 'package:fbase/table.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -42,6 +43,17 @@ class _UserTablePageState extends State<UserTablePage> {
   void initState() {
     super.initState();
     getDocs();
+  }
+
+
+  @override
+  void dispose(){
+    toggleAppBarVisibility();
+  }
+  void toggleAppBarVisibility() {
+    setState(() {
+      isAppBarVisible = !isAppBarVisible;
+    });
   }
 
   Future<void> getDocs() async {
@@ -89,75 +101,82 @@ class _UserTablePageState extends State<UserTablePage> {
         .snapshots();
   }
 
+  Widget filter() {
+    return  Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        ElevatedButton(
+          onPressed: () {
+            setState(() {
+              filterBySocket = !filterBySocket;
+            });
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: filterBySocket ? Colors.green : Colors.grey,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(32.0),
+            ),
+          ),
+          child: const Padding(
+            padding: EdgeInsets.symmetric(vertical: 2, horizontal: 2),
+            child: Icon(Icons.electrical_services_outlined),
+          ),
+        ),
+        ElevatedButton(
+          onPressed: () {
+            setState(() {
+              filterByWindow = !filterByWindow;
+            });
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: filterByWindow ? Colors.green : Colors.grey,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(32.0),
+            ),
+          ),
+          child: const Padding(
+            padding: EdgeInsets.symmetric(vertical: 2, horizontal: 2),
+            child: Icon(Icons.window_outlined),
+          ),
+        ),
+        ElevatedButton(
+          onPressed: () {
+            setState(() {
+              filterByAvailable = !filterByAvailable;
+            });
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: filterByAvailable ? Colors.green : Colors.grey,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(32.0),
+            ),
+          ),
+          child: const Padding(
+            padding: EdgeInsets.symmetric(vertical: 2, horizontal: 2),
+            child: Icon(Icons.event_available_outlined),
+          ),
+        ),
+
+      ],
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
+      appBar: AppBar(
+        backgroundColor: Colors.blue,
+        title: Text(currentCafe),
+        actions: [
+          filter(),
+        ],
+      ),
       body: ListView(
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-            child: Wrap(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ElevatedButton(
-                      onPressed: () {
-                        setState(() {
-                          filterBySocket = !filterBySocket;
-                        });
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: filterBySocket ? Colors.green : Colors.grey,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(32.0),
-                        ),
-                      ),
-                      child: const Padding(
-                        padding: EdgeInsets.symmetric(vertical: 2, horizontal: 2),
-                        child: Icon(Icons.electrical_services_outlined),
-                      ),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        setState(() {
-                          filterByWindow = !filterByWindow;
-                        });
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: filterByWindow ? Colors.green : Colors.grey,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(32.0),
-                        ),
-                      ),
-                      child: const Padding(
-                        padding: EdgeInsets.symmetric(vertical: 2, horizontal: 2),
-                        child: Icon(Icons.window_outlined),
-                      ),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        setState(() {
-                          filterByAvailable = !filterByAvailable;
-                        });
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: filterByAvailable ? Colors.green : Colors.grey,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(32.0),
-                        ),
-                      ),
-                      child: const Padding(
-                        padding: EdgeInsets.symmetric(vertical: 2, horizontal: 2),
-                        child: Icon(Icons.event_available_outlined),
-                      ),
-                    ),
-
-                  ],
-                ),
-                Wrap(
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+            child:
+              Wrap(
                   children: tables
                       .where((table) =>
                   (!filterBySocket || table.socket == filterBySocket) &&
@@ -173,13 +192,15 @@ class _UserTablePageState extends State<UserTablePage> {
 
 
 
-              ],
-            ),
+
           ),
         ],
       ),
+
     );
+
   }
+
 }
 
 class CardView extends StatelessWidget {
