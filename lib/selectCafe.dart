@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 String selectedCafe = "";
+bool isAppBarVisible = true; // Initially set to true
 
 class SelectCafe extends StatefulWidget {
   @override
@@ -41,11 +42,16 @@ class _SelectCafeState extends State<SelectCafe> {
     }
   }
 
+  void toggleAppBarVisibility() {
+    setState(() {
+      isAppBarVisible = !isAppBarVisible;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      appBar: isAppBarVisible ? AppBar(
         automaticallyImplyLeading: false,
         title: const Center(
           child: Row(
@@ -65,7 +71,7 @@ class _SelectCafeState extends State<SelectCafe> {
             ],
           ),
         ),
-      ),
+      ): null,
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: GridView.builder(
@@ -79,6 +85,7 @@ class _SelectCafeState extends State<SelectCafe> {
             String cafeName = cafeNames[index];
             return GestureDetector(
               onTap: () {
+                toggleAppBarVisibility();
                 currentCafe = cafeName;
                 showBottomSheet(
                   context: context,
