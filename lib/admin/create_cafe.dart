@@ -192,7 +192,7 @@ class _CafeCreationPageState extends State<CafeCreationPage> {
                   return null;
                 },
               ),
-              SizedBox(height: 5),
+              const SizedBox(height: 5),
 
               TextFormField(
                 controller: _tableCountController,
@@ -216,33 +216,7 @@ class _CafeCreationPageState extends State<CafeCreationPage> {
               ),
               const SizedBox(height: 16),
 
-              ElevatedButton(
-                onPressed: () async {
-                  await uploadImage();
-                },
-                child: const Text('Select Images'),
-              ),
-              Expanded(
-                child: SizedBox(
-                  width: 150.0,
-                  child: selectedImages.isEmpty
-                      ? const Center(child: Text('No image is selected!'))
-                      : GridView.builder(
-                    itemCount: selectedImages.length,
-                    gridDelegate:
-                    const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 3,
-                    ),
-                    itemBuilder: (BuildContext context, int index) {
-                      return Center(
-                        child: kIsWeb
-                            ? Image.network(selectedImages[index].path)
-                            : Image.file(selectedImages[index]),
-                      );
-                    },
-                  ),
-                ),
-              ),
+
               ElevatedButton(
 
                 onPressed: _isLoading ? null : _createCafe,

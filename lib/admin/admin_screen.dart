@@ -145,9 +145,13 @@ class _OccupancyState extends State<Occupancy> {
   Widget build(BuildContext context) {
     dataMap["full"] = trueCount.toDouble();
     dataMap["empty"] = falseCount.toDouble();
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
+    return Scaffold(
+      backgroundColor: Color(int.parse("0xFFF4F2DE")),
+
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+
         Text(occupancyMessage, style: TextStyle(fontWeight: FontWeight.bold,fontSize: 25.0),),
         SizedBox(height: 15,),
         Divider(thickness: 3,),
@@ -180,7 +184,7 @@ class _OccupancyState extends State<Occupancy> {
      SizedBox(height: 15,),
     Divider(thickness: 3,),
      SizedBox(height: 15,),
-      ],
+      ],),
     );
   }
 }
@@ -227,6 +231,7 @@ final indirim = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(int.parse("0xFFF4F2DE")),
       body: Padding(
       padding: EdgeInsets.all(30.0), // Girinti ayarı
       child: Column(
@@ -355,7 +360,7 @@ class _CafeModeratorState extends State<CafeModerator> {
               GestureDetector(
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => Kupon()));
+                      builder: (context) => Coupon()));
                 },
                 child: const Icon(
                   Icons.discount,
@@ -441,7 +446,6 @@ class _CafeModeratorState extends State<CafeModerator> {
                 },
                 child: Container(
                   padding: const EdgeInsets.all(0),
-                  color: Colors.white,
                   child: const Icon(
                     Icons.image_outlined,
                     color: Colors.black,
