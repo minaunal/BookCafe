@@ -23,6 +23,8 @@ class _CreditCardPageState extends State<CreditCardPage> {
   Widget build(BuildContext context) {
     
     return Scaffold(
+      backgroundColor: Color(int.parse("0xFFF4F2DE")),
+
       body: SafeArea(
         child: Column(
           children: [

@@ -49,7 +49,6 @@ class _UserTablePageState extends State<UserTablePage> {
   @override
   void dispose(){
     super.dispose();
-    toggleAppBarVisibility();
   }
   void toggleAppBarVisibility() {
     setState(() {
@@ -615,7 +614,7 @@ class _TablePageState extends State<TablePage> {
     return Scaffold(
       backgroundColor: Color(int.parse("0xFFF4F2DE")),
       appBar: AppBar(
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.blue,
         centerTitle: true,
         title: Text("Table ${widget.index}"),
       ),

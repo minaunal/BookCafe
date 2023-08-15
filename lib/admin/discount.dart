@@ -3,18 +3,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animated_icons/icons8.dart';
 import 'package:lottie/lottie.dart';
 
-class Kupon extends StatefulWidget {
-  const Kupon({super.key});
+class Coupon extends StatefulWidget {
+  const Coupon({super.key});
 
   @override
-  State<Kupon> createState() => _KuponState();
+  State<Coupon> createState() => _CouponState();
 }
 
-class _KuponState extends State<Kupon> {
+class _CouponState extends State<Coupon> {
   final indirim = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(int.parse("0xFFF4F2DE")),
       body: Padding(
         padding: EdgeInsets.all(30.0), // Girinti ayarı
         child: Column(
@@ -32,7 +33,7 @@ class _KuponState extends State<Kupon> {
             ),
             SizedBox(height: 25,),
             Text(
-              "set the discount percentage",
+              "Set the discount percentage",
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
             ),
             SizedBox(height: 20,),
