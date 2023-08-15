@@ -16,7 +16,7 @@ class UserPage extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.purple,
+        primarySwatch: Colors.green,
       ),
       home: UserTablePage(),
     );
@@ -48,6 +48,7 @@ class _UserTablePageState extends State<UserTablePage> {
 
   @override
   void dispose(){
+    super.dispose();
     toggleAppBarVisibility();
   }
   void toggleAppBarVisibility() {
@@ -58,12 +59,12 @@ class _UserTablePageState extends State<UserTablePage> {
 
   Future<void> getDocs() async {
     QuerySnapshot querySnapshot =
-    await FirebaseFirestore.instance.collection('cafes').doc(currentCafe).collection('Masalar').get();
+    await FirebaseFirestore.instance.collection('cafes').doc(currentCafeName).collection('Masalar').get();
 
     for (int i =1; i <= querySnapshot.docs.length; i++) {
       DocumentSnapshot snapshot = await FirebaseFirestore.instance
           .collection('cafes')
-          .doc(currentCafe)
+          .doc(currentCafeName)
           .collection('Masalar')
           .doc("Masa $i")
           .get();
@@ -102,7 +103,7 @@ class _UserTablePageState extends State<UserTablePage> {
   }
 
   Widget filter() {
-    return  Row(
+    return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         ElevatedButton(
@@ -164,9 +165,32 @@ class _UserTablePageState extends State<UserTablePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(int.parse("0xFFF4F2DE")),
       appBar: AppBar(
         backgroundColor: Colors.blue,
-        title: Text(currentCafe),
+        title:
+        Row(
+    children:[
+            ElevatedButton(
+            onPressed: () {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+        builder: (context) => CommentsPage(),
+        ),
+        );
+        },
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.blue,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(32.0),
+          ),
+        ),
+        child: Icon(Icons.comment_outlined,color: Colors.white,),
+
+      ),SizedBox(width:10),
+      Text(currentCafeName, style: TextStyle(fontFamily: 'JosefinSans', fontSize: 20)),
+
+    ]),
         actions: [
           filter(),
         ],
@@ -191,8 +215,6 @@ class _UserTablePageState extends State<UserTablePage> {
                 ),
 
 
-
-
           ),
         ],
       ),
@@ -202,6 +224,127 @@ class _UserTablePageState extends State<UserTablePage> {
   }
 
 }
+class CommentsPage extends StatefulWidget {
+
+  CommentsPage({super.key});
+
+  @override
+  _CommentsPageState createState() => _CommentsPageState();
+}
+
+class _CommentsPageState extends State<CommentsPage> {
+  late List<Map<String, dynamic>> comments = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchComments();
+  }
+
+  Future<void> fetchComments() async {
+    final commentsSnapshot = await FirebaseFirestore.instance
+        .collection('cafes')
+        .doc(currentCafeName)
+        .collection('Comments')
+        .orderBy('timestamp', descending: true)
+        .get();
+
+    setState(() {
+      comments = commentsSnapshot.docs.map((doc) {
+        final timestamp = doc['timestamp'] as Timestamp;
+        final dateTime = timestamp.toDate();
+
+        return {
+          'comment': doc['comment'],
+          'date': '${dateTime.day} ${_getMonthName(dateTime.month)}',
+          'rating': doc['rating'],
+        };
+      }).toList();
+    });
+  }
+
+  String _getMonthName(int month) {
+    final months = [
+      'January', 'February', 'March', 'April', 'May', 'June',
+      'July', 'August', 'September', 'October', 'November', 'December'
+    ];
+    return months[month - 1];
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Color(int.parse("0xFFF4F2DE")),
+
+      appBar: AppBar(
+        backgroundColor: Colors.blue,
+        title: Text('Comments for $currentCafeName'),
+      ),
+      body: ListView.builder(
+        itemCount: comments.length,
+        itemBuilder: (context, index) {
+          return Container(
+            padding: EdgeInsets.all(10),
+            margin: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              border: Border.all(color: Colors.grey), // Add border to the container
+              borderRadius: BorderRadius.circular(10), // Add border radius
+            ),
+            child: ListTile(
+              title: StarRating(rating: comments[index]['rating'], maxRating: 5),
+              subtitle:
+                  Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children:[
+                        SizedBox(height:5),
+
+                        Text(comments[index]['date'], style: TextStyle(fontWeight:FontWeight.bold),),
+                        SizedBox(height:10),
+                        Text(comments[index]['comment']),
+
+                  ])
+            ),
+          );
+        },
+      ),
+
+    );
+  }
+}
+
+
+class StarRating extends StatelessWidget {
+  final int rating;
+  final int maxRating;
+  final double iconSize;
+  final Color filledColor;
+  final Color emptyColor;
+
+  StarRating({
+    required this.rating,
+    this.maxRating = 5,
+    this.iconSize = 24,
+    this.filledColor = Colors.amber,
+    this.emptyColor = Colors.grey,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: List.generate(maxRating, (index) {
+        if (index < rating) {
+          return Icon(Icons.star, color: filledColor, size: iconSize);
+        } else {
+          return Icon(Icons.star, color: emptyColor, size: iconSize);
+        }
+      }),
+    );
+  }
+}
+
 
 class CardView extends StatelessWidget {
   const CardView({
@@ -236,10 +379,10 @@ class CardView extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(
-              Icons.table_restaurant_rounded,
-              color: Colors.blueGrey,
-              size: 60,
+            Image.asset(
+              'images/icons/table.png',
+              width: 50,
+              height: 50,
             ),
             const SizedBox(height: 5),
             Text(
@@ -279,7 +422,7 @@ class _TablePageState extends State<TablePage> {
 
   Future<void> getDocs() async {
     DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance
-        .collection('cafes').doc(currentCafe).collection('Masalar')
+        .collection('cafes').doc(currentCafeName).collection('Masalar')
         .doc('Masa ${widget.index}')
         .get();
 
@@ -314,7 +457,7 @@ class _TablePageState extends State<TablePage> {
   Future<void> updateChairStatus(
       int tableIndex, int chairIndex, List<bool> chairStatusList) async {
     final tableReference = FirebaseFirestore.instance
-        .collection('cafes').doc(currentCafe).collection('Masalar')
+        .collection('cafes').doc(currentCafeName).collection('Masalar')
         .doc('Masa $tableIndex');
 
     await tableReference.update({
@@ -408,7 +551,7 @@ class _TablePageState extends State<TablePage> {
 
   void updateSocketValue(int tableIndex, bool socketValue) async {
     final tableReference = FirebaseFirestore.instance
-        .collection('cafes').doc(currentCafe).collection('Masalar')
+        .collection('cafes').doc(currentCafeName).collection('Masalar')
         .doc('Masa $tableIndex');
 
     await tableReference.update({'socket': socketValue});
@@ -416,7 +559,7 @@ class _TablePageState extends State<TablePage> {
 
   void updateWindowValue(int tableIndex, bool windowValue) async {
     final tableReference = FirebaseFirestore.instance
-        .collection('cafes').doc(currentCafe).collection('Masalar')
+        .collection('cafes').doc(currentCafeName).collection('Masalar')
         .doc('Masa $tableIndex');
 
     await tableReference.update({'window': windowValue});
@@ -424,7 +567,7 @@ class _TablePageState extends State<TablePage> {
 
   void updateFullValue(int tableIndex, bool fullValue) async {
     final tableReference = FirebaseFirestore.instance
-        .collection('cafes').doc(currentCafe).collection('Masalar')
+        .collection('cafes').doc(currentCafeName).collection('Masalar')
         .doc('Masa $tableIndex');
 
     await tableReference.update({'full': fullValue});
@@ -432,7 +575,7 @@ class _TablePageState extends State<TablePage> {
 
   void updateChairStatusList(int tableIndex, List<bool> chairStatusList) async {
     final tableReference = FirebaseFirestore.instance
-        .collection('cafes').doc(currentCafe).collection('Masalar')
+        .collection('cafes').doc(currentCafeName).collection('Masalar')
         .doc('Masa $tableIndex');
 
     await tableReference.update({'chairStatusList': chairStatusList});
@@ -440,7 +583,7 @@ class _TablePageState extends State<TablePage> {
 
   void updateChairCount(int tableIndex, int newCount) async {
     final tableReference = FirebaseFirestore.instance
-        .collection('cafes').doc(currentCafe).collection('Masalar')
+        .collection('cafes').doc(currentCafeName).collection('Masalar')
         .doc('Masa $tableIndex');
 
     final chairStatusList = List<bool>.filled(newCount, false);
@@ -460,18 +603,17 @@ class _TablePageState extends State<TablePage> {
             showAlertDialog(index);
           }
         },
-        child: Icon(
-          widget.table.chairStatusList[index]
-              ? Icons.chair_alt
-              : Icons.chair_alt,
+        child: Image.asset('images/icons/chair.png',
           color:
               widget.table.chairStatusList[index] ? Colors.red : Colors.green,
-          size: 50,
+          width: 50,
+          height:50,
         ),
       ),
     );
 
     return Scaffold(
+      backgroundColor: Color(int.parse("0xFFF4F2DE")),
       appBar: AppBar(
         backgroundColor: Colors.black,
         centerTitle: true,

@@ -31,7 +31,7 @@ class _CafeCreationPageState extends State<CafeCreationPage> {
   Future<void> _makeTablesForFirebase(int number) async {
 
     final collectionReference =
-    FirebaseFirestore.instance.collection('cafes').doc(currentCafe).collection('Masalar');
+    FirebaseFirestore.instance.collection('cafes').doc(currentCafeName).collection('Masalar');
     final currentTables = await collectionReference.get();
     for (final doc in currentTables.docs) {
       await doc.reference.delete();
@@ -84,7 +84,7 @@ class _CafeCreationPageState extends State<CafeCreationPage> {
           'cafe': name,
         }, SetOptions(merge: true));
 
-        currentCafe = name;
+        currentCafeName = name;
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Cafe created successfully!')),
         );
@@ -117,15 +117,14 @@ class _CafeCreationPageState extends State<CafeCreationPage> {
     });
   }
 
-  Future<void> uploadImages() async {
+  Future<void> uploadImage() async {
     final picker = ImagePicker();
 
-    // Allow the user to select multiple images
-    List<XFile>? imageFiles = await picker.pickMultiImage();
+    XFile? imageFile = await picker.pickImage(source: ImageSource.gallery);
 
-    for (XFile imageFile in imageFiles) {
-      firebase_storage.Reference storageReference = firebase_storage.FirebaseStorage.instance.ref().child('cafes').child(currentCafe).child("icon.jpg");
-      firebase_storage.UploadTask uploadTask = storageReference.putFile(File(imageFile.path) );
+    if (imageFile != null) {
+      firebase_storage.Reference storageReference = firebase_storage.FirebaseStorage.instance.ref().child('cafes').child(currentCafeName).child("icon.jpg");
+      firebase_storage.UploadTask uploadTask = storageReference.putFile(File(imageFile.path));
 
       await uploadTask.whenComplete(() {
         print('Image uploaded');
@@ -134,15 +133,8 @@ class _CafeCreationPageState extends State<CafeCreationPage> {
         print(storageReference);
       });
     }
-
-    // Display a success message to the user
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Images uploaded successfully!'),
-        backgroundColor: Colors.green,
-      ),
-    );
   }
+
 
 
   @override
@@ -226,7 +218,7 @@ class _CafeCreationPageState extends State<CafeCreationPage> {
 
               ElevatedButton(
                 onPressed: () async {
-                  await uploadImages();
+                  await uploadImage();
                 },
                 child: const Text('Select Images'),
               ),

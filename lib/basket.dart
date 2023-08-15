@@ -129,7 +129,7 @@ class _MakecardsState extends State<Makecards> {
                               onPressed: () {
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) =>
-                                        Cafe(docname: widget.docname)));
+                                        CafeMenu(docname: widget.docname)));
                               },
                             ),
                           );
@@ -152,7 +152,7 @@ class _MakecardsState extends State<Makecards> {
                     ElevatedButton.icon(
                       onPressed: () {
                         Navigator.of(context).push(
-                            MaterialPageRoute(builder: (context) => Cafe()));
+                            MaterialPageRoute(builder: (context) => CafeMenu()));
                       },
                       icon: Icon(
                         Icons.cancel_outlined,

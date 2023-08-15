@@ -2,20 +2,21 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fbase/admin/create_cafe.dart';
 import 'package:fbase/logging_in/user_logging_in.dart';
 import 'package:fbase/main.dart';
-import 'package:fbase/admin/moderator.dart';
 import 'package:fbase/user_screen.dart';
 import 'package:fbase/admin/admin_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_animated_icons/icons8.dart';
+import 'package:lottie/src/lottie.dart';
 
-class YoneticiGiris extends StatefulWidget {
-  const YoneticiGiris({super.key});
+class AdminLogin extends StatefulWidget {
+  const AdminLogin({super.key});
 
   @override
-  State<YoneticiGiris> createState() => _YoneticiGirisState();
+  State<AdminLogin> createState() => _AdminLoginState();
 }
 
-class _YoneticiGirisState extends State<YoneticiGiris> {
+class _AdminLoginState extends State<AdminLogin> {
   TextEditingController _email = TextEditingController();
   TextEditingController _password = TextEditingController();
 
@@ -33,7 +34,7 @@ class _YoneticiGirisState extends State<YoneticiGiris> {
         if (data['role'] == "admin") {
           // Admin doesn't have a cafe yet. Navigating to cafe creating page.
           if (data.containsKey('cafe')){
-            currentCafe = data['cafe'];
+            currentCafeName = data['cafe'];
             Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => Yonetici(email: _email.text.trim()),
             ));
@@ -46,7 +47,7 @@ class _YoneticiGirisState extends State<YoneticiGiris> {
           }
         } else {
           Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => Kullanici(email: _email.text.trim()),
+            builder: (context) => UserLogged(email: _email.text.trim()),
           ));
         }
       }
@@ -75,11 +76,29 @@ class _YoneticiGirisState extends State<YoneticiGiris> {
   Widget build(BuildContext context) {
     return Material(
       child: Scaffold(
+        backgroundColor: Color(int.parse("0xFFF4F2DE")),
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+
+
+            const Text(
+              "BookSmart Manager",
+              style: TextStyle(
+                fontFamily: 'Pacifico',
+                fontSize: 25,
+              ),
+            ),
+            SizedBox(height:20),
+            IconButton(
+              splashRadius: 50,
+              iconSize: 70,
+              icon: Lottie.asset(Icons8.book, height: 70, fit: BoxFit.fitHeight),
+              onPressed: null,
+            ),
+            SizedBox(height:25),
             TextField(
-              style: TextStyle(color: Colors.black),
+              style: const TextStyle(color: Colors.black),
               decoration: InputDecoration(
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
@@ -93,14 +112,14 @@ class _YoneticiGirisState extends State<YoneticiGiris> {
                       color: Colors.black,
                     ),
                   ),
-                  hintText: "name",
+                  hintText: "email",
                   hintStyle: TextStyle(color: Colors.blueGrey),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
                   )),
               controller: _email,
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             TextField(
@@ -126,17 +145,61 @@ class _YoneticiGirisState extends State<YoneticiGiris> {
               controller: _password,
               obscureText: true,
             ),
+            SizedBox(height:25),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.black,
-                foregroundColor: Colors.white,
+                backgroundColor: Colors.indigoAccent,
+                elevation: 5,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(32.0),
+                  side: const BorderSide(color: Colors.grey),
+                  borderRadius: BorderRadius.circular(50.0),
                 ),
               ),
-              onPressed: control,
-              child: Text("Log in"),
-            ),
+              onPressed: () {
+                control();
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center, // Center the content horizontally
+                mainAxisSize: MainAxisSize.min, // Use the minimum amount of space horizontally
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(5.0), // Add padding to the icon container
+                    decoration: BoxDecoration(
+                      color: Colors.indigoAccent, // Background color
+                      borderRadius: BorderRadius.circular(30),
+                      border: Border.all(
+                        color: Colors.white, // Change the border color here
+                        width: 5, // Set the border width
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.white.withOpacity(0.5), // Shadow color
+                          spreadRadius: 1, // Spread radius
+                          blurRadius: 1, // Blur radius
+                          //offset: const Offset(0, 3),
+                        ),
+                      ],
+                    ),
+                    child: const Icon(
+                      Icons.login_outlined,
+                      color: Colors.white,
+                      size: 25, // Icon size
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  const Text(
+                    "Log in",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+
+                ],
+              ),
+            )
+
           ],
         ),
       ),
