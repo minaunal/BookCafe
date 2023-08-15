@@ -1,12 +1,10 @@
-import 'package:fbase/admin/create_cafe.dart';
-import 'package:fbase/admin/admin_screen.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animated_icons/icons8.dart';
 import 'package:lottie/lottie.dart';
 
-import '../user_screen.dart';
 
 
 class SignUpPage extends StatefulWidget {
@@ -176,10 +174,12 @@ class _SignUpPageState extends State<SignUpPage> {
     bool isAdmin = role == "admin";
 
     return Scaffold(
+      backgroundColor: Color(int.parse("0xFFF4F2DE")),
+
       appBar: AppBar(
-        title: isAdmin ? Text('Manager Sign Up') : Text('Sign Up'),
+        title: isAdmin ? Text('Manager Sign Up', style:TextStyle(fontWeight: FontWeight.bold,)) : Text('Sign Up'),
         centerTitle: true,
-        backgroundColor: isAdmin ? Colors.blueAccent : Colors.green, // Change the background color of AppBar based on role
+        backgroundColor: isAdmin ? Colors.indigoAccent : Colors.green, // Change the background color of AppBar based on role
       ),
       body: ListView(
         padding: const EdgeInsets.all(16.0),
@@ -213,9 +213,35 @@ class _SignUpPageState extends State<SignUpPage> {
             const SizedBox(height: 10),
 
             ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: isAdmin ? Colors.indigoAccent : Colors.green,
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(32.0),
+                ),
+              ),
               onPressed: _signUp,
-              child: const Text('Sign Up'),
-            ),
+              child: const Row(
+                mainAxisSize: MainAxisSize.min, // Center the content horizontally
+                children: [
+                  SizedBox(
+                    width: 5,
+                  ),
+                  Icon(
+                    Icons.app_registration_rounded,
+                    size: 30,
+                    color: Colors.white,
+                  ),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  Text(
+                    'Sign Up',
+                    style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+                  ),
+                ],
+              ),
+            )
           ],
         ),],
       ),
@@ -323,26 +349,26 @@ class _TFdesignState extends State<TFdesign> {
           style: const TextStyle(color: Colors.black),
           decoration: InputDecoration(
               enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(25),
                 borderSide: BorderSide(
-                  color: Colors.blueGrey,
+                  color: Colors.black45,
                 ),
               ),
               focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(25),
                 borderSide: const BorderSide(
                   color: Colors.black,
                 ),
               ),
               hintText: widget.alanadi,
-              hintStyle: TextStyle(color: Colors.blueGrey),
+              hintStyle: TextStyle(color: Colors.black),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
               )),
           controller: widget.degisken,
           obscureText: pwsituation(),
         ),
-        SizedBox(
+        const SizedBox(
           height: 10,
         ),
       ],

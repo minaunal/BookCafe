@@ -38,7 +38,7 @@ class _HazirState extends State<Hazir> {
           label: 'Go back to menu',
           onPressed: () {
             Navigator.of(context)
-                .push(MaterialPageRoute(builder: (context) => Cafe(docname: widget.docname)));
+                .push(MaterialPageRoute(builder: (context) => CafeMenu(docname: widget.docname)));
           },
         ),
       ),

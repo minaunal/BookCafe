@@ -13,14 +13,16 @@ class googleSignIn extends StatelessWidget {
       },
 
       style: ElevatedButton.styleFrom(
-        primary: Colors.greenAccent, // Buton rengini değiştirmek için
-        onPrimary: Colors.black, // Buton metin rengini değiştirmek için
+        backgroundColor: Color(int.parse("0xFFF4F2DE")),
+        foregroundColor: Colors.white,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(32),
+          borderRadius: BorderRadius.circular(32.0),
+          side: const BorderSide(color: Colors.grey),
+
         ),
       ),
       child: Image.asset(
-        'images/G_logo.png', // Google logosunun bulunduğu dosya yolunu buraya yazın
+        'images/G_logo.png',
         width: 24,
         height: 24,
       ),
@@ -30,7 +32,7 @@ class googleSignIn extends StatelessWidget {
   Future<void> signInWithGoogle(BuildContext context) async {
     try {
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-      if (googleUser == null) return; // Kullanıcı giriş yapmayı iptal etti.
+      if (googleUser == null) return;
 
       final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
       final AuthCredential credential = GoogleAuthProvider.credential(
@@ -45,7 +47,7 @@ class googleSignIn extends StatelessWidget {
       if (user != null) {
         print('Kullanıcı giriş yaptı: ${user.displayName}');
         Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => Kullanici(email: user.email!.trim())));
+            builder: (context) => UserLogged(email: user.email!.trim())));
       } else {
         print('Google ile giriş başarısız.');
       }

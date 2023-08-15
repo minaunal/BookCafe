@@ -23,7 +23,7 @@ class _StarsState extends State<Stars> {
   void fetchData() {
     FirebaseFirestore.instance
         .collection("cafes")
-        .doc(currentCafe)
+        .doc(currentCafeName)
         .collection("Comments")
         .get()
         .then((QuerySnapshot querySnapshot) {

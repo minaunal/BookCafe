@@ -75,6 +75,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - images/
+    - images/icons/
 
 
 
@@ -98,8 +99,14 @@ flutter:
     - family: TitilliumWeb
       fonts:
         - asset: fonts/TitilliumWeb-Regular.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
-  #         weight: 700
-  #
+    #       - asset: fonts/TrajanPro_Bold.ttf
+    #         weight: 700
+    - family: JosefinSans
+      fonts:
+        - asset: fonts/JosefinSans-Bold.ttf
+    - family: OoohBaby
+      fonts:
+          - asset: fonts/OoohBaby-Regular.ttf
+
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

@@ -24,7 +24,6 @@ class _SelectCafeState extends State<SelectCafe> {
 
   Future<void> fetchCafeNames() async {
     List<String> names = await getAllCafeNames();
-
     setState(() {
       cafeNames = names;
     });
@@ -32,13 +31,12 @@ class _SelectCafeState extends State<SelectCafe> {
   Future<String> getCafeImageURL(String cafeName) async {
     try {
 
-      final ref = FirebaseStorage.instance.ref().child('icon.jpg');
+      final ref = FirebaseStorage.instance.ref().child('cafes').child(cafeName).child('icon.jpg');
       final url = await ref.getDownloadURL();
 
       return url;
     } catch (e) {
-      // If the image is not available, return the default image URL
-      return 'images/default_cafe.png';
+      return 'images/default_cafe.jpg';
     }
   }
 
@@ -51,20 +49,19 @@ class _SelectCafeState extends State<SelectCafe> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(int.parse("0xFFF4F2DE")),
       appBar: isAppBarVisible ? AppBar(
         automaticallyImplyLeading: false,
         title: const Center(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.book_online),
               SizedBox(width: 10),
               Text(
                 "BookSmart",
                 style: TextStyle(
                   fontSize: 25,
                   fontFamily: 'Pacifico',
-                  fontWeight: FontWeight.bold,
                   color: Colors.white,
                 ),
               ),
@@ -86,17 +83,16 @@ class _SelectCafeState extends State<SelectCafe> {
             return GestureDetector(
               onTap: () {
                 toggleAppBarVisibility();
-                currentCafe = cafeName;
+                currentCafeName = cafeName;
                 showBottomSheet(
                   context: context,
-                  builder: (context) => masa(),
+                  builder: (context) => table(),
                 );
               },
               child: FutureBuilder<String>(
                 future: getCafeImageURL(cafeName),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    // While the image URL is being fetched, show a loading indicator or a placeholder image
                     return CircularProgressIndicator();
                   } else if (snapshot.hasError) {
                     // If there was an error while fetching the image URL, show an error message or a placeholder image
@@ -114,20 +110,20 @@ class _SelectCafeState extends State<SelectCafe> {
                               borderRadius: BorderRadius.circular(12.0), // Set the border radius here
                               border: Border.all(
                                 color: Colors.black, // Set the border color here
-                                width: 1.0, // Set the border width here
+                                width: 2.0, // Set the border width here
                               ),
                             ),
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(10.0), // Set the border radius here
                               child: Image.network(
                                 imageUrl!,
-                                width: 70,
-                                height: 70,
+                                width: 100,
+                                height: 100,
                                 errorBuilder: (context, error, stackTrace) {
                                   // If there was an error loading the image, show a placeholder image
                                   return Image.asset(
                                     'images/default_cafe.png',
-                                    width: 120,
+                                    width: 100,
                                     height: 100,
                                     fit: BoxFit.fitWidth,
                                   );
@@ -136,22 +132,24 @@ class _SelectCafeState extends State<SelectCafe> {
                             ),
                           ),
                           Container(
-                            width:125,
-
-                            padding: EdgeInsets.all(2.0), // Add padding around the text
+                            width: 115,
+                            height: 25,
+                            padding: const EdgeInsets.all(3.0),
                             decoration: BoxDecoration(
-
-                              color: Colors.black12, // Set the background color
-                              borderRadius: BorderRadius.circular(10.0), // Set the border radius for the background
+                              color: Color(int.parse("0xFFF4F2DE")),
+                              borderRadius: BorderRadius.circular(20.0),
+                              border: Border.all(
+                                color:Colors.black,
+                                width:2.0,
+                              )
                             ),
                             child: Center(
                               child: Text(
                                 cafeName,
                                 style: const TextStyle(
-                                  fontFamily: 'Pacifico',
-                                  //fontWeight: FontWeight.bold,
-                                  color: Colors.black, // Set the text color
-                                  fontSize: 12, // Set the font size
+                                  fontFamily: 'JosefinSans',
+                                  color: Colors.black,
+                                  fontSize: 14,
                                 ),
                               ),
                   )
@@ -188,14 +186,14 @@ Future<List<String>> getAllCafeNames() async {
 
 
 
-class masa extends StatefulWidget {
-  masa({Key? mykey}) : super(key: mykey);
+class table extends StatefulWidget {
+  table({Key? mykey}) : super(key: mykey);
 
   @override
-  State<masa> createState() => _masaState();
+  State<table> createState() => _tableState();
 }
 
-class _masaState extends State<masa> {
+class _tableState extends State<table> {
   TextEditingController yorum = TextEditingController();
   List<bool> starColors = List.filled(5, false);
 
@@ -203,7 +201,10 @@ class _masaState extends State<masa> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(int.parse("0xFFF4F2DE")),
+
       body: Center(
+
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
@@ -211,9 +212,11 @@ class _masaState extends State<masa> {
               child: UserPage(),
             ),
             const Divider(thickness: 2),
-            Row(
+            Container(
+              color: Color(int.parse("0xFFF4F2DE")),
+              child: Row(
               children:[
-                const SizedBox(width:5),
+                const SizedBox(width:7),
                 ElevatedButton(
               onPressed: () {
                 showDialog(
@@ -314,8 +317,12 @@ class _masaState extends State<masa> {
                 SizedBox(width:5),
                 ElevatedButton.icon(
               onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => yorumSor()));
-              },
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return comment(); // Show the custom dialog
+                  },
+                );              },
               icon: Icon(
                 Icons.comment,
                 color: Colors.white,
@@ -329,28 +336,32 @@ class _masaState extends State<masa> {
                 ),
               ),
             ),]
-            ),
+            ),)
           ],
         ),
       ),
     );
   }
 
-  Widget yorumSor() {
-    TextEditingController yorum = TextEditingController();
+  Widget comment() {
+    TextEditingController comment = TextEditingController();
     List<bool> starColors = List.generate(5, (index) => false);
 
-    return Scaffold(
-      body: Column(
+    return Dialog(
+      backgroundColor: Color(int.parse("0xFFF4F2DE")),
+      child: Container(
+        height:150,
+      child:Column(
+
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           TextField(
-            controller: yorum,
+            controller: comment,
           ),
           RatingBar.builder(
             minRating: 1,
-            itemSize: 46,
-            itemPadding: EdgeInsets.symmetric(horizontal: 4),
+            itemSize: 30,
+            itemPadding: const EdgeInsets.symmetric(horizontal: 3),
             itemBuilder: (context, index) => Icon(
               Icons.star,
               color: starColors[index] ? Colors.amber : Colors.grey,
@@ -364,16 +375,14 @@ class _masaState extends State<masa> {
           ),
           ElevatedButton(
             onPressed: () async {
-              String newComment = yorum.text;
+              String newComment = comment.text;
               int starRating = starColors.where((color) => color).length;
 
               if (newComment.isNotEmpty && starRating > 0) {
                 try {
-
-
                     await FirebaseFirestore.instance
                       .collection('cafes')
-                      .doc(currentCafe)
+                      .doc(currentCafeName)
                       .collection('Comments')
                       .add({
                     'comment': newComment,
@@ -382,22 +391,22 @@ class _masaState extends State<masa> {
                   });
 
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Yorumunuz başarıyla eklendi!')),
+                    SnackBar(content: Text('Comment is successfully added!')),
                   );
                 } catch (e) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Yorum eklenirken bir hata oluştu.')),
+                    SnackBar(content: Text('Something wrong happened. Comment is not added.')),
                   );
                 }
               } else {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Lütfen puan ve yorum alanlarını doldurun.')),
+                  SnackBar(content: Text('Please fill comment and star part carefully!')),
                 );
               }
             },
-            child: Text('Tamam'),
+            child: Text('Okay'),
           ),
-        ],
+        ]),
       ),
     );
   }
@@ -405,34 +414,26 @@ class _masaState extends State<masa> {
 }
 
 Future<void> empty(String qrtext) async {
-  // Firebase Firestore bağlantısını al
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  // Belge referansını al
-  final DocumentReference docRef = firestore.collection('Masalar').doc(qrtext);
+  final DocumentReference docRef = firestore.collection('cafes').doc(currentCafeName).collection('Masalar').doc(qrtext);
 
   try {
-    // Belgeyi getir
     final DocumentSnapshot document = await docRef.get();
 
     if (document.exists) {
-      // "chairs" alanını güncelle
       final List<dynamic> chairs =
       List.from(document.get('chairStatusList') as List<dynamic>);
 
-      // False olan bir sandalye bul
       int indexToUpdate = chairs.indexWhere((chair) => chair == true);
 
       if (indexToUpdate != -1) {
-        // İlgili sandalyeyi false yap
         chairs[indexToUpdate] = false;
 
-        // Güncellenmiş sandalye listesini Firestore'a kaydet
         await docRef.update({'chairStatusList': chairs});
       }
     }
   } catch (e) {
-    // Hata durumunda ilgili işlemleri gerçekleştir
-    print('Hata: $e');
+    print('Error: $e');
   }
 }

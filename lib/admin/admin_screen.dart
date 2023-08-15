@@ -1,13 +1,19 @@
-import 'dart:ffi';
+
+import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fbase/admin/discount.dart';
 import 'package:fbase/main.dart';
 import 'package:fbase/admin/moderator.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animated_icons/icons8.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:pie_chart/pie_chart.dart';
 import 'package:lottie/lottie.dart';
+
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import '../changepw.dart';
 
 class Yonetici extends StatefulWidget {
   final email;
@@ -23,44 +29,48 @@ class _YoneticiState extends State<Yonetici> {
   int _currentIndex = 0;
 
   final List<Widget> _pages = [
-    const Masa(),
-    doluluk(),
-    Kupon(),
-    Income(),
+    const Table(),
+    CafeModerator(),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(int.parse("0xFFF4F2DE")),
+
       body: _pages[_currentIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        unselectedLabelStyle:
-            const TextStyle(color: Colors.white, fontSize: 14),
-        backgroundColor: const Color(0xFF084A76),
-        fixedColor: Colors.black,
-        unselectedItemColor: Colors.black,
-        currentIndex: _currentIndex,
-        onTap: (int index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.table_restaurant_rounded,color: Color(0xFFFF7800),),
-            label: 'Tables',
+      bottomNavigationBar: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Divider(
+            height: 1,
+            color: Colors.grey,
+            thickness: 1,
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.group_outlined,color: Color(0xFF2EA84A),),
-            label: 'Occupancy',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.receipt_outlined,color: Color(0xFFDA1E60),),
-            label: 'Coupon',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.attach_money_rounded,color: Color(0xFF182B6A),),
-            label: 'Income',
+          BottomNavigationBar(
+            unselectedLabelStyle: const TextStyle(
+              color: Colors.indigoAccent,
+              fontSize: 15,
+            ),
+            backgroundColor: Color(int.parse("0xFFF4F2DE")),
+            unselectedItemColor: Colors.indigoAccent,
+            currentIndex: _currentIndex,
+            onTap: (int index) {
+              setState(() {
+                _currentIndex = index;
+              });
+            },
+            items: const [
+              BottomNavigationBarItem(
+                icon: Icon(Icons.table_restaurant, color: Colors.indigoAccent),
+                label: 'Tables',
+              ),
+
+              BottomNavigationBarItem(
+                icon: Icon(Icons.admin_panel_settings, color: Color(0xFF2EA84A)),
+                label: 'Account',
+              ),
+            ],
           ),
         ],
       ),
@@ -68,28 +78,28 @@ class _YoneticiState extends State<Yonetici> {
   }
 }
 
-class Masa extends StatefulWidget {
-  const Masa({super.key});
+class Table extends StatefulWidget {
+  const Table({super.key});
 
   @override
-  State<Masa> createState() => _MasaState();
+  State<Table> createState() => _TableState();
 }
 
-class _MasaState extends State<Masa> {
+class _TableState extends State<Table> {
   @override
   Widget build(BuildContext context) {
     return const Moderator();
   }
 }
 
-class doluluk extends StatefulWidget {
-  doluluk({super.key});
+class Occupancy extends StatefulWidget {
+  Occupancy({super.key});
 
   @override
-  State<doluluk> createState() => _dolulukState();
+  State<Occupancy> createState() => _OccupancyState();
 }
 
-class _dolulukState extends State<doluluk> {
+class _OccupancyState extends State<Occupancy> {
   Map<String, double> dataMap = {
     "full": 20,
     "empty": 180,
@@ -111,7 +121,7 @@ class _dolulukState extends State<doluluk> {
 
   void countTrue() async {
     QuerySnapshot snapshot =
-        await FirebaseFirestore.instance.collection('cafes').doc(currentCafe).collection('Masalar').get();
+        await FirebaseFirestore.instance.collection('cafes').doc(currentCafeName).collection('Masalar').get();
 
     snapshot.docs.forEach((doc) {
       List<bool> colors = List<bool>.from(doc['chairStatusList']);
@@ -125,7 +135,7 @@ class _dolulukState extends State<doluluk> {
       });
     } else {
       setState(() {
-        occupancyMessage = "Instant occupancy in $currentCafe.";
+        occupancyMessage = "Instant occupancy in $currentCafeName.";
       });
     }
 
@@ -194,7 +204,7 @@ class _IncomeState extends State<Income> {
   Future<void> fetchData() async {
     DocumentSnapshot snapshot = await FirebaseFirestore.instance
         .collection("cafes")
-        .doc(currentCafe)
+        .doc(currentCafeName)
         .collection('Gelir')
         .doc('gelir')
         .get();
@@ -247,6 +257,245 @@ final indirim = TextEditingController();
           ),
         ],
       ),
+      ),
+    );
+  }
+}
+
+
+class CafeModerator extends StatefulWidget {
+  final email;
+
+  CafeModerator({Key? mykey, this.email}) : super(key: mykey);
+
+  @override
+  State<CafeModerator> createState() => _CafeModeratorState();
+}
+
+
+class _CafeModeratorState extends State<CafeModerator> {
+
+  Future<void> uploadImage() async {
+    final picker = ImagePicker();
+
+    XFile? imageFile = await picker.pickImage(source: ImageSource.gallery);
+
+    if (imageFile != null) {
+      File file = File(imageFile.path);
+
+      firebase_storage.Reference storageReference = firebase_storage.FirebaseStorage.instance.ref().child('cafes').child(currentCafeName).child("icon.jpg");
+      firebase_storage.UploadTask uploadTask = storageReference.putFile(file);
+
+      await uploadTask.whenComplete(() {
+        print('Image uploaded');
+      }).catchError((error) {
+        print('Error uploading image: $error');
+        print(storageReference);
+      });
+    }
+  }
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.all(30.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+
+          Text(currentCafeName,
+            style: const TextStyle(
+              fontFamily: 'Pacifico',
+              fontSize: 25,
+            ),
+          ),
+
+          IconButton(
+            splashRadius: 50,
+            iconSize: 80,
+            icon: Lottie.asset(Icons8.book, height: 80, fit: BoxFit.fitHeight),
+            onPressed: null,
+          ),
+          const Divider(
+            thickness: 2,
+          ),
+          const SizedBox(height: 20),
+          Row(
+            children: <Widget>[
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => change(email: widget.email)));
+                },
+                child: const Icon(
+                  Icons.key,
+                  color: Colors.black,
+                  size: 32,
+                ),
+              ),
+              const SizedBox(
+                width: 20,
+              ),
+              const Text(
+                'Change password',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: 30,
+          ),
+
+          Row(
+            children: <Widget>[
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => Kupon()));
+                },
+                child: const Icon(
+                  Icons.discount,
+                  color: Colors.black,
+                  size: 32,
+                ),
+              ),
+              const SizedBox(
+                width: 20,
+              ),
+              const Text(
+                'Make a discount',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: 30,
+          ),
+          Row(
+            children: <Widget>[
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => Income()));
+                },
+                child: const Icon(
+                  Icons.attach_money,
+                  color: Colors.black,
+                  size: 32,
+                ),
+              ),
+              const SizedBox(
+                width: 20,
+              ),
+              const Text(
+                'Check your income',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: 30,
+          ),
+          Row(
+            children: <Widget>[
+              GestureDetector(
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => Occupancy()));
+                },
+                child: const Icon(
+                  Icons.percent_outlined,
+                  color: Colors.black,
+                  size: 32,
+                ),
+              ),
+              const SizedBox(
+                width: 20,
+              ),
+              const Text(
+                'Check cafe occupancy',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),const SizedBox(
+            height: 30,
+          ),
+          Row(
+            children: <Widget>[
+              GestureDetector(
+                onTap: () async {
+                  await uploadImage();
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(0),
+                  color: Colors.white,
+                  child: const Icon(
+                    Icons.image_outlined,
+                    color: Colors.black,
+                    size: 32,
+                  ),
+                ),
+              ),
+
+              SizedBox(
+                width: 20,
+              ),
+              Text(
+                'Change image of cafe',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+          SizedBox(
+            height: 30,
+          ),
+          Row(
+            children: <Widget>[
+              GestureDetector(
+                onTap: () async {
+                  await FirebaseAuth.instance.signOut();
+
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const Iskele()));
+
+                },
+                child: Icon(
+                  Icons.logout_outlined,
+                  color: Colors.black,
+                  size: 32,
+                ),
+              ),
+              SizedBox(
+                width: 20,
+              ),
+              Text(
+                'Log out',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+
+
+        ],
       ),
     );
   }

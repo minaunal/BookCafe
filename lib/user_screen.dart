@@ -3,7 +3,9 @@ import 'package:fbase/changepw.dart';
 import 'package:fbase/cards.dart';
 import 'package:fbase/logging_in/user_logging_in.dart';
 import 'package:fbase/basket.dart';
+import 'package:fbase/main.dart';
 import 'package:fbase/selectCafe.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_animated_icons/icons8.dart';
@@ -17,16 +19,16 @@ void updateQR(String newQR) {
 }
 
 
-class Kullanici extends StatefulWidget {
+class UserLogged extends StatefulWidget {
   final email;
 
-  Kullanici({Key? key, this.email}) : super(key: key);
+  UserLogged({Key? key, this.email}) : super(key: key);
 
   @override
-  State<Kullanici> createState() => _KullaniciState();
+  State<UserLogged> createState() => _UserLoggedState();
 }
 
-class _KullaniciState extends State<Kullanici> {
+class _UserLoggedState extends State<UserLogged> {
   var docname;
   int selectedIndex = 0;
 
@@ -57,55 +59,71 @@ class _KullaniciState extends State<Kullanici> {
 
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(int.parse("0xFFF4F2DE")),
       body: IndexedStack(
+
         index: selectedIndex,
         children: [
-          //masa(docname: docname),
           SelectCafe(),
-          cuzdan(email: widget.email, docname: docname),
-          Cafe(docname: docname),
+          wallet(email: widget.email, docname: docname),
+          CafeMenu(docname: docname),
           hesap(email: widget.email),
         ],
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        unselectedLabelStyle:
-            const TextStyle(color: Colors.white, fontSize: 14),
-        backgroundColor: const Color(0xFF084A76),
-        fixedColor: Colors.black,
-        unselectedItemColor: Colors.black,
-        currentIndex: selectedIndex,
-        onTap: onTabTapped,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.table_restaurant_outlined,
-              color: Color(0xFFFF7800),
-            ),
-            label: 'Tables',
+      bottomNavigationBar: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Divider(
+            color: Colors.grey,
+            height: 1,
+            thickness: 0.5,
           ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.account_balance_wallet_outlined,
-              color: Color(0xFF2EA84A),
+          Container(
+            color: const Color(0xFFF4F2DE), // Set the background color
+            child: BottomNavigationBar(
+              unselectedLabelStyle: const TextStyle(color: Colors.white, fontSize: 14),
+              fixedColor: Colors.black,
+
+              backgroundColor: Color(int.parse("0xFFF4F2DE")),
+              currentIndex: selectedIndex,
+              onTap: onTabTapped,
+              items:  <BottomNavigationBarItem>[
+                BottomNavigationBarItem(
+                  backgroundColor: Color(int.parse("0xFFF4F2DE")),
+                  icon: Icon(
+                    Icons.table_restaurant_outlined,
+
+                    color: Color(0xFFFF7800),
+                  ),
+                  label: 'Tables',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(
+                    Icons.account_balance_wallet_outlined,
+                    color: Color(0xFF2EA84A),
+                  ),
+                  label: 'Wallet',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(
+                    Icons.emoji_food_beverage,
+                    color: Color(0xFFDA1E60),
+                  ),
+                  label: 'Cafe',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(
+                    Icons.account_circle_outlined,
+                    color: Color(0xFF182B6A),
+                  ),
+                  label: 'Account',
+                ),
+              ],
             ),
-            label: 'Wallet',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.emoji_food_beverage,
-              color: Color(0xFFDA1E60),
-            ),
-            label: 'Cafe',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(
-              Icons.account_circle_outlined,
-              color: Color(0xFF182B6A),
-            ),
-            label: 'Account',
           ),
         ],
       ),
+
     );
   }
 }
@@ -120,16 +138,16 @@ class chosentable extends StatelessWidget {
   }
 }
 
-class cuzdan extends StatefulWidget {
+class wallet extends StatefulWidget {
   final email;
   final docname;
 
-  cuzdan({Key? mykey, this.email, this.docname}) : super(key: mykey);
+  wallet({Key? mykey, this.email, this.docname}) : super(key: mykey);
   @override
-  State<cuzdan> createState() => _cuzdanState();
+  State<wallet> createState() => _walletState();
 }
 
-class _cuzdanState extends State<cuzdan> {
+class _walletState extends State<wallet> {
   int sayac = 0;
   final money = TextEditingController();
   int? temp = 0;
@@ -158,6 +176,8 @@ class _cuzdanState extends State<cuzdan> {
       });
     });
     return Scaffold(
+      backgroundColor: Color(int.parse("0xFFF4F2DE")),
+
       body: Padding(
         padding: EdgeInsets.all(30.0), // Girinti ayarı
         child: Column(
@@ -184,7 +204,7 @@ class _cuzdanState extends State<cuzdan> {
                   width: 20,
                 ),
                 Text(
-                  "Money in the wallet: $temp tl",
+                  "Money in the wallet: $temp TL",
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
               ],
@@ -197,7 +217,7 @@ class _cuzdanState extends State<cuzdan> {
                     style: const TextStyle(fontWeight: FontWeight.bold),
                     controller: money,
                     decoration: const InputDecoration(
-                      hintText: 'tl',
+                      hintText: ' TL',
                       hintStyle: TextStyle(fontSize: 20.0),
                       enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(color: Colors.black, width: 2.0),
@@ -278,15 +298,15 @@ class _cuzdanState extends State<cuzdan> {
   }
 }
 
-class Cafe extends StatefulWidget {
+class CafeMenu extends StatefulWidget {
   final docname;
-  Cafe({Key? mykey, this.docname}) : super(key: mykey);
+  CafeMenu({Key? mykey, this.docname}) : super(key: mykey);
 
   @override
-  State<Cafe> createState() => _CafeState();
+  State<CafeMenu> createState() => _CafeMenuState();
 }
 
-class _CafeState extends State<Cafe> {
+class _CafeMenuState extends State<CafeMenu> {
   @override
   Widget build(BuildContext context) {
     FirebaseFirestore.instance
@@ -297,60 +317,55 @@ class _CafeState extends State<Cafe> {
       Discount = value.data()!['tl'];
     });
     return Column(
+
       children: <Widget>[
         Flexible(
           child: GridView.count(
             crossAxisCount: 2,
             children: <Widget>[
               Makecards(
-                isim: "water",
-                foto: 'images/su.jpg',
+                isim: "Water",
+                foto: 'images/water.jpg',
                 old: 5,
                 fiyat: 5 - (5 * Discount / 100).toInt(),
                 docname: widget.docname,
               ),
               Makecards(
-                isim: "mineral water",
+                isim: "Sparkling water",
                 foto: 'images/soda.jpg',
                 old: 10,
                 fiyat: 10 - (10 * Discount / 100).toInt(),
                 docname: widget.docname,
               ),
               Makecards(
-                isim: "lemonade",
+                isim: "Lemonade",
                 foto: 'images/lim.jpg',
                 old: 18,
                 fiyat: (18 - (18 * Discount / 100)).toInt(),
                 docname: widget.docname,
               ),
               Makecards(
-                isim: "tea",
+                isim: "Tea",
                 foto: 'images/cay.jpg',
                 old: 8,
                 fiyat: 8 - (8 * Discount / 100).toInt(),
                 docname: widget.docname,
               ),
               Makecards(
-                isim: "filter coffee",
+                isim: "Filter coffee",
                 foto: 'images/filtre.jpg',
                 old: 15,
                 fiyat: 15 - (15 * Discount / 100).toInt(),
                 docname: widget.docname,
               ),
               Makecards(
-                isim: "turkish coffee",
+                isim: "Turkish coffee",
                 foto: 'images/kahve.jpg',
                 old: 20,
                 fiyat: 20 - (20 * Discount / 100).toInt(),
                 docname: widget.docname,
               ),
-              Makecards(
-                isim: "sahlep",
-                foto: 'images/salep.jpg',
-                fiyat: 20 - (20 * Discount / 100).toInt(),
-                old: 20,
-                docname: widget.docname,
-              ),
+
             ],
           ),
         ),
@@ -373,33 +388,41 @@ class Makecards extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String price = '';
+    bool changed=false;
     if (old != fiyat) {
-      price = old.toString() + "tl";
+      price = old.toString() + " TL";
+      changed=true;
     }
     return Card(
+      color: Color(int.parse("0xFFF4F2DE")),
       clipBehavior: Clip.antiAlias,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Expanded(
             child: AspectRatio(
-              aspectRatio: 24.0 / 11.0,
-              child: Image.asset(foto),
+              aspectRatio: 50.0 / 11.0,
+
+              child: Image.asset(foto,width:50,height:50,),
             ),
           ),
           Padding(
+
             padding: const EdgeInsets.fromLTRB(16.0, 12.0, 16.0, 8.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(
-                  isim,
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
+                Center(
+                  child: Text(
+                    isim,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
-                Text(
+                Center(
+                  child:changed ? Text(
                   price,
                   style: TextStyle(
                     decoration: TextDecoration.lineThrough,
@@ -408,19 +431,22 @@ class Makecards extends StatelessWidget {
                     fontSize: 16,
                     fontWeight: FontWeight.w900,
                   ),
+                ) : null,
                 ),
-                Text(
-                  fiyat.toString() + "tl",
+                Center(
+                child: Text(
+                  fiyat.toString() + " TL",
                   style: TextStyle(
                     fontSize: 17,
                     fontWeight: FontWeight.bold,
                     color: Colors.black,
                   ),
-                ),
+                ),),
                 SizedBox(
                   width: 10,
                 ),
-                Row(
+                 Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
                       'Add to Cart',
@@ -429,6 +455,7 @@ class Makecards extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
+
                     new IconButton(
                       icon: new Icon(Icons.data_saver_on),
                       onPressed: () {
@@ -439,9 +466,9 @@ class Makecards extends StatelessWidget {
                                 fiyat: fiyat,
                                 docname: docname)));
                       },
-                    )
+                    ),
                   ],
-                )
+                ),
               ],
             ),
           ),
@@ -490,7 +517,7 @@ class _hesapState extends State<hesap> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.all(30.0), // Girinti ayarı
+      padding: EdgeInsets.all(30.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -521,7 +548,7 @@ class _hesapState extends State<hesap> {
                 width: 20,
               ),
               Text(
-                'Change Password',
+                'Change password',
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -591,6 +618,39 @@ class _hesapState extends State<hesap> {
               ),
             ],
           ),
+          SizedBox(
+            height: 30,
+          ),
+          Row(
+            children: <Widget>[
+              GestureDetector(
+                onTap: () async {
+                  await FirebaseAuth.instance.signOut();
+
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const Iskele()));
+
+                },
+                child: Icon(
+                  Icons.logout_outlined,
+                  color: Colors.black,
+                  size: 32,
+                ),
+              ),
+              SizedBox(
+                width: 20,
+              ),
+              Text(
+                'Log out',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+
+
         ],
       ),
     );

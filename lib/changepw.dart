@@ -111,7 +111,7 @@ class _changeState extends State<change> {
                       label: 'GİRİŞ YAP',
                       onPressed: () {
                         Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => KullaniciGiris(),
+                          builder: (context) => UserLogin(),
                         ));
                       },
                     ),
