@@ -17,7 +17,6 @@ BookSmart is a revolutionary smart table reservation application, designed to en
 
 - [Team Members](#team-members)
 - [Product Overview](#product-overview)
-- [Video] (#video)
 - [Features](#features)
 - [Target Audience](#target-audience)
 - [Product Backlog](#product-backlog)
@@ -32,9 +31,7 @@ BookSmart is not just an app; it's a game-changer for students! It simplifies th
 We believe that BookSmart can revolutionize how students study, making it more efficient 👩‍🎓 and comfortable 🛋.
 
 
-<!-- Video -->
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/5nTzlIWrCV8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+[Watch the video](https://www.youtube.com/watch?v=5nTzlIWrCV8)
 
 <!-- Features -->
 
