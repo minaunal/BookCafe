@@ -60,26 +60,26 @@ We believe that BookSmart can revolutionize how students study, making it more e
 
 ## Screenshots
 
-![image](https://github.com/minaunal/BookSmart/assets/92324915/4dcb4fb0-7205-484b-89a3-22ca23a3767c)
+<img src="https://github.com/minaunal/BookSmart/assets/92324915/4dcb4fb0-7205-484b-89a3-22ca23a3767c" alt="image" width="400" height="600">
 
 # User Screenshots
-<img src="https://github.com/minaunal/BookSmart/assets/92324915/d002b875-6023-4718-8904-bf65ae50cea9" alt="image" width="300" height="200">
-<img src="https://github.com/minaunal/BookSmart/assets/92324915/f65c9ec8-148b-4148-b06d-e168af12ef64" alt="image" width="300" height="200">
-<img src="https://github.com/minaunal/BookSmart/assets/92324915/7606d710-dbfb-40fd-b8c7-a07d306c4347" alt="image" width="300" height="200">
-<img src="https://github.com/minaunal/BookSmart/assets/92324915/08f0f3d1-f3c1-4ad0-9693-b42ed27c8325" alt="image" width="300" height="200">
-<img src="https://github.com/minaunal/BookSmart/assets/92324915/97a0cf46-6d9a-48ec-bd5b-3a4e603ba3c7" alt="image" width="300" height="200">
-<img src="https://github.com/minaunal/BookSmart/assets/92324915/b0d88334-844f-46af-9613-751b72a8ad18" alt="image" width="300" height="200">
-<img src="https://github.com/minaunal/BookSmart/assets/92324915/e33d569d-5cb2-40c9-8a63-8f6d48f43d04" alt="image" width="300" height="200">
+<img src="https://github.com/minaunal/BookSmart/assets/92324915/d002b875-6023-4718-8904-bf65ae50cea9" alt="image" width="400" height="600">
+<img src="https://github.com/minaunal/BookSmart/assets/92324915/f65c9ec8-148b-4148-b06d-e168af12ef64" alt="image" width="400" height="600">
+<img src="https://github.com/minaunal/BookSmart/assets/92324915/7606d710-dbfb-40fd-b8c7-a07d306c4347" alt="image"  width="400" height="600">
+<img src="https://github.com/minaunal/BookSmart/assets/92324915/08f0f3d1-f3c1-4ad0-9693-b42ed27c8325" alt="image"  width="400" height="600">
+<img src="https://github.com/minaunal/BookSmart/assets/92324915/97a0cf46-6d9a-48ec-bd5b-3a4e603ba3c7" alt="image"  width="400" height="600">
+<img src="https://github.com/minaunal/BookSmart/assets/92324915/b0d88334-844f-46af-9613-751b72a8ad18" alt="image" width="400" height="600">
+<img src="https://github.com/minaunal/BookSmart/assets/92324915/e33d569d-5cb2-40c9-8a63-8f6d48f43d04" alt="image"  width="400" height="600">
 
 
 # Manager Screenshots
-<img src="https://github.com/minaunal/BookSmart/assets/92324915/82569b28-62dc-4525-9cd5-4eda0ea077f7" alt="image" width="300" height="200">
-<img src="https://github.com/minaunal/BookSmart/assets/92324915/4dcb4fb0-7205-484b-89a3-22ca23a3767c" alt="image" width="300" height="200">
-<img src="https://github.com/minaunal/BookSmart/assets/92324915/b1303d23-193e-45bb-98b8-b03132296632" alt="image" width="300" height="200">
-<img src="https://github.com/minaunal/BookSmart/assets/92324915/9b47a84a-9647-418c-b76e-0a2967e361ea" alt="image" width="300" height="200">
-<img src="https://github.com/minaunal/BookSmart/assets/92324915/0800ce9e-c9fe-4b88-86b2-c5f287c0d716" alt="image" width="300" height="200">
-<img src="https://github.com/minaunal/BookSmart/assets/92324915/e81642f3-657f-413b-8078-b93e0719f9c9" alt="image" width="300" height="200">
-<img src="https://github.com/minaunal/BookSmart/assets/92324915/e35569ad-694c-4735-9f75-85248c409f07" alt="image" width="300" height="200">
+<img src="https://github.com/minaunal/BookSmart/assets/92324915/82569b28-62dc-4525-9cd5-4eda0ea077f7" alt="image" width="400" height="600">
+<img src="https://github.com/minaunal/BookSmart/assets/92324915/4dcb4fb0-7205-484b-89a3-22ca23a3767c" alt="image"  width="400" height="600">
+<img src="https://github.com/minaunal/BookSmart/assets/92324915/b1303d23-193e-45bb-98b8-b03132296632" alt="image"  width="400" height="600">
+<img src="https://github.com/minaunal/BookSmart/assets/92324915/9b47a84a-9647-418c-b76e-0a2967e361ea" alt="image"  width="400" height="600">
+<img src="https://github.com/minaunal/BookSmart/assets/92324915/0800ce9e-c9fe-4b88-86b2-c5f287c0d716" alt="image"  width="400" height="600">
+<img src="https://github.com/minaunal/BookSmart/assets/92324915/e81642f3-657f-413b-8078-b93e0719f9c9" alt="image"  width="400" height="600">
+<img src="https://github.com/minaunal/BookSmart/assets/92324915/e35569ad-694c-4735-9f75-85248c409f07" alt="image" width="400" height="600">
 
 
 
