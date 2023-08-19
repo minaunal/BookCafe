@@ -1,5 +1,6 @@
+import 'package:fbase/main.dart';
 import 'package:fbase/table.dart';
-import 'package:fbase/table_page.dart';
+import 'package:fbase/admin/admin_table_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -10,21 +11,21 @@ class Moderator extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.purple,
+        primarySwatch: Colors.green,
       ),
-      home: MainPage(),
+      home: const ModeratorPage(),
     );
   }
 }
 
-class MainPage extends StatefulWidget {
-  const MainPage({super.key});
+class ModeratorPage extends StatefulWidget {
+  const ModeratorPage({super.key});
 
   @override
-  _MainPageState createState() => _MainPageState();
+  _ModeratorPageState createState() => _ModeratorPageState();
 }
 
-class _MainPageState extends State<MainPage> {
+class _ModeratorPageState extends State<ModeratorPage> {
   List<CafeTable> tables = [];
   int number = 0;
   TextEditingController numberController = TextEditingController();
@@ -46,9 +47,13 @@ class _MainPageState extends State<MainPage> {
     createTableDocument(number);
   }
 
+
+
+
+
   Future getDocs() async {
     QuerySnapshot querySnapshot =
-        await FirebaseFirestore.instance.collection('Masalar').get();
+        await FirebaseFirestore.instance.collection('cafes').doc(currentCafeName).collection('Masalar').get();
 
     for (int i = 0; i < querySnapshot.docs.length; i++) {
       var tempTable = querySnapshot.docs[i];
@@ -74,7 +79,7 @@ class _MainPageState extends State<MainPage> {
 
   void _makeTablesForFirebase(int masaSayisi) async {
     final collectionReference =
-        FirebaseFirestore.instance.collection('Masalar');
+        FirebaseFirestore.instance.collection('cafes').doc(currentCafeName).collection('Masalar');
     // Mevcut masaları sil
     final currentTables = await collectionReference.get();
     for (final doc in currentTables.docs) {
@@ -101,13 +106,15 @@ class _MainPageState extends State<MainPage> {
     };
 
     await FirebaseFirestore.instance
-        .collection('Masalar')
+        .collection('cafes').doc(currentCafeName).collection('Masalar')
         .doc('Masa $tableIndex')
         .set(tableData);
   }
 
   void deleteTableDocument(int tableIndex) async {
     final tableReference = FirebaseFirestore.instance
+        .collection('cafes')
+        .doc(currentCafeName)
         .collection('Masalar')
         .doc('Masa $tableIndex');
 
@@ -143,7 +150,7 @@ class _MainPageState extends State<MainPage> {
 
       // Get a reference to the table document in Firestore
       DocumentReference tableRef =
-          FirebaseFirestore.instance.collection('Masalar').doc(fullTableId);
+          FirebaseFirestore.instance.collection('cafes').doc(currentCafeName).collection('Masalar').doc(fullTableId);
 
       // Update the 'full' field of the table document to true
       tableRef.update({'full': true}).then((_) {
@@ -162,9 +169,10 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(int.parse("0xFFF4F2DE")),
       appBar:  
            AppBar(
-        backgroundColor: Colors.deepPurpleAccent,
+        backgroundColor: Colors.indigoAccent,
         title: Row(
           children: [
             IconButton(
@@ -284,21 +292,20 @@ class CardView extends StatelessWidget {
       },
       child: Container(
         alignment: Alignment.center,
-        color: Colors.white,
-        margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
         height: 100,
         width: 100,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(
-              Icons.table_restaurant,
-              color: Colors.black,
-              size: 50,
+            Image.asset(
+              'images/icons/table.png',
+              width: 50,
+              height: 50,
             ),
             const SizedBox(height: 5),
             Text(
-              index.toString(),
+              "Table "+ index.toString(),
               style: const TextStyle(color: Colors.black, fontSize: 20),
             ),
           ],

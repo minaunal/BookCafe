@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:fbase/user_page.dart';
+import 'package:fbase/user_table_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 
-import 'kullaniciekrani.dart';
-import 'kullanicigiris.dart';
+import 'user_screen.dart';
+import 'logging_in/user_logging_in.dart';
 
 class QRScanner extends StatefulWidget {
   @override

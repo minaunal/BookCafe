@@ -1,3 +1,4 @@
+import 'package:fbase/main.dart';
 import 'package:fbase/table.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -33,6 +34,8 @@ class _TablePageState extends State<TablePage> {
 
   Future<void> getDocs() async {
     DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance
+        .collection('cafes')
+        .doc(currentCafeName)
         .collection('Masalar')
         .doc('Masa ${widget.index}')
         .get();
@@ -42,8 +45,7 @@ class _TablePageState extends State<TablePage> {
       setState(() {
         widget.table.window = tempTable['window'];
         widget.table.socket = tempTable['socket'];
-        widget.table.chairStatusList =
-        List<bool>.from(tempTable['chairStatusList']);
+        widget.table.chairStatusList = List<bool>.from(tempTable['chairStatusList']);
       });
     }
   }
@@ -65,16 +67,16 @@ class _TablePageState extends State<TablePage> {
             TextButton(
               onPressed: () {
                 Navigator.of(context)
-                    .pop(); // İptal düğmesine basılınca dialog kapatılır
+                    .pop();
               },
               child: const Text('Cancel'),
             ),
             TextButton(
               onPressed: () {
-                widget.onDelete(); // onDelete işlevini çağırarak masayı sil
+                widget.onDelete();
                 Navigator.of(context)
-                    .pop(); // Sil düğmesine basılınca dialog kapatılır
-                Navigator.of(context).pop(); // TablePage sayfasına geri dönülür
+                    .pop();
+                Navigator.of(context).pop();
               },
               child: const Text('Delete'),
             ),
@@ -88,6 +90,8 @@ class _TablePageState extends State<TablePage> {
 
   Future<void> updateChairStatus(int tableIndex, int chairIndex, List<bool> chairStatusList) async {
     final tableReference = FirebaseFirestore.instance
+        .collection('cafes')
+        .doc(currentCafeName)
         .collection('Masalar')
         .doc('Masa $tableIndex');
 
@@ -108,6 +112,8 @@ class _TablePageState extends State<TablePage> {
 
   void updateSocketValue(int tableIndex, bool socketValue) async {
     final tableReference = FirebaseFirestore.instance
+        .collection('cafes')
+        .doc(currentCafeName)
         .collection('Masalar')
         .doc('Masa $tableIndex');
 
@@ -116,6 +122,8 @@ class _TablePageState extends State<TablePage> {
 
   void updateWindowValue(int tableIndex, bool windowValue) async {
     final tableReference = FirebaseFirestore.instance
+        .collection('cafes')
+        .doc(currentCafeName)
         .collection('Masalar')
         .doc('Masa $tableIndex');
 
@@ -124,6 +132,8 @@ class _TablePageState extends State<TablePage> {
 
   void updateFullValue(int tableIndex, bool fullValue) async {
     final tableReference = FirebaseFirestore.instance
+        .collection('cafes')
+        .doc(currentCafeName)
         .collection('Masalar')
         .doc('Masa $tableIndex');
 
@@ -132,6 +142,8 @@ class _TablePageState extends State<TablePage> {
 
   void updateChairStatusList(int tableIndex, List<bool> chairStatusList) async {
     final tableReference = FirebaseFirestore.instance
+        .collection('cafes')
+        .doc(currentCafeName)
         .collection('Masalar')
         .doc('Masa $tableIndex');
 
@@ -140,6 +152,8 @@ class _TablePageState extends State<TablePage> {
 
   void updateChairCount(int tableIndex, int newCount) async {
     final tableReference = FirebaseFirestore.instance
+        .collection('cafes')
+        .doc(currentCafeName)
         .collection('Masalar')
         .doc('Masa $tableIndex');
 
@@ -168,8 +182,9 @@ class _TablePageState extends State<TablePage> {
     );
 
     return Scaffold(
+      backgroundColor: Color(int.parse("0xFFF4F2DE")),
       appBar: AppBar(
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.indigoAccent,
         centerTitle: true,
         title: Text("Table ${widget.index}"),
         actions: [
@@ -189,9 +204,20 @@ class _TablePageState extends State<TablePage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text(
-                    "Socket: ",
-                    style: TextStyle(fontSize: 15),
+                  Container(
+                    padding: EdgeInsets.all(3),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: Colors.black, // Set your desired border color
+                        width: 2.0, // Set your desired border width
+                      ),
+                    ),
+                    child: Icon(
+                      Icons.electrical_services_outlined,
+                      color: Colors.black, // Set your desired icon color
+                      size: 30,
+                    ),
                   ),
                   const SizedBox(width: 5),
                   Switch(
@@ -209,9 +235,20 @@ class _TablePageState extends State<TablePage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text(
-                    "Window: ",
-                    style: TextStyle(fontSize: 15),
+                  Container(
+                    padding: EdgeInsets.all(3),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: Colors.black, // Set your desired border color
+                        width: 2.0, // Set your desired border width
+                      ),
+                    ),
+                    child: Icon(
+                      Icons.window_outlined,
+                      color: Colors.black, // Set your desired icon color
+                      size: 30,
+                    ),
                   ),
                   const SizedBox(width: 10),
                   Switch(
@@ -229,9 +266,20 @@ class _TablePageState extends State<TablePage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text(
-                    "Full: ",
-                    style: TextStyle(fontSize: 15),
+                  Container(
+                    padding: EdgeInsets.all(3),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: Colors.black, // Set your desired border color
+                        width: 2.0, // Set your desired border width
+                      ),
+                    ),
+                    child: Image.asset(
+                      'images/icons/available.png',
+                      width: 35,
+                      height: 35,
+                    ),
                   ),
                   const SizedBox(width: 10),
                   Switch(
@@ -240,7 +288,6 @@ class _TablePageState extends State<TablePage> {
                       updateFullValue(widget.index, value);
                       setState(() {
                         widget.table.full = value;
-                        // Doluluk durumuna göre koltukları güncelle
                         for (int i = 0;
                             i < widget.table.chairStatusList.length;
                             i++) {

@@ -12,7 +12,7 @@ class CafeTable {
 
   CafeTable({int chairCount = 4})
       : chair = Chair(count: chairCount),
-        chairStatusList = List<bool>.filled(chairCount, false); // Koltuk sayısı kadar öğeyle başlatılıyor
+        chairStatusList = List<bool>.filled(chairCount, false);
 
 
   bool socket = false;
